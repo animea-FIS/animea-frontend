@@ -30,6 +30,19 @@ class AnimesApi {
             return response.json();
         });
     }
+
+    static searchUserAnimes(userId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
 }
 
 export default AnimesApi;

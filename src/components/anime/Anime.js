@@ -17,7 +17,10 @@ class Anime extends Component {
     <Row>
         <Card
           actions={[
-            <a key="1" href="#">Add to my list</a>
+            <a key="1" href="#">
+              <i class="material-icons">add_circle</i>
+              Add to my list 
+              </a>
           ]}
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
           horizontal

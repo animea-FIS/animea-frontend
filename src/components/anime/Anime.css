@@ -21,19 +21,3 @@ h5 {
 img{
     height: 25em!important;
 }
-
-.card .card-action a{
-    color: hotpink!important;
-}
-
-.anime-search {
-    background-color: hotpink;
-    border-radius: 30px;
-    margin-top: 2em;
-    margin-bottom: 2em;
-}
-
-.nav-wrapper .input-field input[type=search]{
-    border-radius: 30px;
-    margin-top: 2em;
-}
