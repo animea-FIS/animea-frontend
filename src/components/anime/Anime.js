@@ -12,14 +12,13 @@ class Anime extends Component {
   }
 
   render() {
-    // console.log(this.props.value.attributes)
     return (
     <Row>
         <Card
           actions={[
             <a key="1" href="#">
-              <i class="material-icons">add_circle</i>
-              Add to my list 
+              <i className="material-icons">add_circle</i>
+              Add to my list
               </a>
           ]}
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}

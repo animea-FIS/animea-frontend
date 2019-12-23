@@ -5,9 +5,9 @@ class AnimesApi {
         return {}
     }
 
-    static getAllAnimes() {
+    static getAllAnimes(pageNumber) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + "/animes", {
+        const request = new Request(AnimesApi.API_BASE_URL + `/animes?page=${pageNumber}`, {
             method: 'GET',
             headers: headers
         });
