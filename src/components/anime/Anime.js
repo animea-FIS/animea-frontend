@@ -16,7 +16,7 @@ class Anime extends Component {
     <Row>
         <Card
           actions={[
-            <a key="1" href="#">
+            <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(1, this.props.value.id)} >
               <i className="material-icons">add_circle</i>
               Add to my list
               </a>
@@ -26,6 +26,7 @@ class Anime extends Component {
         >
           <h5>{this.props.value.attributes.titles.en_jp}</h5>
           <p>{this.props.value.attributes.synopsis}</p>
+          
     </Card>
     </Row>
     )
