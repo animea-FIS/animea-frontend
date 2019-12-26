@@ -1,13 +1,15 @@
-class AnimesApi {
-    static API_BASE_URL = "http://localhost:3001" // "/api/v1";
+class ProfilesApi{
+    static API_BASE_URL = "http://localhost:3000";
+    static API_VERSION = "/api";
+    static API_URL = ProfilesApi.API_BASE_URL + ProfilesApi.API_VERSION;
 
     static requestHeaders() {
         return {}
     }
 
-    static getAllAnimes() {
+    static getAllProfiles(){
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + "/animes", {
+        const request = new Request(ProfilesApi.API_URL + "/users", {
             method: 'GET',
             headers: headers
         });
@@ -19,4 +21,4 @@ class AnimesApi {
     }
 }
 
-export default AnimesApi;
+export default ProfilesApi;
