@@ -19,7 +19,11 @@ class Anime extends Component {
             <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(1, this.props.value.id)} >
               <i className="material-icons">add_circle</i>
               Add to my list
-              </a>
+            </a>,
+            <a key="1" href="#" onClick={() => AnimesApi.removeAnimeFromList(1, this.props.value.id)}>
+              <i className="material-icons">remove_circle</i>
+              Remove from my list
+            </a>
           ]}
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
           horizontal

@@ -58,6 +58,18 @@ class AnimesApi {
             //return response.json();
         })
     }
+
+    static removeAnimeFromList(userId, animeId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+            method: 'DELETE',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+        })
+    }
 }
 
 export default AnimesApi;
