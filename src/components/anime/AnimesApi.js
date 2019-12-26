@@ -43,6 +43,19 @@ class AnimesApi {
             return response.json();
         });
     }
+
+    static addAnimeToUserList(userId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes`, {
+            method: 'POST',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+            return response.json();
+        })
+    }
 }
 
 export default AnimesApi;

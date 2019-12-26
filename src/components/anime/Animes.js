@@ -92,6 +92,24 @@ class Animes extends Component {
       )
   }
 
+  addAnimeToList() {
+    var userId = 1;
+    AnimesApi.addAnimeToUserList(userId).then(
+      (result) => {
+        console.log(result);
+        this.setState({
+          animes: result
+        })
+      },
+      (error) => {
+        console.log(error);
+        this.setState({
+          errorInfo: "Connection problem"
+        })
+      }
+    )
+  }
+
   handleChange(e) {
     var searchText = e.target.value;
     if (searchText.length > 4) {
