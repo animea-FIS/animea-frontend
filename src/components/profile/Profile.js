@@ -4,22 +4,18 @@ import M from "materialize-css";
 import './Profile.css';
 
 class Profile extends Component {
-    
-    state = {
-        profile: {
-            name: "Antonio",
-            surname: "Rodriguez"
-          }
-      };
-
     constructor(props) {
         super(props);
         this.showMyProfile = this.showMyProfile.bind(this);
+        this.state = {
+          profile: {}
+        }
       }
 
     componentDidMount() {
       // Auto initialize all the things
       M.AutoInit();
+      this.showMyProfile();
     }
 
     showMyProfile() { 
@@ -41,12 +37,20 @@ class Profile extends Component {
           )
       }
     render(){
-        const profile = {
-            name: "Paco",
-            surname: "Perez"
-        }
         return(
-            <p>{this.state.profile.name}</p>
+            <div>
+                <h3>{this.state.profile.username}</h3>
+                <h4>{this.state.profile.name}</h4>
+                <p>{this.state.profile.email}</p>
+                  {this.state.profile.birthdate != null &&
+                    <p>{this.state.profile.birthdate} - {this.state.profile.location}</p>
+                  }
+                   {this.state.profile.birthdate == null &&
+                    <p>{this.state.profile.location}</p>
+                  }
+                <p>Rating: {this.state.profile.rating}</p>
+                <p>Bio: {this.state.profile.bio}</p>
+            </div>
         )
     }
 }

@@ -1,5 +1,5 @@
 class ProfilesApi {
-    static API_BASE_URL = "http://localhost:3002";
+    static API_BASE_URL = "http://localhost:3002/api";
 
     static requestHeaders() {
         return {}
@@ -11,9 +11,9 @@ class ProfilesApi {
             method: 'GET',
             headers: headers
         });
-
+        console.log('request: '+ request);
         return fetch(request).then(response => {
-            console.log(response)
+            console.log('Respuesta en el fetch: ' + response);
             return response.json();
         });
     }
