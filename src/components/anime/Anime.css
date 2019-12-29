@@ -1,8 +1,24 @@
-.card-image img{
-    width:15vw !important;
+@media (max-width: 1200px) {
+    .resizeimg {
+        height: auto;
+        width: auto;
+    }
+    .card{
+        font-size:1.5vw;
+    }
+    h5 {
+        font-size:2vw;
+    }
 }
 
-.card-stacked {
-    width:1vw !important;
-    
+.card{
+    font-size:0.8vw;
+}
+h5 {
+    font-size:1vw;
+}
+
+a:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
