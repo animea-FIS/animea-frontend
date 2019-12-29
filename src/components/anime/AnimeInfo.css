@@ -1,0 +1,20 @@
+.animeInfo li:before {
+    content: '\1F90D';
+    margin-right: 10px;
+    }
+
+.animeInfo li {
+    font-size: 1.2em;
+    padding-bottom: 1em;
+}
+
+li b{
+    text-shadow: 1px 1px 1px #000;
+}
+.card-title {
+    text-shadow: 1px 1px 1px #000;
+}
+
+.card-content p{
+    font-size: 1.1em;
+}

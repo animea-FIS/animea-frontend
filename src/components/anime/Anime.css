@@ -21,3 +21,8 @@ h5 {
 img{
     height: 25em!important;
 }
+
+a:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
