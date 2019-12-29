@@ -10,14 +10,16 @@ class Animes extends Component {
   state = {
     animes: [],
     pageNumber: 0,
-    windowsSize: document.documentElement.clientHeight
+    windowsSize: document.documentElement.clientHeight,
+    userList: false,
+    searchAnimesFunction: this.searchAllAnimes
   };
 
   constructor(props) {
     super(props);
     this.getAllAnimes = this.getAllAnimes.bind(this);
-    this.searchAnimes = this.searchAnimes.bind(this);
-    this.showMyList = this.showMyList.bind(this);
+    this.searchAllAnimes = this.searchAllAnimes.bind(this);
+    this.showUserList = this.showUserList.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
@@ -32,20 +34,21 @@ class Animes extends Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  getAllAnimes(){
+  getAllAnimes() {
     AnimesApi.getAllAnimes(this.state.pageNumber)
       .then(
         (result) => {
           var foundAnimes = []
-          if (this.state.animes.length > 0) {
+          if (this.state.animes.length > 0 && !this.state.userList) {
             foundAnimes = this.state.animes.concat(result);
           } else {
             foundAnimes = result;
           }
           this.setState({
             animes: foundAnimes,
+            userList: false
           })
-          
+
         },
         (error) => {
           console.log(error)
@@ -56,8 +59,8 @@ class Animes extends Component {
       )
   }
 
-  searchAnimes(searchText) { 
-    AnimesApi.searchAnimes(searchText)
+  searchAllAnimes(searchText) {
+    AnimesApi.searchAllAnimes(searchText)
       .then(
         (result) => {
           this.setState({
@@ -73,14 +76,17 @@ class Animes extends Component {
       )
   };
 
-  showMyList() { 
+  showUserList() {
     var userId = 1;
-    AnimesApi.searchUserAnimes(userId)
+    AnimesApi.getUserAnimes(userId)
       .then(
         (result) => {
           console.log(result)
           this.setState({
-            animes: result
+            animes: result,
+            userList: true,
+            searchAnimesFunction: this.searchUserAnimes,
+            pageNumber: 0
           })
         },
         (error) => {
@@ -114,26 +120,35 @@ class Animes extends Component {
     var searchText = e.target.value;
     if (searchText.length > 4) {
       console.log(searchText)
-      this.searchAnimes(searchText)
+      this.state.searchAnimesFunction(searchText)
     }
   }
 
   handleScroll = (e) => {
-    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    const windowBottom = windowHeight + window.pageYOffset;
-    if (Math.ceil(windowBottom) >= docHeight) { // && this.state.windowsSize != html.clientHeight
-      this.setState({
-        pageNumber: this.state.pageNumber + 10,
-        windowsSize: html.clientHeight
-      })
-      this.getAllAnimes();
+    if (!this.state.userList) {
+      const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+      const body = document.body;
+      const html = document.documentElement;
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+      const windowBottom = windowHeight + window.pageYOffset;
+      if (Math.ceil(windowBottom) >= docHeight) { // && this.state.windowsSize != html.clientHeight
+        this.setState({
+          pageNumber: this.state.pageNumber + 10,
+          windowsSize: html.clientHeight
+        })
+        this.getAllAnimes();
+      }
     }
   }
 
   render() {
+    var listMsg;
+    if (this.state.userList) {
+      listMsg = "All animes";
+    } else {
+      listMsg = "My list";
+    }
+
     const listItems = this.state.animes.map((anime) =>
       <Anime key={anime.id} value={anime} />);
     return (
@@ -153,8 +168,8 @@ class Animes extends Component {
             </nav>
           </div>
           <div className="col s2">
-            <button onClick={() => this.showMyList()} className="btn waves-effect waves-light" type="submit" name="action">My list
-        <i className="material-icons right">library_books</i>
+            <button onClick={this.state.userList ? () => this.getAllAnimes() : () => this.showUserList()} className="btn waves-effect waves-light" type="submit" name="action">{listMsg}
+              <i className="material-icons right">library_books</i>
             </button>
           </div>
         </div>
@@ -166,4 +181,4 @@ class Animes extends Component {
   }
 }
 
-export default Animes;
+export default Animes; 
