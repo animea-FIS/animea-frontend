@@ -18,3 +18,7 @@ li b{
 .card-content p{
     font-size: 1.1em;
 }
+
+.info-card img{
+    height:25em!important;
+}

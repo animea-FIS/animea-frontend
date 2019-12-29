@@ -3,7 +3,7 @@
 }
 
 .anime-search {
-    background-color: hotpink;
+    background-color: white;
     border-radius: 30px;
     margin-top: 2em;
     margin-bottom: 2em;
@@ -16,4 +16,15 @@
 
 .btn {
     background-color:#FFCD71;
+}
+
+.brand-logo img {
+    width: 8em;
+    position: absolute;
+    top: -1.05em;
+    left: 2em;
+}
+
+.sideNav a{
+    font-size:1.5em;
 }

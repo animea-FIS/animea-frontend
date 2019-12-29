@@ -152,7 +152,7 @@ class Animes extends Component {
     const listItems = this.state.animes.map((anime) =>
       <Anime key={anime.id} value={anime} />);
     return (
-      <div>
+      <div className="container">
         <div className="row valign-wrapper">
           <div className="col s10">
             <nav className="anime-search">

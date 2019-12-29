@@ -50,11 +50,12 @@ class AnimeInfo extends Component {
         //     <Anime key={anime.id} value={anime} />);
         if (animeInfo) {
             return (
+                <div className="container">
                 <div class="row" style={{marginTop:"2em"}}>
                     <div class="col s7">
-                        <div class="card">
+                        <div class="card info-card">
                             <div class="card-image">
-                                <img src={animeInfo.posterImage.large} />
+                                <img class="info-image" src={animeInfo.posterImage.large} />
                                 <span class="card-title">{animeInfo.titles.en_jp}</span>
                             </div>
                             <div class="card-content">
@@ -72,7 +73,7 @@ class AnimeInfo extends Component {
                             <li><b>Status: </b>{animeInfo.status}</li>
                             <li><b>Number of episodes: </b>{animeInfo.episodeCount}</li>
                             <li><b>Average length of episodes: </b>{animeInfo.episodeLength} minutes</li>
-                            <li><b>Average rating: </b>{animeInfo.averageRating}</li>
+                            <li><b>Average rating: </b>{animeInfo.averageRating}/100 ★</li>
                         </ul>
                         </div>
                     </div>
@@ -86,6 +87,7 @@ class AnimeInfo extends Component {
                         </div>
                     </div>
                     </div>
+                </div>
                 </div>
             )
         } else {

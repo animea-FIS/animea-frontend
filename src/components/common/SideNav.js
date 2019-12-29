@@ -15,8 +15,9 @@ class SideNav extends React.Component {
       return (
         <Router>
       <div>
-        <nav>
-          <ul>
+        <nav class="pink lighten-3">
+        <a href="/" class="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"}/></a>
+          <ul className="right sideNav">
             <li>
               <Link to="/">Home</Link>
             </li>
