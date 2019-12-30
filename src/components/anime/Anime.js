@@ -24,13 +24,17 @@ class Anime extends Component {
       <Row>
         <Card
           actions={[
-            <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(1, this.props.value.id)} >
+            <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(this.props.value.id)} >
               <i className="material-icons">add_circle</i>
               Add to my list
             </a>,
-            <a key="1" href="#" onClick={() => AnimesApi.removeAnimeFromList(1, this.props.value.id)}>
+            <a key="1" href="#" onClick={() => AnimesApi.removeAnimeFromList(this.props.value.id)}>
               <i className="material-icons">remove_circle</i>
               Remove from my list
+            </a>,
+            <a key="1" href="#" onClick={() => AnimesApi.updateAnimeFromList(this.props.value.id)} >
+              <i className="material-icons">edit</i>
+              Edit
             </a>
           ]}
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}

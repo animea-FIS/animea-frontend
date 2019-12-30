@@ -70,9 +70,9 @@ class AnimesApi {
         });
     }
 
-    static addAnimeToUserList(userId, animeId) {
+    static addAnimeToUserList(animeId) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
             method: 'POST',
             headers: headers
         });
@@ -82,19 +82,31 @@ class AnimesApi {
         return fetch(request).then(response => {
             console.log(response);
             //return response.json();
-        })
+        });
     }
 
-    static removeAnimeFromList(userId, animeId) {
+    static removeAnimeFromList(animeId) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
             method: 'DELETE',
             headers: headers
         });
 
         return fetch(request).then(response => {
             console.log(response);
-        })
+        });
+    }
+
+    static updateAnimeFromList(animeId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
+            method: 'PUT',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+        });
     }
 }
 
