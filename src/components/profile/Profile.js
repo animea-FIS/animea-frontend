@@ -22,7 +22,7 @@ class Profile extends Component {
     }
 
     showMyProfile() { 
-        var userId = 1; //TODO Cambiar por ID del usuario autenticado
+        var userId = "5df9cfb41c9d44000047b034"; //TODO Cambiar por ID del usuario autenticado
         ProfilesApi.getUserById(userId)
           .then(
             (result) => {
