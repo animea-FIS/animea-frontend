@@ -96,12 +96,16 @@ class AnimesApi {
             console.log(response);
         });
     }
+    
 
     static updateAnimeFromList(animeId) {
-        const headers = this.requestHeaders();
         const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
             method: 'PUT',
-            headers: headers
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                rating: 5,
+                status: 'finished'
+            })
         });
 
         return fetch(request).then(response => {
