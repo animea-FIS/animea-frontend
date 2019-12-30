@@ -18,14 +18,14 @@ function App() {
     //</div>
     //<Suspense fallback={<div>Loading...</div>}>
     //</Suspense>
-    <Router>
-      
-      <Switch>
-        <Route exact path="/" component={Animes}/>
-        <Route exact path="/myProfile" component={Profile}/>
-      </Switch>
-      
-  </Router>
+    <div className="App">
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Animes}/>
+          <Route exact path="/myProfile" component={Profile}/>
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
