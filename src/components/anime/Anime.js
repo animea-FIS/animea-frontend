@@ -18,40 +18,45 @@ class Anime extends Component {
     M.AutoInit();
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      rating: '1'
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-    alert('Your rate: ' + this.state.value);
-  }
-
   state = {
-    isInEditMode: false,
-    //value: 'coconout'
+    ratingIsEditable: false,
+    statusIsEditable: false,
   }
 
-  changeEditMode() {
+  changeEditModeRating() {
     this.setState({
-      isInEditMode: !this.state.isInEditMode
+      ratingIsEditable: !this.state.ratingIsEditable
     });
-    console.log(this.state.isInEditMode)
+  }
+
+  changeEditModeStatus() {
+    this.setState({
+      statusIsEditable: !this.state.statusIsEditable
+    });
   }
   
+  updateRating(animeId, rating) {
+    const anime = {
+      anime_id: animeId,
+      rating: rating
+    }
 
-  editView() {
-    console.log(this.state.rating)
+    AnimesApi.updateAnimeFromList(anime);
+  }
+
+  updateStatus(animeId, status) {
+    const anime = {
+      anime_id: animeId,
+      status: status
+    }
+
+    AnimesApi.updateAnimeFromList(anime);
+  }
+
+  editRating(animeId) {
+
+    const { selectedOption } = this.state;
+    
     const options = [
       { value: '1', label: '1' },
       { value: '2', label: '2' },
@@ -59,15 +64,20 @@ class Anime extends Component {
       { value: '4', label: '4' },
       { value: '5', label: '5' }
     ]
-    return <form onSubmit={this.handleSubmit}>
-        <label>
-          Rate this anime:
-          <Select value={this.state.value} options={options}/>
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+    return <Select value={selectedOption} onChange={(e) => this.updateRating(animeId, e.value)} options={options}/>
   }
 
+  editStatus(animeId) {
+
+    const { selectedOption } = this.state;
+    
+    const options = [
+      { value: 'pending', label: 'Pending' },
+      { value: 'watching', label: 'Watching' },
+      { value: 'finished', label: 'Finished' }
+    ]
+    return <Select value={selectedOption} onChange={(e) => this.updateStatus(animeId, e.value)} options={options}/>
+  }
 
   render() {
     const { path, url } = this.props.match;
@@ -84,14 +94,14 @@ class Anime extends Component {
               <i className="material-icons">remove_circle</i>
               Remove from my list
             </a>,
-            <a key="1" href="#" onClick={() => AnimesApi.updateAnimeFromList(this.props.value.id)} >
+            <a key="1" href="#" onClick={() => this.changeEditModeRating()} >
               <i className="material-icons">edit</i>
-              Edit
+              Edit rating
             </a>,
-            <a key="1" href="#" onClick={() => this.changeEditMode()} >
+            <a key="1" href="#" onClick={() => this.changeEditModeStatus()} >
               <i className="material-icons">edit</i>
-              Edit with form
-            </a>
+              Edit status
+          </a>
           ]}
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
           horizontal
@@ -99,7 +109,8 @@ class Anime extends Component {
           <h5><Link to={`/animes/${this.props.value.id}`}>{this.props.value.attributes.titles.en_jp}</Link></h5>
           <p>{this.props.value.attributes.synopsis}</p>
           
-          {this.state.isInEditMode ? this.editView() : null}
+          {this.state.ratingIsEditable ? this.editRating(this.props.value.id) : null}
+          {this.state.statusIsEditable ? this.editStatus(this.props.value.id) : null}
           
         </Card>
       </Row>

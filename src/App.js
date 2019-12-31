@@ -12,7 +12,6 @@ import Animes from './components/anime/Animes';
 import AnimeInfo from './components/anime/AnimeInfo';
 import NotFound from './components/common/NotFound';
 import SideNav from './components/common/SideNav';
-import UpdateAnime from './components/anime/UpdateAnimeForm';
 
 function App() {
   return (
