@@ -1,8 +1,5 @@
 arch:
   - arm64
-language: node_js
-node_js:
-  - 'stable'
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 jobs:
