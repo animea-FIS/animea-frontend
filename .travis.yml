@@ -1,3 +1,5 @@
+arch:
+  - arm64
 language: node_js
 node_js:
   - 'stable'
@@ -6,9 +8,6 @@ before_install:
 install: npm install
 jobs:
   include:
-    # - stage: run tests
-    #   script:
-    #   - npm test
     - stage: build docker image
       script:
       - docker build -t animea-frontend .
@@ -16,5 +15,4 @@ jobs:
       - docker push animea/animea-frontend:latest
     - stage: update services in server
       script:
-       - curl http://$SERVER_IP:$API_PORT/update
-# after_success: npm run coverage
+      - curl http://$SERVER_IP:$API_PORT/update
