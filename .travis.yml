@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - 'stable'
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+install: npm install
+jobs:
+  include:
+    # - stage: run tests
+    #   script:
+    #   - npm test
+    - stage: build docker image
+      script:
+      - docker build -t animea-frontend .
+      - docker tag animea-frontend animea/animea-frontend:latest
+      - docker push animea/animea-frontend:latest
+    - stage: update services in server
+      script:
+       - curl http://$SERVER_IP:$API_PORT/update
+# after_success: npm run coverage
