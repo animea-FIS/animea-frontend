@@ -1,14 +1,19 @@
-arch:
-  - arm64
+sudo: required
+language: node_js
+node_js:
+    - "10"
+services:
+    - docker
 before_install:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-jobs:
-  include:
-    - stage: build docker image
-      script:
-      - docker build -t animea-frontend .
-      - docker tag animea-frontend animea/animea-frontend:latest
-      - docker push animea/animea-frontend:latest
-    - stage: update services in server
-      script:
-      - curl http://$SERVER_IP:$API_PORT/update
+    - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+install:
+    - npm install
+script:
+    - docker build -t animea-frontend .
+deploy:
+    provider: script
+    skip_cleanup: true
+    script:
+        heroku container:login
+        heroku container:push web -a $HEROKU_APP_NAME;
+        heroku container:release web -a $HEROKU_APP_NAME;
