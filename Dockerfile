@@ -1,11 +1,16 @@
-FROM node:9
+FROM node:9-alpine
 
 WORKDIR /app
 
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install
+RUN apk add --no-cache --virtual .gyp \
+        python \
+        make \
+        g++ \
+    && npm install \
+    && apk del .gyp
 
 COPY . .
 
