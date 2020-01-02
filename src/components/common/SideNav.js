@@ -8,6 +8,7 @@ import {
 import 'materialize-css/dist/css/materialize.min.css';
 import Animes from '../anime/Animes';
 import AnimeInfo from '../anime/AnimeInfo';
+import Meetings from '../meeting/Meetings';
 import NotFound from '../common/NotFound';
 
 class SideNav extends React.Component {
@@ -27,6 +28,9 @@ class SideNav extends React.Component {
             <li>
               <Link to="/users">Users</Link>
             </li>
+            <li>
+              <Link to="/meetings">Meetings</Link>
+            </li>
           </ul>
         </nav>
 
@@ -43,6 +47,9 @@ class SideNav extends React.Component {
           </Route>
           <Route exact path="/">
             <Animes />
+          </Route>
+          <Route exact path="/meetings">
+            <Meetings />
           </Route>
           <Route component={NotFound} />
         </Switch>
