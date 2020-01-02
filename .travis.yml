@@ -9,7 +9,7 @@ before_install:
 install:
     - npm install
 script:
-    - docker build -t animea-frontend .
+    - docker build -t animea-front .
 deploy:
     provider: script
     skip_cleanup: true
