@@ -1,5 +1,5 @@
 class AnimesApi {
-    static API_BASE_URL = "http://localhost:3001" // "/api/v1";
+    static API_BASE_URL = `http://${process.env.SERVER_IP}:${process.env.GATEWAY_PORT}/api/v1/animes`
 
     static requestHeaders() {
         return {}
