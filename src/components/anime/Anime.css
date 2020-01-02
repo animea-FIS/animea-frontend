@@ -18,6 +18,7 @@ h5 {
     font-size:1vw;
 }
 
-img{
-    height: 25em!important;
+a:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }

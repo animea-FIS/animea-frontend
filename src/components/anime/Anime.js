@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
+import {
+  Switch,
+  Route,
+  withRouter,
+  Link
+} from "react-router-dom";
 import AnimesApi from './AnimesApi';
+import AnimeInfo from './AnimeInfo';
 import M from "materialize-css";
 import './Anime.css';
 import { Icon, CardTitle, Card, Row, Col } from 'react-materialize';
 
-class Anime extends Component {
-
+class Anime extends Component {  
   componentDidMount() {
     // Auto initialize all the things
     M.AutoInit();
   }
 
   render() {
+    const { path, url } = this.props.match;
+
     return (
-    <Row>
+      <Row>
         <Card
           actions={[
             <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(1, this.props.value.id)} >
@@ -28,13 +36,13 @@ class Anime extends Component {
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
           horizontal
         >
-          <h5>{this.props.value.attributes.titles.en_jp}</h5>
+          <h5><Link to={`/animes/${this.props.value.id}`}>{this.props.value.attributes.titles.en_jp}</Link></h5>
           <p>{this.props.value.attributes.synopsis}</p>
-          
-    </Card>
-    </Row>
+        </Card>
+      </Row>
+
     )
   }
 }
 
-export default Anime;
+export default withRouter(Anime);

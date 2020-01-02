@@ -18,9 +18,35 @@ class AnimesApi {
         });
     }
 
-    static searchAnimes(text) {
+    static getAnimeById(animeId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/animes/${animeId}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
+
+    static searchAllAnimes(text) {
         const headers = this.requestHeaders();
         const request = new Request(AnimesApi.API_BASE_URL + `/animes?text=${text}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
+
+    static getUserAnimes(userId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes`, {
             method: 'GET',
             headers: headers
         });
