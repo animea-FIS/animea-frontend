@@ -5,9 +5,20 @@ class MeetingsApi {
         return {}
     }
 
-    static getAllMeetings(pageNumber, province) {
+    static getAllMeetings(pageNumber, province, searchQuery) {
+
+        var getAllUrl = `/meetings?page=${pageNumber}`
+
+        if (province && province != "") {
+            getAllUrl = getAllUrl + `&province=${province}`
+        }
+
+        if (searchQuery && searchQuery != "") {
+            getAllUrl = getAllUrl + `&searchQuery=${searchQuery}`
+        }
+
         const headers = this.requestHeaders();
-        const request = new Request(MeetingsApi.API_BASE_URL + `/meetings?page=${pageNumber}&province=${province}`, {
+        const request = new Request(MeetingsApi.API_BASE_URL + getAllUrl, {
             method: 'GET',
             headers: headers
         });
