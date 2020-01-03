@@ -11,11 +11,11 @@ install:
 script:
     - docker build -t animea-front .
 deploy:
-    provider: script
-    skip_cleanup: true
-    branch: develop
-    script:
-        heroku container:login
-        heroku container:push web -a $HEROKU_APP_NAME;
-        heroku container:release web -a $HEROKU_APP_NAME;
-    
+  provider: script
+  skip_cleanup: true
+  script:
+    heroku container:login
+    heroku container:push web -a $HEROKU_APP_NAME;
+    heroku container:release web -a $HEROKU_APP_NAME;
+  on:
+    all_branches: true
