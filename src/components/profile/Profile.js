@@ -8,6 +8,7 @@ import { Row, Col } from 'react-materialize';
 import SHowProfile from './ShowProfile';
 import EditProfile from './EditProfile';
 import ShowProfile from './ShowProfile';
+import Alert from './Alert';
 
 class Profile extends Component {
     constructor(props) {
@@ -52,7 +53,21 @@ class Profile extends Component {
     }
     
     handleSave(name, profile){
+      this.setState(prevState => {
+        const isEditing = Object.assign({}, prevState.isEditing);
+        delete isEditing[name];
 
+        if(name === profile.username){
+          this.saveProfile(profile);
+          return {
+            profile: profile,
+            isEditing: isEditing
+          }
+        }
+        return{
+          errorInfo: "Cannot edit username"
+        }
+      })
     }
 
     componentDidMount() {
@@ -79,9 +94,24 @@ class Profile extends Component {
             }
           )
       }
+
+      saveProfile(profile){
+        ProfilesApi.updateProfile(profile).then((result => {
+            console.log(result);
+          }, (error) => {
+            console.log(error);
+            this.setState({
+              errorInfo: "Problem with connection to server"
+            })
+          })
+        )
+      }
     render(){
       return (
+        <div> 
         <div>
+        <Alert message={this.state.errorInfo} onClose={this.handleCloseError} />
+        </div>
           { ! this.state.isEditing[this.state.profile.username] ?
           <div>
               <ShowProfile key={this.state.profile.username} profile={this.state.profile} onEdit={this.handleEdit}/>

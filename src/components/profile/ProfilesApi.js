@@ -89,6 +89,18 @@ class ProfilesApi {
 
     //TODO Añadir Rating a usuario
     //TODO Modificar perfil del usuario actual
+
+    static updateProfile(profile){
+        const headers = this.requestHeaders();
+        const request = new Request(ProfilesApi.API_BASE_URL + `/profile`, {
+            method: 'PUT',
+            headers: headers
+        });
+        return fetch(request).then(response => {
+            console.log(response);
+            return response.json();
+        })
+    }
 }
 
 export default ProfilesApi;
