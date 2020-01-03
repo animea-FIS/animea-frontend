@@ -8,6 +8,8 @@ import {
 import 'materialize-css/dist/css/materialize.min.css';
 import Animes from '../anime/Animes';
 import AnimeInfo from '../anime/AnimeInfo';
+import Meetings from '../meeting/Meetings';
+import MeetingInfo from '../meeting/MeetingInfo';
 import Friends from '../friend/Friends';
 import NotFound from '../common/NotFound';
 
@@ -16,7 +18,7 @@ class SideNav extends React.Component {
       return (
         <Router>
       <div>
-        <nav class="pink lighten-3">
+        <nav class="yellow darken-2">
         <a href="/" class="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"}/></a>
           <ul className="right sideNav">
             <li>
@@ -27,6 +29,9 @@ class SideNav extends React.Component {
             </li>
             <li>
               <Link to="/users">Users</Link>
+            </li>
+            <li>
+              <Link to="/meetings">Meetings</Link>
             </li>
             <li>
               <Link to="/friends">Friends</Link>
@@ -47,6 +52,12 @@ class SideNav extends React.Component {
           </Route>
           <Route exact path="/">
             <Animes />
+          </Route>
+          <Route exact path="/meetings">
+            <Meetings />
+          </Route>
+          <Route path={`/meetings/:meetingId`}>
+            <MeetingInfo/>
           </Route>
           <Route exact path="/friends">
             <Friends />
