@@ -1,42 +1,48 @@
 import React, { Component } from 'react';
+import {
+  Switch,
+  Route,
+  withRouter,
+  Link
+} from "react-router-dom";
 import AnimesApi from './AnimesApi';
+import AnimeInfo from './AnimeInfo';
 import M from "materialize-css";
 import './Anime.css';
+import { Icon, CardTitle, Card, Row, Col } from 'react-materialize';
 
-
-class Anime extends Component {
-
+class Anime extends Component {  
   componentDidMount() {
     // Auto initialize all the things
     M.AutoInit();
   }
 
   render() {
-    console.log(this.props.value.attributes)
-    var coverImage = "https://d13ezvd6yrslxm.cloudfront.net/wp/wp-content/images/mandalorian-babyyoda-plush-frontpage-700x311.jpg"
-    if (this.props.value.attributes.coverImage) {
-      coverImage = this.props.value.attributes.coverImage.small
-    }
+    const { path, url } = this.props.match;
+
     return (
-      <div className="col s12 m7">
-        <div className="card horizontal">
-          <div className="card-image">
-            <img src={this.props.value.attributes.posterImage.small} />
-          </div>
-          <div className="card-stacked">
-            <div className="card-content">
-              <h5>{this.props.value.attributes.titles.en_jp}</h5>
-              <p>{this.props.value.attributes.synopsis}</p>
-            </div>
-            <div className="card-action">
-              <a href="#">Add to my list</a>
-              <a href="#">Another cool option</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Row>
+        <Card
+          actions={[
+            <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(1, this.props.value.id)} >
+              <i className="material-icons">add_circle</i>
+              Add to my list
+            </a>,
+            <a key="1" href="#" onClick={() => AnimesApi.removeAnimeFromList(1, this.props.value.id)}>
+              <i className="material-icons">remove_circle</i>
+              Remove from my list
+            </a>
+          ]}
+          header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
+          horizontal
+        >
+          <h5><Link to={`/animes/${this.props.value.id}`}>{this.props.value.attributes.titles.en_jp}</Link></h5>
+          <p>{this.props.value.attributes.synopsis}</p>
+        </Card>
+      </Row>
+
     )
   }
 }
 
-export default Anime;
+export default withRouter(Anime);

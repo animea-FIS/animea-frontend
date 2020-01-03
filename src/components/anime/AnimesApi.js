@@ -1,13 +1,13 @@
 class AnimesApi {
-    static API_BASE_URL = "http://localhost:3001" // "/api/v1";
+    static API_BASE_URL = `http://${process.env.SERVER_IP}:${process.env.GATEWAY_PORT}/api/v1/animes`
 
     static requestHeaders() {
         return {}
     }
 
-    static getAllAnimes() {
+    static getAllAnimes(pageNumber) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + "/animes", {
+        const request = new Request(AnimesApi.API_BASE_URL + `/animes?page=${pageNumber}`, {
             method: 'GET',
             headers: headers
         });
@@ -16,6 +16,85 @@ class AnimesApi {
             console.log(response)
             return response.json();
         });
+    }
+
+    static getAnimeById(animeId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/animes/${animeId}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
+
+    static searchAllAnimes(text) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/animes?text=${text}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
+
+    static getUserAnimes(userId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
+
+    static searchUserAnimes(userId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response)
+            return response.json();
+        });
+    }
+
+    static addAnimeToUserList(userId, animeId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+            method: 'POST',
+            headers: headers
+        });
+
+        console.log(request);
+
+        return fetch(request).then(response => {
+            console.log(response);
+            //return response.json();
+        })
+    }
+
+    static removeAnimeFromList(userId, animeId) {
+        const headers = this.requestHeaders();
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+            method: 'DELETE',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+        })
     }
 }
 
