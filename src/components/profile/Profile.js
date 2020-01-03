@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import ProfilesApi from './ProfilesApi';
 import M from "materialize-css";
 import './Profile.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faEnvelopeOpenText, faBirthdayCake, faMapMarkedAlt, faStarHalfAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
-import { Row, Col } from 'react-materialize';
-import SHowProfile from './ShowProfile';
 import EditProfile from './EditProfile';
 import ShowProfile from './ShowProfile';
 import Alert from './Alert';
@@ -17,7 +13,8 @@ class Profile extends Component {
         this.state = {
           errorInfo: null,
           profile: {},
-          isEditing: {}
+          isEditing: {},
+          isRating: {}
         }
         this.handleEdit = this.handleEdit.bind(this);
         this.handleCloseError = this.handleCloseError.bind(this);
@@ -27,7 +24,13 @@ class Profile extends Component {
       this.setState(prevState => ({
         isEditing: {...prevState.isEditing, [profile.username]: profile}
       }));
-    }  
+    } 
+
+    handleRate(profile){
+      this.setState(prevState => ({
+        isRating: {...prevState.isRating, [profile.username]: profile}
+      }));
+    }
 
     handleCloseError(){
       this.setState({
@@ -115,7 +118,9 @@ class Profile extends Component {
         </div>
           { ! this.state.isEditing[this.state.profile.username] ?
           <div>
-              <ShowProfile key={this.state.profile.username} profile={this.state.profile} onEdit={this.handleEdit}/>
+              <ShowProfile key={this.state.profile.username} profile={this.state.profile} 
+              onEdit={this.handleEdit} onRate={this.handleRate}/>
+              
             </div>
             :
             <div>

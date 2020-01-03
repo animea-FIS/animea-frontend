@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 class ProfilesApi {
     static API_BASE_URL = "http://localhost:3005/api";
 
@@ -92,6 +90,11 @@ class ProfilesApi {
     //TODO Añadir Rating a usuario
 
     static updateProfile(profile){
+        let video_url = profile.presentationVideo + "";
+        if(video_url.length > 11){
+            video_url = video_url.split("v=")[1].substring(0,11)
+        }
+        profile.presentationVideo = video_url;
         return fetch(ProfilesApi.API_BASE_URL + '/profile', {
             method: 'PUT',
             body: JSON.stringify(profile),
