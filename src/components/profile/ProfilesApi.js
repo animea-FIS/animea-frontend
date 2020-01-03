@@ -1,5 +1,7 @@
+const axios = require('axios');
+
 class ProfilesApi {
-    static API_BASE_URL = "https://animea-profile.herokuapp.com/api";
+    static API_BASE_URL = "http://localhost:3005/api";
 
     static requestHeaders() {
         return {}
@@ -88,17 +90,18 @@ class ProfilesApi {
     }
 
     //TODO Añadir Rating a usuario
-    //TODO Modificar perfil del usuario actual
 
     static updateProfile(profile){
-        const headers = this.requestHeaders();
-        const request = new Request(ProfilesApi.API_BASE_URL + `/profile`, {
+        return fetch(ProfilesApi.API_BASE_URL + '/profile', {
             method: 'PUT',
-            headers: headers
-        });
-        return fetch(request).then(response => {
-            console.log(response);
-            return response.json();
+            body: JSON.stringify(profile),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            return res;
+        }).catch(err => {
+            console.log(err)
         })
     }
 }

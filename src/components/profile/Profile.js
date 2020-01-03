@@ -56,7 +56,8 @@ class Profile extends Component {
       this.setState(prevState => {
         const isEditing = Object.assign({}, prevState.isEditing);
         delete isEditing[name];
-
+        console.log(profile);
+        console.log(name);
         if(name === profile.username){
           this.saveProfile(profile);
           return {
@@ -98,11 +99,11 @@ class Profile extends Component {
       saveProfile(profile){
         ProfilesApi.updateProfile(profile).then((result => {
             console.log(result);
+            this.setState({
+              errorInfo: null
+            })
           }, (error) => {
             console.log(error);
-            this.setState({
-              errorInfo: "Problem with connection to server"
-            })
           })
         )
       }
