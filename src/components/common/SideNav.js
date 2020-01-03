@@ -11,6 +11,8 @@ import AnimeInfo from '../anime/AnimeInfo';
 import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import Friends from '../friend/Friends';
+import Requests from '../request/Requests';
+import RequestInfo from '../request/RequestInfo';
 import NotFound from '../common/NotFound';
 
 class SideNav extends React.Component {
@@ -35,6 +37,9 @@ class SideNav extends React.Component {
             </li>
             <li>
               <Link to="/friends">Friends</Link>
+            </li>
+            <li>
+              <Link to="/requests">Friend requests</Link>
             </li>
           </ul>
         </nav>
@@ -61,6 +66,12 @@ class SideNav extends React.Component {
           </Route>
           <Route exact path="/friends">
             <Friends />
+          </Route>
+          <Route exact path="/requests">
+            <Requests />
+          </Route>
+          <Route exact path="/requests/:requestId">
+            <RequestInfo />
           </Route>
           <Route component={NotFound} />
         </Switch>

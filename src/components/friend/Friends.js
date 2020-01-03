@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import FriendsApi from './FriendsApi';
 import Friend from './Friend';
 import M from "materialize-css";
-import './Animes.css';
+import './Friends.css';
 import { Row } from 'react-materialize';
-import ReactPaginate from 'react-paginate';
 
 class Friends extends Component {
   state = {
