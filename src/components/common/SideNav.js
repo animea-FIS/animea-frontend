@@ -9,6 +9,7 @@ import 'materialize-css/dist/css/materialize.min.css';
 import Animes from '../anime/Animes';
 import AnimeInfo from '../anime/AnimeInfo';
 import Meetings from '../meeting/Meetings';
+import MeetingInfo from '../meeting/MeetingInfo';
 import NotFound from '../common/NotFound';
 
 class SideNav extends React.Component {
@@ -50,6 +51,9 @@ class SideNav extends React.Component {
           </Route>
           <Route exact path="/meetings">
             <Meetings />
+          </Route>
+          <Route path={`/meetings/:meetingId`}>
+            <MeetingInfo/>
           </Route>
           <Route component={NotFound} />
         </Switch>

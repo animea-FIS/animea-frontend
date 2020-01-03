@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route, withRouter, Link} from 'react-router-dom';
 
 function Meeting(props) {
     switch (props.value.province) {
@@ -174,10 +175,12 @@ function Meeting(props) {
         
         <div class="col s3" style={{width: 300}}>
             <div class="card grey-darken-text" style={{borderRadius: 10, fontSize: 14, fontFamily: 'Belgrano'}}>
-                <div class="card-content amber lighten-2" style={{borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 10, borderTopRightRadius: 10, fontWeight: "bold", overflow: "hidden", padding: 16}}>
-                    <div style={{float: "left"}}><p>{props.value.name}</p></div>
-                    <div style={{float: "right"}}><i className="material-icons">arrow_forward_ios</i></div>
-                </div>
+                <Link to={`/meetings/${props.value._id}`} style={{color: 'black'}}>
+                    <div class="card-content amber lighten-2" style={{borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 10, borderTopRightRadius: 10, fontWeight: "bold", overflow: "hidden", padding: 16}}>
+                        <div style={{float: "left"}}><p>{props.value.name}</p></div>
+                        <div style={{float: "right"}}><i className="material-icons">arrow_forward_ios</i></div>
+                    </div>
+                </Link>
                 <div class="card-content amber lighten-5">
                     <p>{props.value.province}</p>
                 </div>

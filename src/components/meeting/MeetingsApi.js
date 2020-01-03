@@ -27,6 +27,18 @@ class MeetingsApi {
             return response.json();
         });
     }
+
+    static getMeetingById(meetingId) {
+        const headers = this.requestHeaders();
+        const request = new Request(MeetingsApi.API_BASE_URL + `/meetings/${meetingId}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            return response.json();
+        })
+    }
 }
 
 export default MeetingsApi;
