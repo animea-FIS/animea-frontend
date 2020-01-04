@@ -3,3 +3,10 @@ node_js:
     - "9"
 install:
     - npm install
+script:
+    - npm run build
+deploy:
+    provider: heroku
+    api_key:
+        secure: "720e5621-af19-4933-82a4-286d8349d0ea"
+    branch: master
