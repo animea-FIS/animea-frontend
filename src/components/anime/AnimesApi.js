@@ -1,5 +1,5 @@
 class AnimesApi {
-    static API_BASE_URL = `https://${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_GATEWAY_PORT}/animes/api/v1`
+    static API_BASE_URL = `http://localhost:3001/api/v1`
 
     static requestHeaders() {
         return {}
@@ -107,7 +107,7 @@ class AnimesApi {
             })
         });
 
-        //console.log(request.body);
+        console.log(request.body);
 
         return fetch(request).then(response => {
             console.log(response);
