@@ -16,17 +16,19 @@ import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
-
+import Cookies from 'js-cookie';
 
 function SideNav() {
-  const { authTokens, setAuthTokens } = useAuth();
+  const { authTokens, setAuthTokens, setUserId } = useAuth();
 
   function logOut() {
+    Cookies.remove('userToken');
+    setUserId();
     setAuthTokens();
   }
 
   var navLinks;
-  if (authTokens) {
+  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined') {
     navLinks = (
       <ul className="right sideNav">
       <li>
