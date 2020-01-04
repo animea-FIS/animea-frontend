@@ -1,5 +1,5 @@
 class AuthApi {
-    static API_BASE_URL = `http://localhost:3001/api/auth`
+    static API_BASE_URL = `http://${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_GATEWAY_PORT}/api/auth`
 
     static requestHeaders() {
         return {
