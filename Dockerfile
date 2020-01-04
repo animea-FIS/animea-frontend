@@ -14,6 +14,8 @@ RUN apk add --no-cache --virtual .gyp \
 
 COPY . .
 
+RUN npm run build
+
 EXPOSE 3000
 
 CMD npm start
