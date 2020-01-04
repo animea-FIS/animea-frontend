@@ -17,6 +17,19 @@ class Anime extends Component {
     M.AutoInit();
   }
 
+  updateStatus(animeId) {
+
+    const selectBox = document.getElementById("statusSelected");
+    const animeStatus = selectBox.options[selectBox.selectedIndex].value;
+
+    const anime = {
+      anime_id: animeId,
+      status: animeStatus
+    }
+    //console.log(anime)
+    AnimesApi.updateAnimeFromList(anime);
+  }
+
   render() {
     const { path, url } = this.props.match;
 
@@ -38,6 +51,15 @@ class Anime extends Component {
         >
           <h5><Link to={`/animes/${this.props.value.id}`}>{this.props.value.attributes.titles.en_jp}</Link></h5>
           <p>{this.props.value.attributes.synopsis}</p>
+
+          <div class="col s3" style={{padding: 30}}>
+            <select id="statusSelected" class="input-field" onChange={(e) => this.updateStatus(this.props.value.id)}>
+              <option value="" selected>Status</option>
+              <option value="pending">Pending</option>
+              <option value="watching">Watching</option>   
+              <option value="finished">Finished</option>                      
+            </select>
+          </div>
         </Card>
       </Row>
 

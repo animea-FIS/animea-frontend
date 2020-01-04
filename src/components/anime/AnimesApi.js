@@ -95,6 +95,24 @@ class AnimesApi {
             console.log(response);
         });
     }
+
+    static updateAnimeFromList(anime) {
+        console.log(anime);
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${anime.anime_id}`, {
+            method: 'PUT',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                rating: anime.rating,
+                status: anime.status
+            })
+        });
+
+        //console.log(request.body);
+
+        return fetch(request).then(response => {
+            console.log(response);
+        });
+    }
 }
 
 export default AnimesApi;
