@@ -1,5 +1,5 @@
 class AnimesApi {
-    static API_BASE_URL = `http://${process.env.SERVER_IP}:${process.env.GATEWAY_PORT}/api/v1/animes`
+    static API_BASE_URL = `http://${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_GATEWAY_PORT}/animes/api/v1`
 
     static requestHeaders() {
         return {}
@@ -13,7 +13,6 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
