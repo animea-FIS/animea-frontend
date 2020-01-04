@@ -1,5 +1,5 @@
 class AnimesApi {
-    static API_BASE_URL = `https://${REACT_APP_SERVER_IP}:${REACT_APP_GATEWAY_PORT}/animes/api/v1`
+    static API_BASE_URL = `https://${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_GATEWAY_PORT}/animes/api/v1`
 
     static requestHeaders() {
         return {}
