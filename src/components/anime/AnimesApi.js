@@ -1,5 +1,5 @@
 class AnimesApi {
-    static API_BASE_URL = "http://localhost:3001" // "/api/v1";
+    static API_BASE_URL = `http://185.176.5.147:7400/animes/api/v1`
 
     static requestHeaders() {
         return {}
@@ -13,7 +13,6 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
@@ -70,9 +69,9 @@ class AnimesApi {
         });
     }
 
-    static addAnimeToUserList(userId, animeId) {
+    static addAnimeToUserList(animeId) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
             method: 'POST',
             headers: headers
         });
@@ -82,19 +81,19 @@ class AnimesApi {
         return fetch(request).then(response => {
             console.log(response);
             //return response.json();
-        })
+        });
     }
 
-    static removeAnimeFromList(userId, animeId) {
+    static removeAnimeFromList(animeId) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
             method: 'DELETE',
             headers: headers
         });
 
         return fetch(request).then(response => {
             console.log(response);
-        })
+        });
     }
 }
 

@@ -1,0 +1,12 @@
+sudo: required
+language: node_js
+node_js:
+    - "9"
+install:
+    - npm install
+deploy:
+    provider: heroku
+    skip_cleanup: true
+    api_key:
+        secure: $HEROKU_API_KEY
+    branch: master

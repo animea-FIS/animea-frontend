@@ -1,22 +1,19 @@
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  withRouter
-} from "react-router-dom";
+import React, { useState } from 'react';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css';
-import Animes from './components/anime/Animes';
-import AnimeInfo from './components/anime/AnimeInfo';
-import NotFound from './components/common/NotFound';
 import SideNav from './components/common/SideNav';
+import { AuthContext } from "./components/auth/context/auth";
 
 function App() {
+  const [authTokens, setAuthTokens] = useState(localStorage.getItem("userToken"));
+  const setTokens = (data) => {
+    localStorage.setItem("userToken", JSON.stringify(data));
+    setAuthTokens(data);
+  }
   return (
+    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
     <SideNav />
-
+    </AuthContext.Provider>
   );
 }
 
