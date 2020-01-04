@@ -12,20 +12,23 @@ import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import MeetingCreation from '../meeting/MeetingCreation';
 import NotFound from '../common/NotFound';
+import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
-
+import Cookies from 'js-cookie';
 
 function SideNav() {
-  const { authTokens, setAuthTokens } = useAuth();
+  const { authTokens, setAuthTokens, setUserId } = useAuth();
 
   function logOut() {
+    Cookies.remove('userToken');
+    setUserId();
     setAuthTokens();
   }
 
   var navLinks;
-  if (authTokens) {
+  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined') {
     navLinks = (
       <ul className="right sideNav">
       <li>
@@ -58,6 +61,9 @@ function SideNav() {
       <li>
         <Link to="/login">Login</Link>
       </li>
+      <li>
+        <Link to="/my-profile">My profile</Link>
+      </li>
       </ul>
     )
   }
@@ -83,6 +89,9 @@ function SideNav() {
           <PrivateRoute exact path="/meetings/create-meeting" component={MeetingCreation}/>
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
+          </Route>
+          <Route exact path="/my-profile">
+            <Profile />
           </Route>
           <Route path="/login" component={Login} />
           <Route component={NotFound} />

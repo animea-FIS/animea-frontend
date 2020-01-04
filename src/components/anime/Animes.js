@@ -4,7 +4,7 @@ import Anime from './Anime';
 import M from "materialize-css";
 import './Animes.css';
 import { Row } from 'react-materialize';
-import ReactPaginate from 'react-paginate';
+import { AuthContext } from "../auth/context/auth";
 
 class Animes extends Component {
   state = {
@@ -81,7 +81,6 @@ class Animes extends Component {
     AnimesApi.getUserAnimes(userId)
       .then(
         (result) => {
-          console.log(result)
           this.setState({
             animes: result,
             userList: true,
@@ -102,7 +101,6 @@ class Animes extends Component {
     var userId = 1;
     AnimesApi.addAnimeToUserList(userId).then(
       (result) => {
-        console.log(result);
         this.setState({
           animes: result
         })
@@ -119,7 +117,6 @@ class Animes extends Component {
   handleChange(e) {
     var searchText = e.target.value;
     if (searchText.length > 4) {
-      console.log(searchText)
       this.state.searchAnimesFunction(searchText)
     }
   }
@@ -180,5 +177,5 @@ class Animes extends Component {
     )
   }
 }
-
+Animes.contextType = AuthContext;
 export default Animes; 

@@ -10,11 +10,13 @@ function Login() {
     const [isError, setIsError] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { setAuthTokens } = useAuth();
+    const { setAuthTokens, setUserId } = useAuth();
 
     function postLogin() {
         AuthApi.login(email, password).then(result => {
+            console.log(result)
             setAuthTokens(result.token);
+            setUserId(result.user_id)
             setLoggedIn(true);
         }).catch(e => {
             setIsError(true);

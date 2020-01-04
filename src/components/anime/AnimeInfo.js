@@ -10,7 +10,7 @@ import {
 class AnimeInfo extends Component {
     state = {
         animeInfo: {},
-    };
+    };   
 
     constructor(props) {
         super(props);
@@ -18,7 +18,6 @@ class AnimeInfo extends Component {
     }
     componentDidMount() {
         M.AutoInit();
-        console.log(this.props.match.params.animeId)
     }
 
     componentWillMount() {
@@ -45,9 +44,6 @@ class AnimeInfo extends Component {
 
     render() {
         var animeInfo = this.state.animeInfo.attributes;
-        console.log(this.state.animeInfo)
-        // const animeGenres = this.state.animes.map((anime) =>
-        //     <Anime key={anime.id} value={anime} />);
         if (animeInfo) {
             return (
                 <div className="container">
