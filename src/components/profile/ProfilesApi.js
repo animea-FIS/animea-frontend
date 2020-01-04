@@ -11,9 +11,7 @@ class ProfilesApi {
             method: 'GET',
             headers: headers
         });
-        console.log('request: '+ request);
         return fetch(request).then(response => {
-            console.log('Respuesta en el fetch: ' + response);
             return response.json();
         });
     }
@@ -26,7 +24,6 @@ class ProfilesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response);
             return response.json();
         });
     }
@@ -39,7 +36,6 @@ class ProfilesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
@@ -52,7 +48,6 @@ class ProfilesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
@@ -87,7 +82,24 @@ class ProfilesApi {
         })
     }
 
-    //TODO Añadir Rating a usuario
+    static addRatingToUser(userRated, userRating, value){
+        const bodyRequest = {
+            "my_id": userRating,
+            "rating_value": value
+        };
+        return fetch(ProfilesApi.API_BASE_URL + '/rating/profile/' + userRated, {
+            method: 'PUT',
+            body: JSON.stringify(bodyRequest),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            console.log(res);
+            return res;
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     static updateProfile(profile){
         let video_url = profile.presentationVideo + "";
