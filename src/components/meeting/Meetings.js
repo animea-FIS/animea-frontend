@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
+import { Switch, Route, withRouter, Link} from 'react-router-dom';
 
 import Meeting from './Meeting';
 import MeetingsApi from './MeetingsApi';
@@ -116,9 +117,11 @@ class Meetings extends Component {
                     <div class="col s3" style={{fontWeigth: 'bold', fontFamily: 'Belgrano', padding: 30}}>
                         <h4 style={{textAlign: 'right'}}><p>Meetings</p></h4>
                     </div>
-                    <div class="col s1">
-                        <i className="material-icons" style={{color: '#ffd54f', fontSize: 40}}>add_circle</i>
-                    </div>
+                    <Link to={"/meetings/create-meeting"}>
+                        <div class="col s1">
+                            <i className="material-icons" style={{color: '#ffd54f', fontSize: 40}}>add_circle</i>
+                        </div>
+                    </Link>
                     <div class="col s5" style={{textAlign: 'center', padding: 30}}>
                         <nav style={{borderRadius: 100, overflow: 'hidden'}}>
                             <div class="nav-wrapper amber lighten-2">
