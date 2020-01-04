@@ -16,17 +16,19 @@ import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
-
+import Cookies from 'js-cookie';
 
 function SideNav() {
-  const { authTokens, setAuthTokens } = useAuth();
+  const { authTokens, setAuthTokens, setUserId } = useAuth();
 
   function logOut() {
+    Cookies.remove('userToken');
+    setUserId();
     setAuthTokens();
   }
 
   var navLinks;
-  if (authTokens) {
+  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined') {
     navLinks = (
       <ul className="right sideNav">
       <li>
@@ -52,6 +54,9 @@ function SideNav() {
       </li>
       <li>
         <Link to="/animes">Animes</Link>
+      </li>
+      <li>
+        <Link to="/meetings">Meetings</Link>
       </li>
       <li>
         <Link to="/login">Login</Link>
@@ -81,9 +86,7 @@ function SideNav() {
             <Animes />
           </Route>
           <Route exact path="/meetings" component={Meetings} />
-          <Route exact path="/meetings/create-meeting">
-            <MeetingCreation />
-          </Route>
+          <PrivateRoute exact path="/meetings/create-meeting" component={MeetingCreation}/>
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
           </Route>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import M from 'materialize-css';
 
 import MeetingsApi from './MeetingsApi';
+import { AuthContext } from "../auth/context/auth";
 
 class MeetingCreation extends Component {
     state = {
@@ -148,8 +149,8 @@ class MeetingCreation extends Component {
         M.Timepicker.init(elemEnding, optionsEnding);
     }
 
-    createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time) {
-        MeetingsApi.createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time)
+    createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time, userToken) {
+        MeetingsApi.createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time, userToken)
             .then(
                 (result) => {
                     console.log(result);
@@ -164,13 +165,15 @@ class MeetingCreation extends Component {
     }
 
     render() {
+        var userToken = this.context.authTokens;
+
         return(
             <div>
                 <div class="col s3" style={{fontWeigth: 'bold', fontFamily: 'Belgrano', padding: 30, paddingLeft: 80}}>
                     <h4><p>Create a new meeting:</p></h4>
                 </div>
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <form class="col s10" style={{margin: 0}} onSubmit={(e) => {this.createMeeting(this.state.name, this.state.description, this.state.address, this.state.postal_code, this.state.province, this.state.capacity, this.state.starting_date, this.state.starting_time, this.state.ending_date, this.state.ending_time); e.preventDefault();}}>
+                    <form class="col s10" style={{margin: 0}} onSubmit={(e) => {this.createMeeting(this.state.name, this.state.description, this.state.address, this.state.postal_code, this.state.province, this.state.capacity, this.state.starting_date, this.state.starting_time, this.state.ending_date, this.state.ending_time, userToken); e.preventDefault();}}>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input id="name" name="name" type="text" class="validate" maxlength="240" required onChange={this.handleInputChange}/>
@@ -283,4 +286,5 @@ class MeetingCreation extends Component {
     }
 }
 
+MeetingCreation.contextType = AuthContext;
 export default MeetingCreation; 
