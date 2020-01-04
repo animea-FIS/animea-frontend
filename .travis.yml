@@ -15,6 +15,7 @@ deploy:
   skip_cleanup: true
   script:
     heroku container:login
+    heroku buildpacks:set mars/create-react-app
     heroku container:push web -a $HEROKU_APP_NAME;
     heroku container:release web -a $HEROKU_APP_NAME;
   on:
