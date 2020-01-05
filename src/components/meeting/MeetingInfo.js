@@ -311,7 +311,11 @@ class MeetingInfo extends Component {
 
         var leaveButton = "";
         
-        if (true) {
+        if (this.context.authTokens && 
+            this.state.meetingInfo && this.state.meetingInfo.members &&
+            this.state.meetingInfo.startingDate && new Date(this.state.meetingInfo.startingDate).getTime() > new Date(Date.now()).getTime() &&
+            this.state.meetingInfo.creatorId && userId && this.state.meetingInfo.creatorId.toString().localeCompare(userId.toString()) != 0 &&
+            this.state.meetingInfo.members.includes(this.context.userId)) {
 
             var userToken = this.context.authTokens;
 
