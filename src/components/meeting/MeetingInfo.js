@@ -77,6 +77,21 @@ class MeetingInfo extends Component {
             )
     }
 
+    leaveMeeting(meetingId, userToken) {
+        MeetingsApi.leaveMeeting(meetingId, userToken)
+            .then(
+                (result) => {
+                    console.log(result)
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        errorInfo: "Problem with connection to server.<"
+                    })
+                }
+            )
+    }
+
     render() {
 
         if (this.state.meetingInfo && this.state.meetingInfo.province) {
@@ -294,6 +309,19 @@ class MeetingInfo extends Component {
                         </div>
         }
 
+        var leaveButton = "";
+        
+        if (true) {
+
+            var userToken = this.context.authTokens;
+
+            leaveButton = <div class="col s2" style={{margin: 0, float: 'left'}}>
+                            <a class="waves-effect waves-light btn" onClick={(e) => {this.leaveMeeting(this.props.match.params.meetingId, userToken); e.preventDefault();}} style={{backgroundColor: '#ffd54f', color: 'black', fontFamily: 'Belgrano'}}>
+                                Leave<i class="material-icons right">person_add_disabled</i>
+                            </a>
+                        </div>
+        }
+
         var editButton = "";
         var deleteButton = "";
         var userId = this.context.userId;
@@ -327,6 +355,7 @@ class MeetingInfo extends Component {
                         <h4>{this.state.meetingInfo.name}</h4>
                     </div>
                     {joinButton}
+                    {leaveButton}
                     {editButton}
                     {deleteButton}
                 </div>

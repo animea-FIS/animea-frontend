@@ -121,6 +121,20 @@ class MeetingsApi {
             return response.json();
         })
     }
+
+    static leaveMeeting(meetingId, userToken) {
+        const request = new Request(MeetingsApi.API_BASE_URL + `/meetings/leave/${meetingId}`, {
+            method: 'DELETE',
+            headers: {
+                "x-access-token": userToken
+            }
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+            return response.json();
+        })
+    }
 }
 
 export default MeetingsApi;
