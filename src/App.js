@@ -10,12 +10,12 @@ function App() {
   const [userId, setUserId] = useState(Cookies.get("userId"));
 
   const setTokens = (data) => {
-    Cookies.set('userToken', JSON.stringify(data), { expires: 1/24 }); //expires in 1 hour
+    Cookies.set('userToken', data, { expires: 1/24 }); //expires in 1 hour
     setAuthTokens(data);
   }
 
   const setId = (data) => {
-    Cookies.set('userId', JSON.stringify(data), { expires: 1/24 }); //expires in 1 hour
+    Cookies.set('userId', data, { expires: 1/24 }); //expires in 1 hour
     setUserId(data);
   }
 

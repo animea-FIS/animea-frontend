@@ -5,6 +5,7 @@ import M from "materialize-css";
 import './Animes.css';
 import { Row } from 'react-materialize';
 import { AuthContext } from "../auth/context/auth";
+import { Redirect } from "react-router-dom";
 
 class Animes extends Component {
   state = {
@@ -12,7 +13,9 @@ class Animes extends Component {
     pageNumber: 0,
     windowsSize: document.documentElement.clientHeight,
     userList: false,
-    searchAnimesFunction: this.searchAllAnimes
+    searchAnimesFunction: this.searchAllAnimes,
+    errorCode: '',
+    errorMessage: ''
   };
 
   constructor(props) {
@@ -77,6 +80,7 @@ class Animes extends Component {
   };
 
   showUserList() {
+    console.log(this.context)
     AnimesApi.getUserAnimes(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
@@ -88,10 +92,9 @@ class Animes extends Component {
           })
         },
         (error) => {
-          console.log(error)
-          this.setState({
-            errorInfo: "Problem with connection to server"
-          })
+          this.setState(
+            {error}
+          );          
         }
       )
   }
@@ -145,6 +148,10 @@ class Animes extends Component {
       listMsg = "My list";
     }
 
+    if (this.state.error) {
+      return (<Redirect to={{pathname:"/error", state:{errorCode:this.state.error.status, errorMessage:this.state.error.statusText }}}/>)
+    }
+    
     const listItems = this.state.animes.map((anime) =>
       <Anime key={anime.id} value={anime} />);
     return (

@@ -15,6 +15,7 @@ import Friends from '../friend/Friends';
 import Requests from '../request/Requests';
 import RequestInfo from '../request/RequestInfo';
 import NotFound from '../common/NotFound';
+import Error from '../common/Error';
 import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
@@ -22,7 +23,7 @@ import { useAuth } from "../auth/context/auth";
 import Cookies from 'js-cookie';
 
 function SideNav() {
-  const { authTokens, setAuthTokens, setUserId } = useAuth();
+  const { authTokens, setAuthTokens, setUserId, userId } = useAuth();
 
   function logOut() {
     Cookies.remove('userToken');
@@ -32,7 +33,9 @@ function SideNav() {
   }
 
   var navLinks;
-  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined') {
+  console.log(authTokens!==undefined)
+  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined'
+        && authTokens!==undefined && Cookies.get('userToken')!==undefined) {
     navLinks = (
       <ul className="right sideNav">
       <li>
@@ -106,6 +109,9 @@ function SideNav() {
           </Route>
           <Route exact path="/requests/:requestId">
             <RequestInfo />
+          </Route>
+          <Route exact path="/error">
+            <Error />
           </Route>
           <Route component={NotFound} />
         </Switch>

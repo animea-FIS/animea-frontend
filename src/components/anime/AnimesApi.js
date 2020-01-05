@@ -57,10 +57,11 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
+            console.log(response)
             if(response.status == 200){
             return response.json();
             } else {
-                return [];
+                throw {status: response.status, statusText: response.statusText};
             }
         });
     }
