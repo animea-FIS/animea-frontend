@@ -40,12 +40,12 @@ class MeetingsApi {
         })
     }
 
-    static createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time) {
+    static createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time, userToken) {
 
         const request = new Request(MeetingsApi.API_BASE_URL + `/meetings/`, {
             method: 'POST',
             headers: {
-                // "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDc5YmNmNWJjZjAzMGZkODlmMDg1MCIsImlhdCI6MTU3ODEzOTcxOCwiZXhwIjoxNTc4MjI2MTE4fQ.FnkjnOGruPg_opuEPMOYycJZhMmu0gKI_Vgn2Bh0Et0",
+                "x-access-token": userToken,
                 'Content-Type': 'application/json',
             },    
 

@@ -57,6 +57,9 @@ function SideNav() {
         <Link to="/animes">Animes</Link>
       </li>
       <li>
+        <Link to="/meetings">Meetings</Link>
+      </li>
+      <li>
         <Link to="/login">Login</Link>
       </li>
       <li>
@@ -84,9 +87,7 @@ function SideNav() {
             <Animes />
           </Route>
           <Route exact path="/meetings" component={Meetings} />
-          <Route exact path="/meetings/create-meeting">
-            <MeetingCreation />
-          </Route>
+          <PrivateRoute exact path="/meetings/create-meeting" component={MeetingCreation}/>
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
           </Route>

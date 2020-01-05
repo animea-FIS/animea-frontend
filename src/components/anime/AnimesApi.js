@@ -1,5 +1,5 @@
 class AnimesApi {
-    static API_BASE_URL = `https://${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_GATEWAY_PORT}/animes/api/v1`
+    static API_BASE_URL = `http://localhost:3001/api/v1`
 
     static requestHeaders() {
         return {}
@@ -90,6 +90,24 @@ class AnimesApi {
             method: 'DELETE',
             headers: headers
         });
+
+        return fetch(request).then(response => {
+            console.log(response);
+        });
+    }
+
+    static updateAnimeFromList(anime) {
+        console.log(anime);
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${anime.anime_id}`, {
+            method: 'PUT',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                rating: anime.rating,
+                status: anime.status
+            })
+        });
+
+        console.log(request.body);
 
         return fetch(request).then(response => {
             console.log(response);
