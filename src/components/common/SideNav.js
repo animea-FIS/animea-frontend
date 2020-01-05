@@ -23,6 +23,7 @@ function SideNav() {
 
   function logOut() {
     Cookies.remove('userToken');
+    Cookies.remove('userId');
     setUserId();
     setAuthTokens();
   }
