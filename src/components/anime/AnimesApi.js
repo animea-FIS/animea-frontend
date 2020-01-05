@@ -76,8 +76,6 @@ class AnimesApi {
             headers: headers
         });
 
-        console.log(request);
-
         return fetch(request).then(response => {
             console.log(response);
             //return response.json();
@@ -97,7 +95,6 @@ class AnimesApi {
     }
 
     static updateAnimeFromList(anime) {
-        console.log(anime);
         const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${anime.anime_id}`, {
             method: 'PUT',
             headers: { 'Content-type': 'application/json' },
@@ -106,8 +103,6 @@ class AnimesApi {
                 status: anime.status
             })
         });
-
-        console.log(request.body);
 
         return fetch(request).then(response => {
             console.log(response);
