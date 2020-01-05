@@ -16,7 +16,10 @@ class Request extends Component {
       return (
         <Row>
           <hr />
-          <a href={url}>{this.props.value.userId}</a>
+          <a href={url}>
+            Sender: {this.props.value.user.username} <br />
+            To: {this.props.value.friend.username}
+          </a>
         </Row>
       )
     }
