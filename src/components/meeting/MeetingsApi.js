@@ -66,6 +66,21 @@ class MeetingsApi {
             return response.json();
         });
     }
+
+    static joinMeeting(meetingId, userToken) {
+        console.log(userToken)
+        const request = new Request(MeetingsApi.API_BASE_URL + `/meetings/join/${meetingId}`, {
+            method: 'POST',
+            headers: {
+                "x-access-token": userToken
+            }
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+            return response.json();
+        })
+    }
 }
 
 export default MeetingsApi;

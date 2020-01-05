@@ -3,6 +3,7 @@ import M from 'materialize-css';
 import { withRouter, } from 'react-router-dom';
 
 import MeetingsApi from './MeetingsApi';
+import { AuthContext } from "../auth/context/auth";
 
 class MeetingInfo extends Component {
 
@@ -13,6 +14,7 @@ class MeetingInfo extends Component {
     constructor(props) {
         super(props);
         this.getMeetingById = this.getMeetingById.bind(this);
+        this.joinMeeting = this.joinMeeting.bind(this);
     }
 
     componentDidMount() {
@@ -40,6 +42,21 @@ class MeetingInfo extends Component {
                 }
             )
     };
+
+    joinMeeting(meetingId, userToken) {
+        MeetingsApi.joinMeeting(meetingId, userToken)
+            .then(
+                (result) => {
+                    console.log(result)
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        errorInfo: "Problem with connection to server.<"
+                    })
+                }
+            )
+    }
 
     render() {
         var infoProvince = "";
@@ -241,13 +258,32 @@ class MeetingInfo extends Component {
         if (this.state.meetingInfo && this.state.meetingInfo.capacity) {
             totalCapacity = "Total capacity: " + this.state.meetingInfo.capacity;
         }
+        
+        var joinButton = "";
+        
+        if (this.context.authTokens && 
+            this.state.meetingInfo && 
+            this.state.meetingInfo.capacity && this.state.meetingInfo.members && this.state.meetingInfo.members.length < this.state.meetingInfo.capacity &&
+            this.state.meetingInfo.startingDate && new Date(this.state.meetingInfo.startingDate).getTime() > new Date(Date.now()).getTime() &&
+            !this.state.meetingInfo.members.includes(this.context.userId)) {
+
+            var userToken = this.context.authTokens;
+            console.log("usertoken " + userToken) 
+
+            joinButton = <div class="col s2" style={{margin: 0, float: 'left'}}>
+                            <a class="waves-effect waves-light btn" onClick={(e) => {this.joinMeeting(this.props.match.params.meetingId, userToken); e.preventDefault();}} style={{backgroundColor: '#ffd54f', color: 'black', fontFamily: 'Belgrano'}}>
+                                Join<i class="material-icons right">person_add</i>
+                            </a>
+                        </div>
+        }
 
         return (
             <div style={{fontFamily: 'Belgrano'}}>
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>            
                     <div class="col s6" style={{fontWeigth: 'bold', padding: 30, margin: 0}}>
-                        <h4><p>{this.state.meetingInfo.name}</p></h4>
+                        <h4>{this.state.meetingInfo.name}</h4>
                     </div>
+                    {joinButton}
                 </div>
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <ul class="col s3 collapsible popout" style={{margin: 0}}>
@@ -288,4 +324,5 @@ class MeetingInfo extends Component {
     }
 }
 
+MeetingInfo.contextType = AuthContext;
 export default withRouter(MeetingInfo);
