@@ -59,6 +59,24 @@ class MeetingInfo extends Component {
             )
     }
 
+    deleteMeeting(meetingId, userToken) {
+        MeetingsApi.deleteMeeting(meetingId, userToken)
+            .then(
+                (result) => {
+                    console.log(result)
+                    if (!result.error) {
+                        window.location = "http://localhost:3000/meetings";
+                    }
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        errorInfo: "Problem with connection to server.<"
+                    })
+                }
+            )
+    }
+
     render() {
 
         if (this.state.meetingInfo && this.state.meetingInfo.province) {
@@ -277,6 +295,7 @@ class MeetingInfo extends Component {
         }
 
         var editButton = "";
+        var deleteButton = "";
         var userId = this.context.userId;
         
         if (this.context.authTokens && 
@@ -293,7 +312,13 @@ class MeetingInfo extends Component {
                                 </a>
                             </div>
                         </Link>
-        } 
+
+            deleteButton = <div class="col s2" style={{margin: 0, float: 'left'}}>
+                                <a class="waves-effect waves-light btn" onClick={(e) => {this.deleteMeeting(this.props.match.params.meetingId, userToken); e.preventDefault();}} style={{backgroundColor: '#ffd54f', color: 'black', fontFamily: 'Belgrano'}}>
+                                    Delete<i class="material-icons right">delete_forever</i>
+                                </a>
+                            </div>
+        }
 
         return (
             <div style={{fontFamily: 'Belgrano'}}>
@@ -303,6 +328,7 @@ class MeetingInfo extends Component {
                     </div>
                     {joinButton}
                     {editButton}
+                    {deleteButton}
                 </div>
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <ul class="col s3 collapsible popout" style={{margin: 0}}>

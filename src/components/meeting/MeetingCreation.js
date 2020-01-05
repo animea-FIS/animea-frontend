@@ -153,6 +153,9 @@ class MeetingCreation extends Component {
             .then(
                 (result) => {
                     console.log(result);
+                    if (!result.error) {
+                        window.location = "http://localhost:3000/meetings";
+                    }
                 },
                 (error) => {
                     console.log(error)

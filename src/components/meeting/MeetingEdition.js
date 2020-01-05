@@ -35,8 +35,6 @@ class MeetingEdition extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-
-        console.log(value)
     
         this.setState({
             [name]: value
@@ -180,6 +178,9 @@ class MeetingEdition extends Component {
             .then(
                 (result) => {
                     console.log(result);
+                    if (!result.error) {
+                        window.location = "http://localhost:3000/meetings";
+                    }
                 },
                 (error) => {
                     console.log(error)

@@ -49,7 +49,7 @@ class Meetings extends Component {
                     }
 
                     if (foundMeetings.length == 0) {
-                        messageToShow = "Nothing to show :("
+                        messageToShow = "Nothing to show ☹"
                     }
 
                     this.setState({
