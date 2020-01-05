@@ -5,6 +5,7 @@ import M from "materialize-css";
 import './Animes.css';
 import { Row } from 'react-materialize';
 import { AuthContext } from "../auth/context/auth";
+import { Redirect } from "react-router-dom";
 
 class Animes extends Component {
   state = {
@@ -12,7 +13,7 @@ class Animes extends Component {
     pageNumber: 0,
     windowsSize: document.documentElement.clientHeight,
     userList: false,
-    searchAnimesFunction: this.searchAllAnimes
+    searchAnimesFunction: this.searchAllAnimes.bind(this)
   };
 
   constructor(props) {
@@ -22,6 +23,7 @@ class Animes extends Component {
     this.showUserList = this.showUserList.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.setState = this.setState.bind(this)
   }
 
   componentDidMount() {
@@ -77,8 +79,7 @@ class Animes extends Component {
   };
 
   showUserList() {
-    var userId = 1;
-    AnimesApi.getUserAnimes(userId)
+    AnimesApi.getUserAnimes(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
           this.setState({
@@ -89,10 +90,9 @@ class Animes extends Component {
           })
         },
         (error) => {
-          console.log(error)
-          this.setState({
-            errorInfo: "Problem with connection to server"
-          })
+          this.setState(
+            {error}
+          );          
         }
       )
   }
@@ -146,6 +146,10 @@ class Animes extends Component {
       listMsg = "My list";
     }
 
+    if (this.state.error) {
+      return (<Redirect to={{pathname:"/error", state:{errorCode:this.state.error.status, errorMessage:this.state.error.statusText }}}/>)
+    }
+    
     const listItems = this.state.animes.map((anime) =>
       <Anime key={anime.id} value={anime} />);
     return (
