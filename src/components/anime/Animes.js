@@ -77,8 +77,7 @@ class Animes extends Component {
   };
 
   showUserList() {
-    var userId = 1;
-    AnimesApi.getUserAnimes(userId)
+    AnimesApi.getUserAnimes(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
           this.setState({

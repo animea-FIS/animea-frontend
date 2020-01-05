@@ -1,8 +1,14 @@
 class AnimesApi {
-    static API_BASE_URL = `https://${process.env.REACT_APP_SERVER_IP}:${process.env.REACT_APP_GATEWAY_PORT}/animes/api/v1`
+    static API_BASE_URL = `http://localhost:3002/animes/api/v1`
 
     static requestHeaders() {
         return {}
+    }
+
+    static tokenRequestHeaders(userToken) {
+        return {
+            'x-access-token': userToken
+        }
     }
 
     static getAllAnimes(pageNumber) {
@@ -43,16 +49,19 @@ class AnimesApi {
         });
     }
 
-    static getUserAnimes(userId) {
-        const headers = this.requestHeaders();
+    static getUserAnimes(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userToken);
         const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes`, {
             method: 'GET',
             headers: headers
         });
 
         return fetch(request).then(response => {
-            console.log(response)
+            if(response.status == 200){
             return response.json();
+            } else {
+                return [];
+            }
         });
     }
 
