@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
-import { withRouter, } from 'react-router-dom';
+import { Switch, Route, withRouter, Link} from 'react-router-dom';
 
 import MeetingsApi from './MeetingsApi';
 import { AuthContext } from "../auth/context/auth";
+import MeetingEdition from './MeetingEdition';
 
 class MeetingInfo extends Component {
 
@@ -59,7 +60,6 @@ class MeetingInfo extends Component {
     }
 
     render() {
-        var infoProvince = "";
 
         if (this.state.meetingInfo && this.state.meetingInfo.province) {
             switch (this.state.meetingInfo.province) {
@@ -268,7 +268,6 @@ class MeetingInfo extends Component {
             !this.state.meetingInfo.members.includes(this.context.userId)) {
 
             var userToken = this.context.authTokens;
-            console.log("usertoken " + userToken) 
 
             joinButton = <div class="col s2" style={{margin: 0, float: 'left'}}>
                             <a class="waves-effect waves-light btn" onClick={(e) => {this.joinMeeting(this.props.match.params.meetingId, userToken); e.preventDefault();}} style={{backgroundColor: '#ffd54f', color: 'black', fontFamily: 'Belgrano'}}>
@@ -277,6 +276,25 @@ class MeetingInfo extends Component {
                         </div>
         }
 
+        var editButton = "";
+        var userId = this.context.userId;
+        
+        if (this.context.authTokens && 
+            this.state.meetingInfo && 
+            this.state.meetingInfo.startingDate && new Date(this.state.meetingInfo.startingDate).getTime() > new Date(Date.now()).getTime() &&
+            this.state.meetingInfo.creatorId && userId && this.state.meetingInfo.creatorId.toString().localeCompare(userId.toString()) == 0) {
+
+            var userToken = this.context.authTokens;
+
+            editButton = <Link to={{pathname:"/meetings/edit-meeting", state: {meetingInfo: this.state.meetingInfo}}}>
+                            <div class="col s2" style={{margin: 0, float: 'left'}}>
+                                <a class="waves-effect waves-light btn" style={{backgroundColor: '#ffd54f', color: 'black', fontFamily: 'Belgrano'}}>
+                                    Edit<i class="material-icons right">edit</i>
+                                </a>
+                            </div>
+                        </Link>
+        } 
+
         return (
             <div style={{fontFamily: 'Belgrano'}}>
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>            
@@ -284,6 +302,7 @@ class MeetingInfo extends Component {
                         <h4>{this.state.meetingInfo.name}</h4>
                     </div>
                     {joinButton}
+                    {editButton}
                 </div>
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <ul class="col s3 collapsible popout" style={{margin: 0}}>

@@ -11,6 +11,7 @@ import AnimeInfo from '../anime/AnimeInfo';
 import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import MeetingCreation from '../meeting/MeetingCreation';
+import MeetingEdition from '../meeting/MeetingEdition';
 import Friends from '../friend/Friends';
 import Requests from '../request/Requests';
 import RequestInfo from '../request/RequestInfo';
@@ -90,6 +91,7 @@ function SideNav() {
           </Route>
           <Route exact path="/meetings" component={Meetings} />
           <PrivateRoute exact path="/meetings/create-meeting" component={MeetingCreation}/>
+          <PrivateRoute exact path="/meetings/edit-meeting" component={MeetingEdition}/>
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
           </Route>
