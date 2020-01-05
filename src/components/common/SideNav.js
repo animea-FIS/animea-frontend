@@ -14,6 +14,7 @@ import MeetingCreation from '../meeting/MeetingCreation';
 import Friends from '../friend/Friends';
 import Requests from '../request/Requests';
 import RequestInfo from '../request/RequestInfo';
+import RequestCreation from '../request/RequestCreation';
 import NotFound from '../common/NotFound';
 import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
@@ -46,6 +47,12 @@ function SideNav() {
       <li>
         <Link to="/meetings">Meetings</Link>
       </li>
+      <li>
+        <Link to="/friends">Friends</Link>
+      </li>
+      <li>
+        <Link to="/requests">Requests</Link>
+      </li>
       <li><button onClick={logOut}>Log out</button></li>
       </ul>
       )
@@ -60,6 +67,12 @@ function SideNav() {
       </li>
       <li>
         <Link to="/meetings">Meetings</Link>
+      </li>
+      <li>
+        <Link to="/friends">Friends</Link>
+      </li>
+      <li>
+        <Link to="/requests">Requests</Link>
       </li>
       <li>
         <Link to="/login">Login</Link>
@@ -105,6 +118,12 @@ function SideNav() {
           </Route>
           <Route exact path="/requests/:requestId">
             <RequestInfo />
+          </Route>
+          <Route exact path="/requests/new/:friendId">
+            <RequestCreation />
+          </Route>
+          <Route exact path="/requests/edit/:reqId">
+            <RequestCreation />
           </Route>
           <Route component={NotFound} />
         </Switch>
