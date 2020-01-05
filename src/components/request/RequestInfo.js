@@ -10,6 +10,8 @@ import {
 class RequestInfo extends Component {
     state = {
         requestInfo: {},
+        user: {},
+        friend: {}
     };
 
     constructor(props) {
@@ -29,8 +31,11 @@ class RequestInfo extends Component {
         RequestsApi.getRequestById('5df9cfb41c9d44000047b035', reqId)
             .then(
                 (result) => {
+                    console.log(result);
                     this.setState({
-                        requestInfo: result
+                        requestInfo: result,
+                        user: result.user,
+                        friend: result.friend
                     });
                 },
                 (error) => {
@@ -46,7 +51,8 @@ class RequestInfo extends Component {
         return (
             <div className="container">
                 <br />
-                Sender: {this.state.requestInfo.userId} <br />
+                Sender: {this.state.user.name} ({this.state.user.username}) <br />
+                To: {this.state.friend.name} ({this.state.friend.username}) <br />
                 Message: {this.state.requestInfo.message}
             </div>
         )

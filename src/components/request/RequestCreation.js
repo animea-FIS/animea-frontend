@@ -4,13 +4,14 @@ import M from 'materialize-css';
 import RequestsApi from './RequestsApi';
 import { AuthContext } from "../auth/context/auth";
 import {
-    withRouter,
+    withRouter, Redirect
 } from "react-router-dom";
 
 class RequestCreation extends Component {
     state = {
         message: "",
-        prevReq: null
+        prevReq: null,
+        done: false
     }
 
     constructor(props) {
@@ -57,6 +58,9 @@ class RequestCreation extends Component {
                 .then(
                     (result) => {
                         console.log(result);
+                        this.setState({
+                            done: true
+                        });
                     },
                     (error) => {
                         console.log(error)
@@ -70,6 +74,9 @@ class RequestCreation extends Component {
                 .then(
                     (result) => {
                         console.log(result);
+                        this.setState({
+                            done: true
+                        });
                     },
                     (error) => {
                         console.log(error)
@@ -82,6 +89,8 @@ class RequestCreation extends Component {
     }
 
     render() {
+        if (this.state.done) return <Redirect to="/requests" />
+
         var userToken = this.context.authTokens;
 
         return(

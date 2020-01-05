@@ -171,6 +171,12 @@ class Requests extends Component {
               Accept request
           </a>
         }
+        {!this.state.myList &&
+          <a key="1" href={`requests/edit/${req.id}`}>
+            <i className="material-icons">add_circle</i>
+              Edit request
+          </a>
+        }
         <a key="1" href="#" onClick={() => this.removeRequest(req.id)}>
           <i className="material-icons">remove_circle</i>
             Remove request
