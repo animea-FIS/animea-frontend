@@ -11,6 +11,9 @@ import AnimeInfo from '../anime/AnimeInfo';
 import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import MeetingCreation from '../meeting/MeetingCreation';
+import Friends from '../friend/Friends';
+import Requests from '../request/Requests';
+import RequestInfo from '../request/RequestInfo';
 import NotFound from '../common/NotFound';
 import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
@@ -94,6 +97,15 @@ function SideNav() {
             <Profile />
           </Route>
           <Route path="/login" component={Login} />
+          <Route exact path="/friends">
+            <Friends />
+          </Route>
+          <Route exact path="/requests">
+            <Requests />
+          </Route>
+          <Route exact path="/requests/:requestId">
+            <RequestInfo />
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </div>
