@@ -20,7 +20,7 @@ class RequestsApi {
 
     static getMyRequests(userId) {
         const headers = this.requestHeaders();
-        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests?myRequests=true`, {
+        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests?received=true`, {
             method: 'GET',
             headers: headers
         });
@@ -73,6 +73,42 @@ class RequestsApi {
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
             method: 'DELETE',
             headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+        });
+    }
+
+    static createRequest(userId, friendId, message) {
+        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },    
+            body: JSON.stringify({
+                userId: userId,
+                friendId: friendId,
+                message: message
+            })
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+        });
+    }
+
+    static updateRequest(prevReq, message) {
+        const request = new Request(RequestsApi.API_BASE_URL + `/users/${prevReq.userId}/requests/${prevReq.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },    
+            body: JSON.stringify({
+                userId: prevReq.userId,
+                friendId: prevReq.friendId,
+                message: message
+            })
         });
 
         return fetch(request).then(response => {

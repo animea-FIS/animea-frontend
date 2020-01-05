@@ -15,7 +15,9 @@ import MeetingEdition from '../meeting/MeetingEdition';
 import Friends from '../friend/Friends';
 import Requests from '../request/Requests';
 import RequestInfo from '../request/RequestInfo';
+import RequestCreation from '../request/RequestCreation';
 import NotFound from '../common/NotFound';
+import Error from '../common/Error';
 import Profile from '../profile/Profile';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
@@ -23,16 +25,19 @@ import { useAuth } from "../auth/context/auth";
 import Cookies from 'js-cookie';
 
 function SideNav() {
-  const { authTokens, setAuthTokens, setUserId } = useAuth();
+  const { authTokens, setAuthTokens, setUserId, userId } = useAuth();
 
   function logOut() {
     Cookies.remove('userToken');
+    Cookies.remove('userId');
     setUserId();
     setAuthTokens();
   }
 
   var navLinks;
-  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined') {
+  console.log(authTokens!==undefined)
+  if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined'
+        && authTokens!==undefined && Cookies.get('userToken')!==undefined) {
     navLinks = (
       <ul className="right sideNav">
       <li>
@@ -46,6 +51,12 @@ function SideNav() {
       </li>
       <li>
         <Link to="/meetings">Meetings</Link>
+      </li>
+      <li>
+        <Link to="/friends">Friends</Link>
+      </li>
+      <li>
+        <Link to="/requests">Requests</Link>
       </li>
       <li><button onClick={logOut}>Log out</button></li>
       </ul>
@@ -61,6 +72,12 @@ function SideNav() {
       </li>
       <li>
         <Link to="/meetings">Meetings</Link>
+      </li>
+      <li>
+        <Link to="/friends">Friends</Link>
+      </li>
+      <li>
+        <Link to="/requests">Requests</Link>
       </li>
       <li>
         <Link to="/login">Login</Link>
@@ -107,6 +124,15 @@ function SideNav() {
           </Route>
           <Route exact path="/requests/:requestId">
             <RequestInfo />
+          </Route>
+          <Route exact path="/error">
+            <Error />
+          </Route>
+          <Route exact path="/requests/new/:friendId">
+            <RequestCreation />
+          </Route>
+          <Route exact path="/requests/edit/:reqId">
+            <RequestCreation />
           </Route>
           <Route component={NotFound} />
         </Switch>
