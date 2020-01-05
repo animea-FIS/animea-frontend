@@ -10,21 +10,31 @@ import AnimeInfo from './AnimeInfo';
 import M from "materialize-css";
 import './Anime.css';
 import { Icon, CardTitle, Card, Row, Col } from 'react-materialize';
+import { AuthContext } from "../auth/context/auth";
+import { Redirect } from "react-router-dom";
 
 class Anime extends Component {  
+  state = {}
+
   componentDidMount() {
     // Auto initialize all the things
     M.AutoInit();
   }
 
   updateStatus(animeId, e) {
-
     const anime = {
       anime_id: animeId,
       status: e
     }
     
-    AnimesApi.updateAnimeFromList(anime);
+    AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
+      (result) => {},
+      (error) => {
+        this.setState(
+          {error}
+        );          
+      }
+    );
   }
 
   updateRating(animeId, e) {
@@ -34,21 +44,52 @@ class Anime extends Component {
       rating: e
     }
     
-    AnimesApi.updateAnimeFromList(anime);
+    AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
+      (result) => {},
+      (error) => {
+        this.setState(
+          {error}
+        );          
+      }
+    );
+  }
+
+  addAnime(animeId){
+    AnimesApi.addAnimeToUserList(animeId, this.context.userId, this.context.authTokens).then(
+      (result) => {},
+      (error) => {
+        this.setState(
+          {error}
+        );          
+      }
+    );
+  }
+
+  removeAnime(animeId){
+    AnimesApi.removeAnimeFromList(animeId, this.context.userId, this.context.authTokens).then(
+      (result) => {},
+      (error) => {
+        this.setState(
+          {error}
+        );          
+      }
+    );
   }
 
   render() {
     const { path, url } = this.props.match;
-
+    if (this.state.error) {
+      return (<Redirect to={{pathname:"/error", state:{errorCode:this.state.error.status, errorMessage:this.state.error.statusText }}}/>)
+    }
     return (
       <Row>
         <Card
           actions={[
-            <a key="1" href="#" onClick={() => AnimesApi.addAnimeToUserList(this.props.value.id)} >
+            <a key="1" href="#" onClick={() => this.addAnime(this.props.value.id)} >
               <i className="material-icons">add_circle</i>
               Add to my list
             </a>,
-            <a key="1" href="#" onClick={() => AnimesApi.removeAnimeFromList(this.props.value.id)}>
+            <a key="1" href="#" onClick={() => this.removeAnime(this.props.value.id)}>
               <i className="material-icons">remove_circle</i>
               Remove from my list
             </a>
@@ -82,4 +123,5 @@ class Anime extends Component {
   }
 }
 
+Anime.contextType = AuthContext;
 export default withRouter(Anime);

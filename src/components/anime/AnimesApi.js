@@ -7,7 +7,8 @@ class AnimesApi {
 
     static tokenRequestHeaders(userToken) {
         return {
-            'x-access-token': userToken
+            'x-access-token': userToken,
+            'Content-type': 'application/json'
         }
     }
 
@@ -31,7 +32,6 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
@@ -44,7 +44,6 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
@@ -57,7 +56,6 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             if(response.status == 200){
             return response.json();
             } else {
@@ -74,48 +72,59 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            console.log(response)
             return response.json();
         });
     }
 
-    static addAnimeToUserList(animeId) {
-        const headers = this.requestHeaders();
+    static addAnimeToUserList(animeId, userId, userToken) {
+        const headers = this.tokenRequestHeaders(userToken);
         const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
             method: 'POST',
-            headers: headers
-        });
-
-        return fetch(request).then(response => {
-            console.log(response);
-            //return response.json();
-        });
-    }
-
-    static removeAnimeFromList(animeId) {
-        const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
-            method: 'DELETE',
-            headers: headers
-        });
-
-        return fetch(request).then(response => {
-            console.log(response);
-        });
-    }
-
-    static updateAnimeFromList(anime) {
-        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${anime.anime_id}`, {
-            method: 'PUT',
-            headers: { 'Content-type': 'application/json' },
+            headers: headers,
             body: JSON.stringify({
-                rating: anime.rating,
-                status: anime.status
+                user_id: userId,
             })
         });
 
         return fetch(request).then(response => {
-            console.log(response);
+            if(response.status != 200){
+               throw {status: response.status, statusText: response.statusText};
+            }
+        });
+    }
+
+    static removeAnimeFromList(animeId, userId, userToken) {
+        const headers = this.tokenRequestHeaders(userToken);
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
+            method: 'DELETE',
+            headers: headers,
+            body: JSON.stringify({
+                user_id: userId,
+            })
+        });
+
+        return fetch(request).then(response => {
+            if(response.status != 200){
+                throw {status: response.status, statusText: response.statusText};
+             }
+        });
+    }
+
+    static updateAnimeFromList(anime, userId, userToken) {
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${anime.anime_id}`, {
+            method: 'PUT',
+            headers: this.tokenRequestHeaders(userToken),
+            body: JSON.stringify({
+                rating: anime.rating,
+                status: anime.status,
+                user_id: userId
+            })
+        });
+
+        return fetch(request).then(response => {
+            if(response.status != 200){
+                throw {status: response.status, statusText: response.statusText};
+             }
         });
     }
 }

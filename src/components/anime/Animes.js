@@ -13,9 +13,7 @@ class Animes extends Component {
     pageNumber: 0,
     windowsSize: document.documentElement.clientHeight,
     userList: false,
-    searchAnimesFunction: this.searchAllAnimes,
-    errorCode: '',
-    errorMessage: ''
+    searchAnimesFunction: this.searchAllAnimes.bind(this)
   };
 
   constructor(props) {
@@ -25,6 +23,7 @@ class Animes extends Component {
     this.showUserList = this.showUserList.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.setState = this.setState.bind(this)
   }
 
   componentDidMount() {
@@ -80,7 +79,6 @@ class Animes extends Component {
   };
 
   showUserList() {
-    console.log(this.context)
     AnimesApi.getUserAnimes(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
