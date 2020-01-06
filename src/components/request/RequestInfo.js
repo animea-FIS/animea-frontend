@@ -6,6 +6,7 @@ import { Icon, CardTitle, Card, Row, Col } from 'react-materialize';
 import {
     withRouter,
 } from "react-router-dom";
+import { AuthContext } from "../auth/context/auth";
 
 class RequestInfo extends Component {
     state = {
@@ -28,7 +29,7 @@ class RequestInfo extends Component {
     }
 
     getRequestById(reqId) {
-        RequestsApi.getRequestById('5df9cfb41c9d44000047b035', reqId)
+        RequestsApi.getRequestById(this.context.userId, reqId, this.context.token)
             .then(
                 (result) => {
                     console.log(result);
@@ -59,4 +60,5 @@ class RequestInfo extends Component {
     }
 }
 
+RequestInfo.contextType = AuthContext;
 export default withRouter(RequestInfo);
