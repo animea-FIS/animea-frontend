@@ -4,6 +4,7 @@ import Friend from './Friend';
 import M from "materialize-css";
 import './Friends.css';
 import { Row } from 'react-materialize';
+import { AuthContext } from "../auth/context/auth";
 
 class Friends extends Component {
   state = {
@@ -22,16 +23,11 @@ class Friends extends Component {
 
   componentDidMount() {
     M.AutoInit();
-    window.addEventListener('scroll', this.handleScroll);
     this.getAllFriends();
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
   getAllFriends() {
-    FriendsApi.getAllFriends('5df9cfb41c9d44000047b035')
+    FriendsApi.getAllFriends(this.context.userId, this.context.token)
       .then(
         (result) => {
           var foundFriends = result
@@ -49,9 +45,9 @@ class Friends extends Component {
   }
 
   removeFriend(friendId) {
-    FriendsApi.removeFriend("5df9cfb41c9d44000047b035", friendId).then(
+    FriendsApi.removeFriend(this.context.userId, friendId, this.context.token).then(
       () => {
-        FriendsApi.getAllFriends('5df9cfb41c9d44000047b035')
+        FriendsApi.getAllFriends(this.context.userId)
         .then(
           (result) => {
             var foundFriends = result
@@ -77,9 +73,9 @@ class Friends extends Component {
   }
 
   removeAllFriends() {
-    FriendsApi.removeAllFriends("5df9cfb41c9d44000047b035").then(
+    FriendsApi.removeAllFriends(this.context.userId, this.context.token).then(
       () => {
-        FriendsApi.getAllFriends('5df9cfb41c9d44000047b035')
+        FriendsApi.getAllFriends(this.context.userId, this.context.token)
         .then(
           (result) => {
             var foundFriends = result
@@ -136,4 +132,5 @@ class Friends extends Component {
   }
 }
 
+Friends.contextType = AuthContext;
 export default Friends;

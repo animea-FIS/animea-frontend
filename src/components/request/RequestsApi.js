@@ -1,12 +1,20 @@
 class RequestsApi {
-    static API_BASE_URL = "http://localhost:3003" // "/api/v1";
+    static API_BASE_URL = "http://localhost:3003/api/v1";
 
     static requestHeaders() {
         return {}
     }
 
-    static getCreatedRequests(userId) {
-        const headers = this.requestHeaders();
+    static tokenRequestHeaders(userId, userToken) {
+        return {
+            'x-access-token': userToken,
+            'x-user-id': userId,
+            'Content-type': 'application/json'
+        }
+    }
+
+    static getCreatedRequests(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
             method: 'GET',
             headers: headers
@@ -18,8 +26,8 @@ class RequestsApi {
         });
     }
 
-    static getMyRequests(userId) {
-        const headers = this.requestHeaders();
+    static getMyRequests(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests?received=true`, {
             method: 'GET',
             headers: headers
@@ -27,12 +35,16 @@ class RequestsApi {
 
         return fetch(request).then(response => {
             console.log(response);
-            return response.json();
+            if(response.status == 200){
+                return response.json();
+            } else {
+                throw {status: response.status, statusText: response.statusText};
+            }
         });
     }
 
-    static getRequestById(userId, reqId) {
-        const headers = this.requestHeaders();
+    static getRequestById(userId, reqId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests/${reqId}`, {
             method: 'GET',
             headers: headers
@@ -40,12 +52,16 @@ class RequestsApi {
 
         return fetch(request).then(response => {
             console.log(response)
-            return response.json();
+            if(response.status == 200){
+                return response.json();
+            } else {
+                throw {status: response.status, statusText: response.statusText};
+            }
         });
     }
 
-    static acceptRequest(userId, reqId) {
-        const headers = this.requestHeaders();
+    static acceptRequest(userId, reqId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests/${reqId}/accept`, {
             method: 'GET',
             headers: headers
@@ -56,8 +72,8 @@ class RequestsApi {
         });
     }
 
-    static removeRequest(userId, reqId) {
-        const headers = this.requestHeaders();
+    static removeRequest(userId, reqId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests/${reqId}`, {
             method: 'DELETE',
             headers: headers
@@ -68,8 +84,8 @@ class RequestsApi {
         });
     }
 
-    static removeAllRequests(userId) {
-        const headers = this.requestHeaders();
+    static removeAllRequests(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
             method: 'DELETE',
             headers: headers
@@ -80,12 +96,11 @@ class RequestsApi {
         });
     }
 
-    static createRequest(userId, friendId, message) {
+    static createRequest(userId, friendId, message, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },    
+            headers: headers,
             body: JSON.stringify({
                 userId: userId,
                 friendId: friendId,
@@ -98,12 +113,11 @@ class RequestsApi {
         });
     }
 
-    static updateRequest(prevReq, message) {
+    static updateRequest(prevReq, message, userToken) {
+        const headers = this.tokenRequestHeaders(prevReq.userId, userToken);
         const request = new Request(RequestsApi.API_BASE_URL + `/users/${prevReq.userId}/requests/${prevReq.id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },    
+            headers: headers,
             body: JSON.stringify({
                 userId: prevReq.userId,
                 friendId: prevReq.friendId,
