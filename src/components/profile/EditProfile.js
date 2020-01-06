@@ -19,6 +19,9 @@ function EditProfile(props){
                     <label> Location:
             <input className="form-control" name="location" value={props.profile.location} onChange={handleChange} />
                     </label>
+                    <label> Twitter username (without @):
+            <input className="form-control" name="twitterUsername" value={props.profile.twitterUsername} onChange={handleChange} />
+                    </label>
                     <label> Birthdate:
             <input className="form-control" name="birthdate" value={props.profile.birthdate} onChange={handleChange} />
                     </label>
@@ -28,7 +31,7 @@ function EditProfile(props){
                     <label> Profile picture:
             <input className="form-control" name="profilePic" value={props.profile.profilePic} onChange={handleChange} />
                     </label>
-                    <label> Presentation video:
+                    <label> Presentation video (YouTube link or YouTube video ID):
             <input className="form-control" name="presentationVideo" value={props.profile.presentationVideo} onChange={handleChange} />
                     </label>
 

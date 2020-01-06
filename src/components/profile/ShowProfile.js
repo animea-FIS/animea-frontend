@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Row } from 'react-materialize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faEnvelopeOpenText, faBirthdayCake, faMapMarkedAlt, faStarHalfAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faEnvelopeOpenText, faBirthdayCake, faMapMarkedAlt, faStarHalfAlt, faUserEdit, faHashtag } from '@fortawesome/free-solid-svg-icons'
+import {faTwitter} from '@fortawesome/free-brands-svg-icons'
 import ProfileVideo from './ProfileVideo';
 import RateProfile from './RateProfile';
 import ProfilesApi from './ProfilesApi';
 import './Profile.css';
+import {AuthContext} from "../auth/context/auth";
 
 
 class ShowProfile extends Component {
@@ -112,6 +114,8 @@ class ShowProfile extends Component {
 							<p><FontAwesomeIcon icon={faMapMarkedAlt} /> {this.props.profile.location}</p>
 						}
 						<p><FontAwesomeIcon icon={faStarHalfAlt} /> Rating: {this.props.rating} {stars} </p>
+						<p><FontAwesomeIcon icon={faTwitter}/> Twitter account: {this.props.profile.twitterUsername}</p>
+						<p><FontAwesomeIcon icon={faHashtag}/> Last Tweet: {this.props.lastTweet}</p>
 						<p><FontAwesomeIcon icon={faUserEdit} /> Bio: {this.props.profile.bio}</p>
 					</div>
 					<Row>
@@ -142,4 +146,5 @@ class ShowProfile extends Component {
 	}
 }
 
+ShowProfile.contextType = AuthContext;
 export default ShowProfile;

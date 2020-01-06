@@ -119,6 +119,27 @@ class ProfilesApi {
             console.log(err)
         })
     }
+
+    static getLastTweet(twitterUsername){
+        const headers = this.requestHeaders();
+        const request = new Request(ProfilesApi.API_BASE_URL + '/profile/tweet/' + twitterUsername, {
+            method: 'GET',
+            headers: headers
+        });
+        return fetch(request).then(response => {
+            return response.json();
+        });
+
+       /* return fetch(ProfilesApi.API_BASE_URL + '/profile/tweet/' + twitterUsername, {
+            method: 'GET',
+            headers: headers
+        }).then(res => {
+            console.log(res.json());
+            return res.json();
+        }).catch(err => {
+            console.log(err);
+        });*/
+    }
 }
 
 export default ProfilesApi;

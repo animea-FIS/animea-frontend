@@ -5,6 +5,7 @@ import './Profile.css';
 import EditProfile from './EditProfile';
 import ShowProfile from './ShowProfile';
 import Alert from './Alert';
+import {AuthContext} from "../auth/context/auth";
 
 class Profile extends Component {
     constructor(props) {
@@ -16,13 +17,35 @@ class Profile extends Component {
           isEditing: {},
           rating: 0,
           alreadyRated: false,
-          alreadyRatedValue: 0
+          alreadyRatedValue: 0,
+          lastTweet:null
         }
         this.handleEdit = this.handleEdit.bind(this);
         this.handleCloseError = this.handleCloseError.bind(this);
         this.updateRate = this.updateRate.bind(this);
         this.updateRecentlyRate = this.updateRecentlyRate.bind(this);
         this.didUserAlreadyRate = this.didUserAlreadyRate.bind(this);
+        this.getUserLastTweet = this.getUserLastTweet.bind(this);
+    }
+
+    getUserLastTweet(twitterUsername){
+      if(!twitterUsername || twitterUsername ==='' ){
+        this.setState({
+          errorInfo: null,
+          lastTweet: "You must add a Twitter account in order to show your last tweet here."
+        })
+      }else{
+        ProfilesApi.getLastTweet(twitterUsername).then((result) => {
+          console.log(result);
+          this.setState({
+            lastTweet: result.lastTweet
+          })
+        }, (error) => {
+          this.setState({
+            lastTweet: "Last tweet not found, check your Twitter username."
+          })
+        })
+      }
     }
 
     updateRecentlyRate(value){
@@ -108,6 +131,7 @@ class Profile extends Component {
         delete isEditing[name];
         if(name === profile.username){
           this.saveProfile(profile);
+          this.getUserLastTweet(profile.twitterUsername);
           return {
             profile: profile,
             isEditing: isEditing
@@ -126,7 +150,7 @@ class Profile extends Component {
     }
 
     showMyProfile() { 
-        var userId = "5df9cfb41c9d44000047b034"; //TODO Cambiar por ID del usuario autenticado
+        var userId = "5e0b07b4067c9904241b3925"; //TODO Cambiar por ID del usuario autenticado
         ProfilesApi.getUserById(userId)
           .then(
             (result) => {
@@ -134,6 +158,7 @@ class Profile extends Component {
                 profile: result
               });
               this.updateRate();
+              this.getUserLastTweet(result.twitterUsername);
             },
             (error) => {
               console.log(error);
@@ -158,13 +183,14 @@ class Profile extends Component {
     render(){
       return (
         <div>
+          <p>{this.context.userId}</p>
           <div>
             <Alert message={this.state.errorInfo} onClose={this.handleCloseError} />
           </div>
           {!this.state.isEditing[this.state.profile.username] ?
             <div>
               <ShowProfile key={this.state.profile.username} profile={this.state.profile}
-              rating={this.state.rating} updateRecentlyRate={this.updateRecentlyRate} alreadyRated={this.state.alreadyRated}
+              rating={this.state.rating} lastTweet={this.state.lastTweet} updateRecentlyRate={this.updateRecentlyRate} alreadyRated={this.state.alreadyRated}
               alreadyRatedValue={this.state.alreadyRatedValue}
                 onEdit={this.handleEdit} />
             </div>
@@ -181,4 +207,5 @@ class Profile extends Component {
     }
 }
 
+Profile.contextType = AuthContext;
 export default Profile;
