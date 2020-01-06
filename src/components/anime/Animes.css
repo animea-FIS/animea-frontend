@@ -26,7 +26,8 @@
 }
 
 .sideNav a{
-    font-size:1.5em;
+    font-size:1.3em!important;
+    font-family: 'Raleway', sans-serif;
 }
 
 ul.dropdown-content.select-dropdown li span {
