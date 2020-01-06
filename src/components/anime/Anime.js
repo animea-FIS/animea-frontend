@@ -76,8 +76,15 @@ class Anime extends Component {
     );
   }
 
+  cutSynopsis(synopsis) {
+    var shortSynopsis = synopsis;
+    if (synopsis.length > 380) {
+      shortSynopsis = synopsis.substring(0, 380) + "...";
+    }
+    return shortSynopsis;
+  }
+
   render() {
-    const { path, url } = this.props.match;
     if (this.state.error) {
       return (<Redirect to={{pathname:"/error", state:{errorCode:this.state.error.status, errorMessage:this.state.error.statusText }}}/>)
     }
@@ -97,10 +104,12 @@ class Anime extends Component {
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
           horizontal
         >
-          <h5><Link to={`/animes/${this.props.value.id}`}>{this.props.value.attributes.titles.en_jp}</Link></h5>
-          <p>{this.props.value.attributes.synopsis}</p>
+          <h5 style={{fontWeigth: 'bold', fontFamily: 'Belgrano'}}><Link to={`/animes/${this.props.value.id}`}>
+            {this.props.value.attributes.titles.en_jp}
+            </Link></h5>
+          <p>{this.cutSynopsis(this.props.value.attributes.synopsis)}</p>
 
-          <div class="col s3" style={{padding: 30}}>
+          <div class="col s4" style={{padding: 30}}>
             <select id="statusSelected" class="input-field" onChange={(e) => this.updateStatus(this.props.value.id, e.target.value)}>
               <option value="pending">Pending</option>
               <option value="watching">Watching</option>   

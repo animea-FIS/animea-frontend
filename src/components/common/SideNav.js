@@ -35,7 +35,6 @@ function SideNav() {
   }
 
   var navLinks;
-  console.log(authTokens!==undefined)
   if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined'
         && authTokens!==undefined && Cookies.get('userToken')!==undefined) {
     navLinks = (
