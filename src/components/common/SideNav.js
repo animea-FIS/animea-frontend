@@ -79,10 +79,10 @@ function SideNav() {
         <Link to="/requests">Requests</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <li>
         <Link to="/my-profile">My profile</Link>
+      </li>
+      <li class="loginLink">
+        <Link to="/login">Login</Link>
       </li>
       </ul>
     )
