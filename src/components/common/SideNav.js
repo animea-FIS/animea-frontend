@@ -8,6 +8,7 @@ import {
 import 'materialize-css/dist/css/materialize.min.css';
 import Animes from '../anime/Animes';
 import AnimeInfo from '../anime/AnimeInfo';
+import UserAnimes from '../anime/UserAnimes';
 import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import MeetingCreation from '../meeting/MeetingCreation';
@@ -111,6 +112,9 @@ function SideNav() {
           </Route>
           <Route path={`/animes/:animeId`}>
             <AnimeInfo />
+          </Route>
+          <Route path={`/user/:userId/animes`}>
+            <UserAnimes />
           </Route>
           <PrivateRoute exact path="/users" />
           <Route exact path="/">

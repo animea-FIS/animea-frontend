@@ -5,13 +5,13 @@ class Error extends React.Component {
     render() {
       var errorCode;
       var errorMsg;
-        if (this.props.location.state && this.props.location.state.errorCode){
-          errorCode = this.props.location.state 
-          errorMsg = this.props.location.state.errorCode
-        } else {
-          errorCode = 500
+        // if (this.props && this.props.location &&this.props.location.state && this.props.location.state.errorCode){
+        //   errorCode = this.props.location.state 
+        //   errorMsg = this.props.location.state.errorCode
+        // } else {
+          errorCode = '500'
           errorMsg = 'Something went wrong'
-        }
+        // }
        return (
           <div className="container">
             <div class="row">
