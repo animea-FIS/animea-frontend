@@ -99,7 +99,7 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
-            if(response.status != 200){
+            if(response.status != 201){
                throw {status: response.status, statusText: response.statusText};
             }
         });

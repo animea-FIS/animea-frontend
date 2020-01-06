@@ -200,10 +200,67 @@ class Animes extends Component {
 
   render() {
     var listMsg;
+    var myListButton = '';
+    var searchBar = (<nav className="anime-search">
+    <div className="nav-wrapper">
+      <form autoComplete="off">
+        <div className="input-field">
+          <input autoComplete="off" id="search" type="search" placeholder="Search animes" required onKeyUp={this.handleTextChange} />
+          <label className="label-icon"><i className="material-icons">search</i></label>
+        </div>
+      </form>
+    </div>
+  </nav>)
+  var filters = (<div className="col s3">
+  <div class="search-filters">
+  <div class="input-field col s12">
+    <select onChange={this.handleGenreChange}>
+      <option value="" disabled selected>Genre</option>
+      <option value="action">Action</option>
+      <option value="adventure">Adventure</option>
+      <option value="school">School</option>
+      <option value="comedy">Comedy</option>
+      <option value="drama">Drama</option>
+      <option value="fantasy">Fantasy</option>
+      <option value="magic">Magic</option>
+      <option value="horror">Horror</option>
+      <option value="mystery">Mystery</option>
+      <option value="music">Music</option>
+      <option value="psychological">Psychological</option>
+      <option value="romance">Romance</option>
+      <option value="sci-fi">Sci-Fi</option>
+      <option value="yaoi">Yaoi</option>
+      <option value="yuri">Yuri</option>
+    </select>
+    <label>Genre</label>
+  </div>
+  <div class="input-field col s12">
+    <select onChange={this.handleStatusChange}>
+      <option value="" disabled selected>Status</option>
+      <option value="current">Current</option>
+      <option value="finished">Finished</option>
+      <option value="tba">TBA</option>
+      <option value="unreleased">Unreleased</option>
+      <option value="upcoming">Upcoming</option>
+    </select>
+    <label>Status</label>
+  </div>
+  </div>
+</div>)
     if (this.state.userList) {
       listMsg = "All animes";
+      searchBar = (<h5 style={{fontWeigth: 'bold', fontFamily: 'Belgrano', fontSize: 37, color:'#1DB9D7'}}>My Anime List</h5>)
+      filters = "";
     } else {
       listMsg = "My list";
+    }
+
+    if(this.context.authTokens){
+      myListButton = (<div className="col s2">
+      <button onClick={this.state.userList ? () => this.getAllAnimes() : () => this.showUserList()} className="btn waves-effect waves-light" type="submit" name="action">{listMsg}
+        <i className="material-icons right">library_books</i>
+      </button>
+    </div>)
     }
 
     if (this.state.error) {
@@ -216,60 +273,12 @@ class Animes extends Component {
       <div className="container">
         <div className="row valign-wrapper">
           <div className="col s10">
-            <nav className="anime-search">
-              <div className="nav-wrapper">
-                <form autoComplete="off">
-                  <div className="input-field">
-                    <input autoComplete="off" id="search" type="search" required onKeyUp={this.handleTextChange} />
-                    <label className="label-icon"><i className="material-icons">search</i></label>
-                  </div>
-                </form>
-              </div>
-            </nav>
+            {searchBar}
           </div>
-          <div className="col s2">
-            <button onClick={this.state.userList ? () => this.getAllAnimes() : () => this.showUserList()} className="btn waves-effect waves-light" type="submit" name="action">{listMsg}
-              <i className="material-icons right">library_books</i>
-            </button>
-          </div>
+          {myListButton}
         </div>
         <div class="row" onScroll={this.handleScroll}>
-          <div className="col s3">
-            <div class="search-filters">
-            <div class="input-field col s12">
-              <select onChange={this.handleGenreChange}>
-                <option value="" disabled selected>Genre</option>
-                <option value="action">Action</option>
-                <option value="adventure">Adventure</option>
-                <option value="school">School</option>
-                <option value="comedy">Comedy</option>
-                <option value="drama">Drama</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="magic">Magic</option>
-                <option value="horror">Horror</option>
-                <option value="mystery">Mystery</option>
-                <option value="music">Music</option>
-                <option value="psychological">Psychological</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-Fi</option>
-                <option value="yaoi">Yaoi</option>
-                <option value="yuri">Yuri</option>
-              </select>
-              <label>Genre</label>
-            </div>
-            <div class="input-field col s12">
-              <select onChange={this.handleStatusChange}>
-                <option value="" disabled selected>Status</option>
-                <option value="current">Current</option>
-                <option value="finished">Finished</option>
-                <option value="tba">TBA</option>
-                <option value="unreleased">Unreleased</option>
-                <option value="upcoming">Upcoming</option>
-              </select>
-              <label>Status</label>
-            </div>
-            </div>
-          </div>
+          {filters}
           <div class="col s9">
             {listItems}
           </div>
