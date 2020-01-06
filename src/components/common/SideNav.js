@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,15 +23,20 @@ import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
 import Cookies from 'js-cookie';
+import {
+  Redirect
+} from "react-router-dom";
 
 function SideNav() {
   const { authTokens, setAuthTokens, setUserId, userId } = useAuth();
+  const [toLogin, setToLogin] = useState(false);
 
   function logOut() {
     Cookies.remove('userToken');
     Cookies.remove('userId');
     setUserId();
     setAuthTokens();
+    setToLogin(true)
   }
 
   var navLinks;
@@ -87,8 +92,14 @@ function SideNav() {
       </ul>
     )
   }
+  var redirect = '';
+  if(toLogin){
+     redirect = <Redirect to="/login" />;
+  }
+
   return (
     <Router>
+      {redirect}
       <div>
         <nav class="yellow darken-2">
           <a href="/" class="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"} /></a>

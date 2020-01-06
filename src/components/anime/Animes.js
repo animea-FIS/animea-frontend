@@ -255,7 +255,7 @@ class Animes extends Component {
       listMsg = "My list";
     }
 
-    if(this.context.authTokens){
+    if((this.context.authTokens!=='undefined' && this.context.authTokens!==undefined)){
       myListButton = (<div className="col s2">
       <button onClick={this.state.userList ? () => this.getAllAnimes() : () => this.showUserList()} className="btn waves-effect waves-light" type="submit" name="action">{listMsg}
         <i className="material-icons right">library_books</i>
