@@ -9,7 +9,8 @@ import { AuthContext } from "../auth/context/auth";
 class MeetingsUser extends Component {
     state = {
         meetings: [],
-        emptyMessage: ""
+        emptyMessage: "",
+        error: ""
     }
 
     constructor(props) {
@@ -26,18 +27,25 @@ class MeetingsUser extends Component {
         MeetingsApi.getUserMeetings(userId)
             .then(
                 (result) => {
-                    console.log(result.meetings)
-                    var foundMeetings = result.meetings;
-                    var messageToShow = "";
+                    console.log(result);
+                    if (!result.error) {
+                        var foundMeetings = result.meetings;
+                        var messageToShow = "";
 
-                    if (foundMeetings.length == 0) {
-                        messageToShow = "Nothing to show ☹"
-                    }
+                        if (foundMeetings.length == 0) {
+                            messageToShow = "Nothing to show ☹"
+                        }
 
-                    this.setState({
-                        meetings: foundMeetings,
-                        emptyMessage: messageToShow
-                    })                                        
+                        this.setState({
+                            meetings: foundMeetings,
+                            emptyMessage: messageToShow,
+                            error: ""
+                        });
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
+                    }                                        
                 },
                 (error) => {
                     console.log(error);
@@ -51,8 +59,16 @@ class MeetingsUser extends Component {
     render() {
         const listItems = this.state.meetings.map((meeting) => <Meeting key={meeting._id} value={meeting} />)
 
+        var errorBox = "";
+        if (this.state.error != "") {
+            errorBox = <div class="vertical-center" style={{backgroundColor: '#f50057', borderRadius: 5, boxShadow: "0px 2px 8px 2px rgba(255, 0, 0, .3)", color:'white', fontWeight: 'bold', marginBottom: 14, padding: 10, paddingTop: 12}}>    
+                            <p style={{margin: 0}}>{this.state.error}</p>
+                        </div>
+        }
+
         return (
             <div>
+                {errorBox}
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 0, width: '90%'}}>            
                     <div class="col s5" style={{fontWeigth: 'bold', fontFamily: 'Belgrano', padding: 30, margin: 0}}>
                         <h4><p>Meetings of the user:</p></h4>
