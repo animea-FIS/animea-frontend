@@ -122,6 +122,10 @@ class Friends extends Component {
               <i className="material-icons">remove_circle</i>
                 Remove all friends
             </a>
+            <br />
+            <a key="1" href="friends/animes">
+              View friends animes
+            </a>
           </span>
         }
         {this.state.friends.length === 0 &&

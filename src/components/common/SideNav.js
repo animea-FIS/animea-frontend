@@ -79,12 +79,6 @@ function SideNav() {
         <Link to="/meetings">Meetings</Link>
       </li>
       <li>
-        <Link to="/friends">Friends</Link>
-      </li>
-      <li>
-        <Link to="/requests">Requests</Link>
-      </li>
-      <li>
         <Link to="/my-profile">My profile</Link>
       </li>
       <li class="loginLink">
@@ -132,6 +126,9 @@ function SideNav() {
           <Route path="/login" component={Login} />
           <Route exact path="/friends">
             <Friends />
+          </Route>
+          <Route path={`/friends/animes`}>
+            <FriendsAnimes />
           </Route>
           <Route exact path="/requests">
             <Requests />

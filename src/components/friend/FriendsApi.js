@@ -30,6 +30,23 @@ class FriendsApi {
         });
     }
 
+    static getFriendsAnimes(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
+        const request = new Request(FriendsApi.API_BASE_URL + `/users/${userId}/friends/animes`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
+            console.log(response);
+            if(response.status == 200){
+                return response.json();
+            } else {
+                throw {status: response.status, statusText: response.statusText};
+            }
+        });
+    }
+
     static removeFriend(userId, friendId, userToken) {
         const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(FriendsApi.API_BASE_URL + `/users/${userId}/friends/${friendId}`, {
