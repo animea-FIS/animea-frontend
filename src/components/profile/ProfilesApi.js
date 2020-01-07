@@ -1,5 +1,6 @@
 class ProfilesApi {
-    static API_BASE_URL = "http://localhost:3005/api";
+    //static API_BASE_URL = "http://localhost:3005/api";
+    static API_BASE_URL = "http://animea-profile.herokuapp.com/api";
 
     static requestHeaders() {
         return {}

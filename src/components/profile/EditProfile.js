@@ -1,5 +1,11 @@
 import React from 'react';
 import './Profile.css';
+import EditProfileErrors from './EditProfileErrors';
+
+
+function errorClass(error){
+        return(error.length === 0 ? '' : 'has-error');
+}
 
 function EditProfile(props){
     const handleChange = event => {
@@ -13,9 +19,11 @@ function EditProfile(props){
                     <label> Name:
             <input className="form-control" name="name" value={props.profile.name} onChange={handleChange} />
                     </label>
-                    <label> Email:
-            <input className="form-control" name="email" value={props.profile.email} onChange={handleChange} />
-                    </label>
+                    
+                            <label> Email:
+                                <input className="form-control" name="email" value={props.profile.email} onChange={handleChange} />
+                            </label>
+                    
                     <label> Location:
             <input className="form-control" name="location" value={props.profile.location} onChange={handleChange} />
                     </label>
@@ -35,7 +43,7 @@ function EditProfile(props){
             <input className="form-control" name="presentationVideo" value={props.profile.presentationVideo} onChange={handleChange} />
                     </label>
 
-                    <button className="btn btn-primary" onClick={() => props.onSave(props.profile)}>Save</button>
+                    <button className="btn btn-primary" disabled={!props.isValid} onClick={() => props.onSave(props.profile)}>Save</button>
                     <button className="btn btn-primary" onClick={() => props.onCancel(props.profile)}>Cancel</button>
                 </div>
             

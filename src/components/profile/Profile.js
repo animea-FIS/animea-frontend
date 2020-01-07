@@ -18,7 +18,11 @@ class Profile extends Component {
           rating: 0,
           alreadyRated: false,
           alreadyRatedValue: 0,
-          lastTweet:null
+          lastTweet:null,
+          formErrors: {email: '', profilePic: ''},
+          emailValid: false,
+          profilePicValid: false,
+          formValid: true
         }
         this.handleEdit = this.handleEdit.bind(this);
         this.handleCloseError = this.handleCloseError.bind(this);
@@ -120,9 +124,56 @@ class Profile extends Component {
     }
 
     handleChange(name, profile) {
+      const email = profile.email;
+      const profilePic = profile.profilePic;
       this.setState(prevState => ({
           isEditing: {...prevState.isEditing, [name]: profile}
-      }))
+      }));
+      this.validateEmail(email);
+      this.validateProfilePic(profilePic);
+    }
+
+    validateEmail(email){
+      let fieldValidationErrors = this.state.formErrors;
+      let emailValid = email + "";
+      emailValid = emailValid.includes("@");
+
+      if(emailValid){
+        fieldValidationErrors.email = "";
+      }else{
+        fieldValidationErrors.email = " is invalid, must have an @"
+      }
+
+      this.setState({
+        formErrors: fieldValidationErrors,
+        emailValid: emailValid
+      }); 
+      this.validateForm();
+    }
+
+    validateProfilePic(profilePic){
+      let fieldValidationErrors = this.state.formErrors;
+      let profilePicValid = profilePic + "";
+      profilePicValid = profilePicValid.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/);
+
+      if(profilePicValid){
+        fieldValidationErrors.profilePic = "";
+      }else{
+        fieldValidationErrors.profilePic = " is invalid, must be a valid picture url";
+      }
+
+      this.setState({
+        formErrors: fieldValidationErrors,
+        profilePicValid: profilePicValid
+      }); 
+      this.validateForm();
+    }
+
+    validateForm(){
+      this.setState({
+        formValid: this.state.emailValid && this.state.profilePicValid
+      });
+      console.log(this.state.formValid);
     }
     
     handleSave(name, profile){
@@ -150,7 +201,7 @@ class Profile extends Component {
     }
 
     showMyProfile() { 
-        var userId = "5e0b07b4067c9904241b3925"; //TODO Cambiar por ID del usuario autenticado
+        var userId = "5e145b225591df48f0316f03"; //TODO Cambiar por ID del usuario autenticado
         ProfilesApi.getUserById(userId)
           .then(
             (result) => {
@@ -199,7 +250,9 @@ class Profile extends Component {
               <EditProfile key={this.state.username} profile={this.state.isEditing[this.state.profile.username]}
                 onCancel={this.handleCancel.bind(this, this.state.profile.username)}
                 onChange={this.handleChange.bind(this, this.state.profile.username)}
-                onSave={this.handleSave.bind(this, this.state.profile.username)} />
+                onSave={this.handleSave.bind(this, this.state.profile.username)} 
+                isValid={this.state.formValid}
+                formErrors={this.state.formErrors}/>
             </div>
           }
         </div>
