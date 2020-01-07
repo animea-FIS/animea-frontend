@@ -12,9 +12,21 @@ class AnimesApi {
         }
     }
 
-    static getAllAnimes(pageNumber) {
+    static getAllAnimes(pageNumber, genre, status, searchText) {
         const headers = this.requestHeaders();
-        const request = new Request(AnimesApi.API_BASE_URL + `/animes?page=${pageNumber}`, {
+        var baseUrl = AnimesApi.API_BASE_URL + `/animes?page=${pageNumber}`;
+
+        if (genre) {
+            baseUrl += `&genre=${genre}`
+        }
+        if (status) {
+            baseUrl += `&status=${status}`
+        }
+        if (searchText) {
+            baseUrl += `&text=${searchText}`
+        }
+
+        const request = new Request(baseUrl, {
             method: 'GET',
             headers: headers
         });
@@ -87,8 +99,23 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
+            if(response.status != 201){
+               throw {status: response.status, statusText: response.statusText};
+            }
+        });
+    }
+
+    static getUserFriendsForAnime(animeId, userId, userToken) {
+        const headers = this.tokenRequestHeaders(userToken);
+        const request = new Request(AnimesApi.API_BASE_URL + `/user/${userId}/animes/${animeId}`, {
+            method: 'GET',
+            headers: headers
+        });
+        return fetch(request).then(response => {
             if(response.status != 200){
                throw {status: response.status, statusText: response.statusText};
+            } else {
+                return response.json();
             }
         });
     }

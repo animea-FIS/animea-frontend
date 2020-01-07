@@ -29,7 +29,7 @@ function Login() {
 
     return (
         <Card>
-            <Logo src={window.location.origin + "/logo.png"} />
+            <h5 style={{fontWeigth: 'bold', fontFamily: 'Belgrano', fontSize: 37, color:'#1DB9D7'}}>Log in</h5>
             <Form>
                 <Input
                     type="email"

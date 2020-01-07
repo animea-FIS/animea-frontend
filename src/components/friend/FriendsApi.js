@@ -1,12 +1,20 @@
 class FriendsApi {
-    static API_BASE_URL = "http://localhost:3003" // "/api/v1";
+    static API_BASE_URL = "https://185.176.5.147:7400/friends/api/v1";
 
     static requestHeaders() {
         return {}
     }
 
-    static getAllFriends(userId) {
-        const headers = this.requestHeaders();
+    static tokenRequestHeaders(userId, userToken) {
+        return {
+            'x-access-token': userToken,
+            'x-user-id': userId,
+            'Content-type': 'application/json'
+        }
+    }
+
+    static getAllFriends(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(FriendsApi.API_BASE_URL + `/users/${userId}/friends`, {
             method: 'GET',
             headers: headers
@@ -14,12 +22,16 @@ class FriendsApi {
 
         return fetch(request).then(response => {
             console.log(response);
-            return response.json();
+            if(response.status == 200){
+                return response.json();
+            } else {
+                throw {status: response.status, statusText: response.statusText};
+            }
         });
     }
 
-    static removeFriend(userId, friendId) {
-        const headers = this.requestHeaders();
+    static removeFriend(userId, friendId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(FriendsApi.API_BASE_URL + `/users/${userId}/friends/${friendId}`, {
             method: 'DELETE',
             headers: headers
@@ -30,8 +42,8 @@ class FriendsApi {
         });
     }
 
-    static removeAllFriends(userId) {
-        const headers = this.requestHeaders();
+    static removeAllFriends(userId, userToken) {
+        const headers = this.tokenRequestHeaders(userId, userToken);
         const request = new Request(FriendsApi.API_BASE_URL + `/users/${userId}/friends`, {
             method: 'DELETE',
             headers: headers

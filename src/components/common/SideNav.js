@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,6 +8,7 @@ import {
 import 'materialize-css/dist/css/materialize.min.css';
 import Animes from '../anime/Animes';
 import AnimeInfo from '../anime/AnimeInfo';
+import UserAnimes from '../anime/UserAnimes';
 import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import MeetingCreation from '../meeting/MeetingCreation';
@@ -24,19 +25,23 @@ import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
 import Cookies from 'js-cookie';
+import {
+  Redirect
+} from "react-router-dom";
 
 function SideNav() {
   const { authTokens, setAuthTokens, setUserId, userId } = useAuth();
+  const [toLogin, setToLogin] = useState(false);
 
   function logOut() {
     Cookies.remove('userToken');
     Cookies.remove('userId');
     setUserId();
     setAuthTokens();
+    setToLogin(true)
   }
 
   var navLinks;
-  console.log(authTokens!==undefined)
   if (authTokens!=='undefined' && Cookies.get('userToken')!=='undefined'
         && authTokens!==undefined && Cookies.get('userToken')!==undefined) {
     navLinks = (
@@ -59,7 +64,7 @@ function SideNav() {
       <li>
         <Link to="/requests">Requests</Link>
       </li>
-      <li><button onClick={logOut}>Log out</button></li>
+      <li><a class="loginLink" onClick={logOut}>Log out</a></li>
       </ul>
       )
   } else {
@@ -81,16 +86,22 @@ function SideNav() {
         <Link to="/requests">Requests</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <li>
         <Link to="/my-profile">My profile</Link>
+      </li>
+      <li class="loginLink">
+        <Link to="/login">Login</Link>
       </li>
       </ul>
     )
   }
+  var redirect = '';
+  if(toLogin){
+     redirect = <Redirect to="/login" />;
+  }
+
   return (
     <Router>
+      {redirect}
       <div>
         <nav class="yellow darken-2">
           <a href="/" class="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"} /></a>
@@ -102,6 +113,9 @@ function SideNav() {
           </Route>
           <Route path={`/animes/:animeId`}>
             <AnimeInfo />
+          </Route>
+          <Route path={`/user/:userId/animes`}>
+            <UserAnimes />
           </Route>
           <PrivateRoute exact path="/users" />
           <Route exact path="/">

@@ -26,5 +26,20 @@
 }
 
 .sideNav a{
-    font-size:1.5em;
+    font-size:1.3em!important;
+    font-family: 'Raleway', sans-serif;
+}
+
+ul.dropdown-content.select-dropdown li span {
+    color: #1DD7D5!important; 
+}
+
+.select-wrapper input.select-dropdown{
+    border-bottom: 2px solid #1DD7D5!important;
+    color: #1DB9D7!important;
+    text-decoration: solid;
+}
+
+.loginLink a {
+    font-weight: bold;
 }
