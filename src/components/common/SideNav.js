@@ -73,8 +73,8 @@ function SideNav() {
   return (
     <Router>
       <div>
-        <nav class="yellow darken-2">
-          <a href="/" class="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"} /></a>
+        <nav className="yellow darken-2">
+          <a href="/" className="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"} /></a>
           {navLinks}
         </nav>
         <Switch>
