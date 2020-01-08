@@ -1,5 +1,5 @@
 class FriendsApi {
-    static API_BASE_URL = "https://185.176.5.147:7400/friends/api/v1";
+    static API_BASE_URL = "https://animea-gateway.herokuapp.com/friends/api/v1/";
 
     static requestHeaders() {
         return {}
