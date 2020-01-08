@@ -92,11 +92,11 @@ class Anime extends Component {
       <Row>
         <Card
           actions={[
-            <a key="1" href="#" onClick={() => this.addAnime(this.props.value.id)} >
+            <a key="1" href="#" id="addAnime" onClick={() => this.addAnime(this.props.value.id)} >
               <i className="material-icons">add_circle</i>
               Add to my list
             </a>,
-            <a key="1" href="#" onClick={() => this.removeAnime(this.props.value.id)}>
+            <a key="1" href="#" id="removeAnime" onClick={() => this.removeAnime(this.props.value.id)}>
               <i className="material-icons">remove_circle</i>
               Remove from my list
             </a>
@@ -133,4 +133,4 @@ class Anime extends Component {
 }
 
 Anime.contextType = AuthContext;
-export default withRouter(Anime);
+export default Anime;
