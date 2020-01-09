@@ -4,6 +4,7 @@ import Request from './Request';
 import M from "materialize-css";
 import './Requests.css';
 import { Row } from 'react-materialize';
+import { AuthContext } from "../auth/context/auth";
 
 class Requests extends Component {
   state = {
@@ -26,7 +27,7 @@ class Requests extends Component {
   }
 
   getAllRequests() {
-    RequestsApi.getCreatedRequests('5df9cfb41c9d44000047b035')
+    RequestsApi.getCreatedRequests(this.context.userId, this.context.token)
       .then(
         (result) => {
           var foundRequests = [];
@@ -50,7 +51,7 @@ class Requests extends Component {
   }
 
   getMyRequests() {
-    RequestsApi.getMyRequests("5df9cfb41c9d44000047b035")
+    RequestsApi.getMyRequests(this.context.userId, this.context.token)
       .then(
         (result) => {
           console.log(result)
@@ -69,9 +70,9 @@ class Requests extends Component {
   }
 
   acceptRequest(reqId) {
-    RequestsApi.acceptRequest("5df9cfb41c9d44000047b035", reqId).then(
+    RequestsApi.acceptRequest(this.context.userId, reqId, this.context.token).then(
       () => {
-        RequestsApi.getMyRequests('5df9cfb41c9d44000047b035')
+        RequestsApi.getMyRequests(this.context.userId, this.context.token)
         .then(
           (result) => {
             var foundRequests = result
@@ -97,11 +98,11 @@ class Requests extends Component {
   }
 
   removeRequest(reqId) {
-    RequestsApi.removeRequest("5df9cfb41c9d44000047b035", reqId).then(
+    RequestsApi.removeRequest(this.context.userId, reqId, this.context.token).then(
       () => {
         var nextReq;
-        if (!this.state.myList) nextReq = RequestsApi.getCreatedRequests('5df9cfb41c9d44000047b035');
-        else if (this.state.myList) nextReq = RequestsApi.getMyRequests('5df9cfb41c9d44000047b035');
+        if (!this.state.myList) nextReq = RequestsApi.getCreatedRequests(this.context.userId, this.context.token);
+        else if (this.state.myList) nextReq = RequestsApi.getMyRequests(this.context.userId, this.context.token);
         nextReq
         .then(
           (result) => {
@@ -128,9 +129,9 @@ class Requests extends Component {
   }
 
   removeAllRequests() {
-    RequestsApi.removeAllRequests("5df9cfb41c9d44000047b035").then(
+    RequestsApi.removeAllRequests(this.context.userId, this.context.token).then(
       () => {
-        RequestsApi.getCreatedRequests('5df9cfb41c9d44000047b035')
+        RequestsApi.getCreatedRequests(this.context.userId, this.context.token)
         .then(
           (result) => {
             var foundRequests = result
@@ -171,6 +172,12 @@ class Requests extends Component {
               Accept request
           </a>
         }
+        {!this.state.myList &&
+          <a key="1" href={`requests/edit/${req.id}`}>
+            <i className="material-icons">add_circle</i>
+              Edit request
+          </a>
+        }
         <a key="1" href="#" onClick={() => this.removeRequest(req.id)}>
           <i className="material-icons">remove_circle</i>
             Remove request
@@ -207,4 +214,5 @@ class Requests extends Component {
   }
 }
 
+Requests.contextType = AuthContext;
 export default Requests;

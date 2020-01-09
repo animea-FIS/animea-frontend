@@ -27,7 +27,6 @@ class MeetingCreation extends Component {
     }
 
     componentDidMount() {
-        document.addEventListener('DOMContentLoaded', this.initDatepicker);
         M.AutoInit();
         this.initDatepicker();
         this.initTimepicker();
@@ -35,7 +34,7 @@ class MeetingCreation extends Component {
 
     handleInputChange(event) {
         const target = event.target;
-        const value = target.name.includes("ing_") ? target : target.value;
+        const value = target.value;
         const name = target.name;
     
         this.setState({
@@ -154,6 +153,9 @@ class MeetingCreation extends Component {
             .then(
                 (result) => {
                     console.log(result);
+                    if (!result.error) {
+                        window.location = "http://localhost:3000/meetings";
+                    }
                 },
                 (error) => {
                     console.log(error)
