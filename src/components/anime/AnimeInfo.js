@@ -77,7 +77,8 @@ class AnimeInfo extends Component {
                     <Link to={`profile/${friendObj.id}`}><b>{friendObj.username}</b></Link>
                 </div>
                 )
-
+            
+            if(listItems.length > 0){
             friends = (<div class="card purple lighten-2">
             <div class="card-content white-text">
             <span class="card-title">Users that watched the anime...</span>
@@ -86,6 +87,7 @@ class AnimeInfo extends Component {
             </ul>
             </div>
         </div>)
+            }
         }
         if (animeInfo) {
             return (
@@ -94,7 +96,7 @@ class AnimeInfo extends Component {
                     <div class="col s7">
                         <div class="card info-card">
                             <div class="card-image">
-                                <img class="info-image" src={animeInfo.posterImage.large} />
+                                <img class="info-image" src={animeInfo.posterImage.large} style={{objectFit: "cover"}}/>
                                 <span class="card-title">{animeInfo.titles.en_jp}</span>
                             </div>
                             <div class="card-content">

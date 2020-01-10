@@ -1,5 +1,5 @@
 class MeetingsApi {
-    static API_BASE_URL = "https://animea-gateway.herokuapp.com/meetings/api/v1/";
+    static API_BASE_URL = "https://animea-gateway.herokuapp.com/meetings/api/v1";
 
     static requestHeaders() {
         return {}
