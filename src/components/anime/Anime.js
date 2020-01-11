@@ -14,7 +14,7 @@ import { AuthContext } from "../auth/context/auth";
 import { Redirect } from "react-router-dom";
 
 class Anime extends Component {  
-  state = {}
+  state = {Anime}
 
   componentDidMount() {
     // Auto initialize all the things
@@ -22,6 +22,9 @@ class Anime extends Component {
   }
 
   updateStatus(animeId, e) {
+    console.log("el user id")
+    console.log(this.context.userId)
+
     const anime = {
       anime_id: animeId,
       status: e
@@ -45,8 +48,11 @@ class Anime extends Component {
     }
     
     AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
-      (result) => {},
+      (result) => {
+        console.log(result)
+      },
       (error) => {
+        console.log(error)
         this.setState(
           {error}
         );          

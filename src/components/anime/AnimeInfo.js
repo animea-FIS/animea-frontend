@@ -26,7 +26,7 @@ class AnimeInfo extends Component {
     }
 
     componentWillMount() {
-        this.getAnimeById(this.props.match.params.animeId);
+        this.getAnimeById(this.props.match.params.animeId, this.context.authTokens);
         if(this.context.authTokens){
             this.getUserFriendsForAnime(this.props.match.params.animeId);
         }
@@ -34,7 +34,7 @@ class AnimeInfo extends Component {
     }
 
     getAnimeById(animeId) {
-        AnimesApi.getAnimeById(animeId)
+        AnimesApi.getAnimeById(animeId, this.context.authTokens)
             .then(
                 (result) => {
                     this.setState({
@@ -69,6 +69,8 @@ class AnimeInfo extends Component {
 
     render() {
         var animeInfo = this.state.animeInfo.attributes;
+        console.log("info del anime")
+        console.log(this.state.animeInfo)
         var friends = "";
         if(this.state.userFriendsForAnime) {
             const listItems = this.state.userFriendsForAnime.map((friendObj) =>
@@ -89,9 +91,9 @@ class AnimeInfo extends Component {
         </div>)
             }
         }
-        if (animeInfo) {
+        if (animeInfo) { 
             return (
-                <div className="container">
+            <div className="container">
                 <div class="row" style={{marginTop:"2em"}}>
                     <div class="col s7">
                         <div class="card info-card">
@@ -120,8 +122,19 @@ class AnimeInfo extends Component {
                     </div>
                     {friends}
                     </div>
+                    <div class="col s5">
+                        <div class="card pink lighten-2">
+                            <div class="card-content white-text">
+                                <span class="card-title">My anime info</span>
+                                <ul className="animeInfo">
+                                    {this.state.animeInfo.status ? <li><b>My rating: </b>{this.state.animeInfo.rating} ★</li> : ''}
+                                    {this.state.animeInfo.status ? <li><b>My status: </b>{this.state.animeInfo.status} ★</li> : ''}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
+            </div>
             )
         } else {
             return ("")
