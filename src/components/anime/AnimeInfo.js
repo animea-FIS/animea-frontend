@@ -10,6 +10,8 @@ import { AuthContext } from "../auth/context/auth";
 import {
     Link,
   } from "react-router-dom";
+import Select from 'react-select';
+
 class AnimeInfo extends Component {
     state = {
         animeInfo: {},
@@ -21,6 +23,7 @@ class AnimeInfo extends Component {
         this.getAnimeById = this.getAnimeById.bind(this);
         this.getUserFriendsForAnime = this.getUserFriendsForAnime.bind(this);
     }
+
     componentDidMount() {
         M.AutoInit();
     }
@@ -34,6 +37,7 @@ class AnimeInfo extends Component {
     }
 
     getAnimeById(animeId) {
+        console.log(this.context)
         AnimesApi.getAnimeById(animeId, this.context.authTokens)
             .then(
                 (result) => {
@@ -49,6 +53,63 @@ class AnimeInfo extends Component {
                 }
             )
     };
+
+    addAnime(animeId){
+        AnimesApi.addAnimeToUserList(animeId, this.context.userId, this.context.authTokens).then(
+          (result) => {},
+          (error) => {
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+    
+      removeAnime(animeId){
+        AnimesApi.removeAnimeFromList(animeId, this.context.userId, this.context.authTokens).then(
+          (result) => {},
+          (error) => {
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+
+      updateStatus(animeId, e) {    
+        const anime = {
+          anime_id: animeId,
+          status: e.value
+        }
+        
+        AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
+          (result) => {},
+          (error) => {
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+    
+      updateRating(animeId, e) {
+        const anime = {
+          anime_id: animeId,
+          rating: e.value
+        }
+        
+        AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
+          (result) => {
+          },
+          (error) => {
+            console.log(error)
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+      
 
     async getUserFriendsForAnime(animeId) {
         AnimesApi.getUserFriendsForAnime(animeId, this.context.userId, this.context.authTokens)
@@ -72,6 +133,23 @@ class AnimeInfo extends Component {
         console.log("info del anime")
         console.log(this.state.animeInfo)
         var friends = "";
+        var addButtom = "";
+        var removeButtom = "";
+        var updateRatingAnime = "";
+        var updateStatusAnime = "";
+        const ratingOptions = [
+            { value: '1', label: '1' },
+            { value: '2', label: '2' },
+            { value: '3', label: '3' },
+            { value: '4', label: '4' },
+            { value: '5', label: '5' },
+        ];
+        const statusOptions = [
+            { value: 'pending', label: 'Pending' },
+            { value: 'watching', label: 'Watching' },
+            { value: 'finished', label: 'Finished' },
+        ];
+        var selectedOption = this.state.animeInfo.rating
         if(this.state.userFriendsForAnime) {
             const listItems = this.state.userFriendsForAnime.map((friendObj) =>
                 <div class="chip">
@@ -80,7 +158,7 @@ class AnimeInfo extends Component {
                 </div>
                 )
             
-            if(listItems.length > 0){
+        if(listItems.length > 0){
             friends = (<div class="card purple lighten-2">
             <div class="card-content white-text">
             <span class="card-title">Users that watched the anime...</span>
@@ -90,6 +168,34 @@ class AnimeInfo extends Component {
             </div>
         </div>)
             }
+        }
+        if(!this.state.animeInfo.userHasAnime) {
+            addButtom = (<a key="1" href="#" onClick={() => this.addAnime(this.state.animeInfo.id)} >
+                        <i className="material-icons">add_circle</i>
+                        Add to my list
+                        </a>
+            )
+        }
+        if(this.state.animeInfo.userHasAnime) {
+            removeButtom = (<a key="1" href="#" onClick={() => this.removeAnime(this.state.animeInfo.id)}>
+                        <i className="material-icons">remove_circle</i>
+                        Remove from my list
+                    </a>
+            )
+        }
+        if(this.state.animeInfo.userHasAnime) {
+            updateRatingAnime = (<Select
+                value={selectedOption}
+                onChange={(e) => this.updateRating(this.state.animeInfo.id, e)}
+                options={ratingOptions}/>
+            )
+        }
+        if(this.state.animeInfo.userHasAnime) {
+            updateStatusAnime = (<Select
+                value={selectedOption}
+                onChange={(e) => this.updateStatus(this.state.animeInfo.id, e)}
+                options={statusOptions}/>
+            )
         }
         if (animeInfo) { 
             return (
@@ -133,6 +239,10 @@ class AnimeInfo extends Component {
                             </div>
                         </div>
                     </div>
+                    {addButtom}
+                    {removeButtom}
+                    {updateRatingAnime}
+                    {updateStatusAnime}
                 </div>
             </div>
             )

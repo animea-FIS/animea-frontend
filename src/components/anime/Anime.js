@@ -22,8 +22,6 @@ class Anime extends Component {
   }
 
   updateStatus(animeId, e) {
-    console.log("el user id")
-    console.log(this.context.userId)
 
     const anime = {
       anime_id: animeId,
@@ -60,28 +58,6 @@ class Anime extends Component {
     );
   }
 
-  addAnime(animeId){
-    AnimesApi.addAnimeToUserList(animeId, this.context.userId, this.context.authTokens).then(
-      (result) => {},
-      (error) => {
-        this.setState(
-          {error}
-        );          
-      }
-    );
-  }
-
-  removeAnime(animeId){
-    AnimesApi.removeAnimeFromList(animeId, this.context.userId, this.context.authTokens).then(
-      (result) => {},
-      (error) => {
-        this.setState(
-          {error}
-        );          
-      }
-    );
-  }
-
   cutSynopsis(synopsis) {
     var shortSynopsis = synopsis;
     if (synopsis.length > 380) {
@@ -97,16 +73,6 @@ class Anime extends Component {
     return (
       <Row>
         <Card
-          actions={[
-            <a key="1" href="#" onClick={() => this.addAnime(this.props.value.id)} >
-              <i className="material-icons">add_circle</i>
-              Add to my list
-            </a>,
-            <a key="1" href="#" onClick={() => this.removeAnime(this.props.value.id)}>
-              <i className="material-icons">remove_circle</i>
-              Remove from my list
-            </a>
-          ]}
           header={<CardTitle image={this.props.value.attributes.posterImage.small} />}
           horizontal
         >
