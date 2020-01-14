@@ -21,7 +21,7 @@ class Anime extends Component {
     M.AutoInit();
   }
 
-  updateStatus(animeId, e) {
+  /* updateStatus(animeId, e) {
 
     const anime = {
       anime_id: animeId,
@@ -56,7 +56,7 @@ class Anime extends Component {
         );          
       }
     );
-  }
+  } */
 
   cutSynopsis(synopsis) {
     var shortSynopsis = synopsis;
