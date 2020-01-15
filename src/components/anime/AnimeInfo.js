@@ -15,7 +15,7 @@ import Select from 'react-select';
 class AnimeInfo extends Component {
     state = {
         animeInfo: {},
-        userFriendsForAnime: false
+        userFriendsForAnime: false,
     };   
 
     constructor(props) {
@@ -56,7 +56,9 @@ class AnimeInfo extends Component {
 
     addAnime(animeId){
         AnimesApi.addAnimeToUserList(animeId, this.context.userId, this.context.authTokens).then(
-          (result) => {},
+          (result) => {
+            this.getAnimeById(animeId);
+          },
           (error) => {
             this.setState(
               {error}
@@ -67,7 +69,9 @@ class AnimeInfo extends Component {
     
       removeAnime(animeId){
         AnimesApi.removeAnimeFromList(animeId, this.context.userId, this.context.authTokens).then(
-          (result) => {},
+          (result) => {
+            this.getAnimeById(animeId);
+          },
           (error) => {
             this.setState(
               {error}
@@ -76,14 +80,16 @@ class AnimeInfo extends Component {
         );
       }
 
-      updateStatus(animeId, e) {    
+      updateStatus(animeId, e) {
         const anime = {
           anime_id: animeId,
           status: e.value
         }
         
         AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
-          (result) => {},
+          (result) => {
+            this.getAnimeById(animeId);
+          },
           (error) => {
             this.setState(
               {error}
@@ -100,6 +106,7 @@ class AnimeInfo extends Component {
         
         AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
           (result) => {
+            this.getAnimeById(animeId);
           },
           (error) => {
             console.log(error)
@@ -185,6 +192,7 @@ class AnimeInfo extends Component {
         }
         if(this.state.animeInfo.userHasAnime) {
             updateRatingAnime = (<Select
+                placeholder={selectedOption}
                 value={selectedOption}
                 onChange={(e) => this.updateRating(this.state.animeInfo.id, e)}
                 options={ratingOptions}/>
@@ -192,11 +200,13 @@ class AnimeInfo extends Component {
         }
         if(this.state.animeInfo.userHasAnime) {
             updateStatusAnime = (<Select
+                placeholder={this.state.animeInfo.status}
                 value={selectedOption}
                 onChange={(e) => this.updateStatus(this.state.animeInfo.id, e)}
                 options={statusOptions}/>
             )
         }
+
         if (animeInfo) { 
             return (
             <div className="container">
@@ -241,8 +251,10 @@ class AnimeInfo extends Component {
                     </div>
                     {addButtom}
                     {removeButtom}
-                    {updateRatingAnime}
-                    {updateStatusAnime}
+                    <div>
+                        {updateRatingAnime}
+                        {updateStatusAnime}
+                    </div>
                 </div>
             </div>
             )
