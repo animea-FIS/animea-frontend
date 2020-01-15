@@ -21,43 +21,6 @@ class Anime extends Component {
     M.AutoInit();
   }
 
-  /* updateStatus(animeId, e) {
-
-    const anime = {
-      anime_id: animeId,
-      status: e
-    }
-    
-    AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
-      (result) => {},
-      (error) => {
-        this.setState(
-          {error}
-        );          
-      }
-    );
-  }
-
-  updateRating(animeId, e) {
-
-    const anime = {
-      anime_id: animeId,
-      rating: e
-    }
-    
-    AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
-      (result) => {
-        console.log(result)
-      },
-      (error) => {
-        console.log(error)
-        this.setState(
-          {error}
-        );          
-      }
-    );
-  } */
-
   cutSynopsis(synopsis) {
     var shortSynopsis = synopsis;
     if (synopsis.length > 380) {

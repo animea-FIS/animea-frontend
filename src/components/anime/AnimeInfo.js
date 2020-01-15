@@ -37,7 +37,6 @@ class AnimeInfo extends Component {
     }
 
     getAnimeById(animeId) {
-        console.log(this.context)
         AnimesApi.getAnimeById(animeId, this.context.authTokens)
             .then(
                 (result) => {
@@ -137,8 +136,6 @@ class AnimeInfo extends Component {
 
     render() {
         var animeInfo = this.state.animeInfo.attributes;
-        console.log("info del anime")
-        console.log(this.state.animeInfo)
         var friends = "";
         var addButtom = "";
         var removeButtom = "";
@@ -195,7 +192,16 @@ class AnimeInfo extends Component {
                 placeholder={selectedOption}
                 value={selectedOption}
                 onChange={(e) => this.updateRating(this.state.animeInfo.id, e)}
-                options={ratingOptions}/>
+                options={ratingOptions}
+                theme={theme => ({
+                    ...theme,
+                    borderRadius: 0,
+                    colors: {
+                      ...theme.colors,
+                      primary25: 'hotpink',
+                      primary: 'hotpink',
+                    },
+                  })}/>
             )
         }
         if(this.state.animeInfo.userHasAnime) {
@@ -203,7 +209,16 @@ class AnimeInfo extends Component {
                 placeholder={this.state.animeInfo.status}
                 value={selectedOption}
                 onChange={(e) => this.updateStatus(this.state.animeInfo.id, e)}
-                options={statusOptions}/>
+                options={statusOptions}
+                theme={theme => ({
+                    ...theme,
+                    borderRadius: 0,
+                    colors: {
+                      ...theme.colors,
+                      primary25: 'hotpink',
+                      primary: 'hotpink',
+                    },
+                  })}/>
             )
         }
 
