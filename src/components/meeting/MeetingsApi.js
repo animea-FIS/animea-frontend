@@ -1,5 +1,5 @@
 class MeetingsApi {
-    static API_BASE_URL = "http://localhost:3005/api/v1";
+    static API_BASE_URL = "https://animea-gateway.herokuapp.com/meetings/api/v1";
 
     static requestHeaders() {
         return {}
@@ -132,6 +132,18 @@ class MeetingsApi {
 
         return fetch(request).then(response => {
             console.log(response);
+            return response.json();
+        })
+    }
+
+    static getUserMeetings(userId) {
+        const headers = this.requestHeaders();
+        const request = new Request(MeetingsApi.API_BASE_URL + `/meetings/user/${userId}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        return fetch(request).then(response => {
             return response.json();
         })
     }

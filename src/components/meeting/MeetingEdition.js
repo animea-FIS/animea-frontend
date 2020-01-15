@@ -15,7 +15,8 @@ class MeetingEdition extends Component {
         starting_date: this.props.location.state.meetingInfo.startingDate.toString().substring(0, 10),
         starting_time: this.props.location.state.meetingInfo.startingDate.toString().substring(11, 16),
         ending_date: this.props.location.state.meetingInfo.endingDate.toString().substring(0, 10),
-        ending_time: this.props.location.state.meetingInfo.endingDate.toString().substring(11, 16)
+        ending_time: this.props.location.state.meetingInfo.endingDate.toString().substring(11, 16),
+        error: "",
     }
 
     constructor(props) {
@@ -179,7 +180,14 @@ class MeetingEdition extends Component {
                 (result) => {
                     console.log(result);
                     if (!result.error) {
+                        this.setState({
+                            error: ""
+                        });
                         window.location = "http://localhost:3000/meetings";
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
                     }
                 },
                 (error) => {
@@ -411,8 +419,16 @@ class MeetingEdition extends Component {
             }
         }
 
+        var errorBox = "";
+        if (this.state.error != "") {
+            errorBox = <div class="vertical-center" style={{backgroundColor: '#f50057', borderRadius: 5, boxShadow: "0px 2px 8px 2px rgba(255, 0, 0, .3)", color:'white', fontWeight: 'bold', marginBottom: 14, padding: 10, paddingTop: 12}}>    
+                            <p style={{margin: 0}}>{this.state.error}</p>
+                        </div>
+        }
+
         return(
             <div>
+                {errorBox}
                 <div class="col s3" style={{fontWeigth: 'bold', fontFamily: 'Belgrano', padding: 30, paddingLeft: 80}}>
                     <h4><p>Edit the meeting:</p></h4>
                 </div>

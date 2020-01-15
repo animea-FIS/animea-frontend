@@ -10,6 +10,8 @@ import { AuthContext } from "../auth/context/auth";
 import {
     Link,
   } from "react-router-dom";
+import Select from 'react-select';
+
 class AnimeInfo extends Component {
     state = {
         animeInfo: {},
@@ -21,12 +23,13 @@ class AnimeInfo extends Component {
         this.getAnimeById = this.getAnimeById.bind(this);
         this.getUserFriendsForAnime = this.getUserFriendsForAnime.bind(this);
     }
+
     componentDidMount() {
         M.AutoInit();
     }
 
     componentWillMount() {
-        this.getAnimeById(this.props.match.params.animeId);
+        this.getAnimeById(this.props.match.params.animeId, this.context.authTokens);
         if(this.context.authTokens){
             this.getUserFriendsForAnime(this.props.match.params.animeId);
         }
@@ -34,7 +37,8 @@ class AnimeInfo extends Component {
     }
 
     getAnimeById(animeId) {
-        AnimesApi.getAnimeById(animeId)
+        console.log(this.context)
+        AnimesApi.getAnimeById(animeId, this.context.authTokens)
             .then(
                 (result) => {
                     this.setState({
@@ -49,6 +53,63 @@ class AnimeInfo extends Component {
                 }
             )
     };
+
+    addAnime(animeId){
+        AnimesApi.addAnimeToUserList(animeId, this.context.userId, this.context.authTokens).then(
+          (result) => {},
+          (error) => {
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+    
+      removeAnime(animeId){
+        AnimesApi.removeAnimeFromList(animeId, this.context.userId, this.context.authTokens).then(
+          (result) => {},
+          (error) => {
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+
+      updateStatus(animeId, e) {    
+        const anime = {
+          anime_id: animeId,
+          status: e.value
+        }
+        
+        AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
+          (result) => {},
+          (error) => {
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+    
+      updateRating(animeId, e) {
+        const anime = {
+          anime_id: animeId,
+          rating: e.value
+        }
+        
+        AnimesApi.updateAnimeFromList(anime, this.context.userId, this.context.authTokens).then(
+          (result) => {
+          },
+          (error) => {
+            console.log(error)
+            this.setState(
+              {error}
+            );          
+          }
+        );
+      }
+      
 
     async getUserFriendsForAnime(animeId) {
         AnimesApi.getUserFriendsForAnime(animeId, this.context.userId, this.context.authTokens)
@@ -69,7 +130,26 @@ class AnimeInfo extends Component {
 
     render() {
         var animeInfo = this.state.animeInfo.attributes;
+        console.log("info del anime")
+        console.log(this.state.animeInfo)
         var friends = "";
+        var addButtom = "";
+        var removeButtom = "";
+        var updateRatingAnime = "";
+        var updateStatusAnime = "";
+        const ratingOptions = [
+            { value: '1', label: '1' },
+            { value: '2', label: '2' },
+            { value: '3', label: '3' },
+            { value: '4', label: '4' },
+            { value: '5', label: '5' },
+        ];
+        const statusOptions = [
+            { value: 'pending', label: 'Pending' },
+            { value: 'watching', label: 'Watching' },
+            { value: 'finished', label: 'Finished' },
+        ];
+        var selectedOption = this.state.animeInfo.rating
         if(this.state.userFriendsForAnime) {
             const listItems = this.state.userFriendsForAnime.map((friendObj) =>
                 <div class="chip">
@@ -77,7 +157,8 @@ class AnimeInfo extends Component {
                     <Link to={`profile/${friendObj.id}`}><b>{friendObj.username}</b></Link>
                 </div>
                 )
-
+            
+        if(listItems.length > 0){
             friends = (<div class="card purple lighten-2">
             <div class="card-content white-text">
             <span class="card-title">Users that watched the anime...</span>
@@ -86,15 +167,44 @@ class AnimeInfo extends Component {
             </ul>
             </div>
         </div>)
+            }
         }
-        if (animeInfo) {
+        if(!this.state.animeInfo.userHasAnime) {
+            addButtom = (<a key="1" href="#" onClick={() => this.addAnime(this.state.animeInfo.id)} >
+                        <i className="material-icons">add_circle</i>
+                        Add to my list
+                        </a>
+            )
+        }
+        if(this.state.animeInfo.userHasAnime) {
+            removeButtom = (<a key="1" href="#" onClick={() => this.removeAnime(this.state.animeInfo.id)}>
+                        <i className="material-icons">remove_circle</i>
+                        Remove from my list
+                    </a>
+            )
+        }
+        if(this.state.animeInfo.userHasAnime) {
+            updateRatingAnime = (<Select
+                value={selectedOption}
+                onChange={(e) => this.updateRating(this.state.animeInfo.id, e)}
+                options={ratingOptions}/>
+            )
+        }
+        if(this.state.animeInfo.userHasAnime) {
+            updateStatusAnime = (<Select
+                value={selectedOption}
+                onChange={(e) => this.updateStatus(this.state.animeInfo.id, e)}
+                options={statusOptions}/>
+            )
+        }
+        if (animeInfo) { 
             return (
-                <div className="container">
+            <div className="container">
                 <div class="row" style={{marginTop:"2em"}}>
                     <div class="col s7">
                         <div class="card info-card">
                             <div class="card-image">
-                                <img class="info-image" src={animeInfo.posterImage.large} />
+                                <img class="info-image" src={animeInfo.posterImage.large} style={{objectFit: "cover"}}/>
                                 <span class="card-title">{animeInfo.titles.en_jp}</span>
                             </div>
                             <div class="card-content">
@@ -118,8 +228,23 @@ class AnimeInfo extends Component {
                     </div>
                     {friends}
                     </div>
+                    <div class="col s5">
+                        <div class="card pink lighten-2">
+                            <div class="card-content white-text">
+                                <span class="card-title">My anime info</span>
+                                <ul className="animeInfo">
+                                    {this.state.animeInfo.status ? <li><b>My rating: </b>{this.state.animeInfo.rating} ★</li> : ''}
+                                    {this.state.animeInfo.status ? <li><b>My status: </b>{this.state.animeInfo.status} ★</li> : ''}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {addButtom}
+                    {removeButtom}
+                    {updateRatingAnime}
+                    {updateStatusAnime}
                 </div>
-                </div>
+            </div>
             )
         } else {
             return ("")

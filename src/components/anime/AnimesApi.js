@@ -1,4 +1,5 @@
 class AnimesApi {
+    //static API_BASE_URL = `https://animea-gateway.herokuapp.com/animes/api/v1`
     static API_BASE_URL = `http://localhost:3001/api/v1`
 
     static requestHeaders() {
@@ -36,8 +37,9 @@ class AnimesApi {
         });
     }
 
-    static getAnimeById(animeId) {
-        const headers = this.requestHeaders();
+    static getAnimeById(animeId, userToken) {
+        const headers = this.tokenRequestHeaders(userToken);
+        console.log("el token es: " + userToken)
         const request = new Request(AnimesApi.API_BASE_URL + `/animes/${animeId}`, {
             method: 'GET',
             headers: headers
@@ -69,7 +71,7 @@ class AnimesApi {
 
         return fetch(request).then(response => {
             if(response.status == 200){
-            return response.json();
+                return response.json();
             } else {
                 throw {status: response.status, statusText: response.statusText};
             }
@@ -149,6 +151,7 @@ class AnimesApi {
         });
 
         return fetch(request).then(response => {
+            console.log(request)
             if(response.status != 200){
                 throw {status: response.status, statusText: response.statusText};
              }

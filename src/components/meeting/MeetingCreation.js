@@ -15,7 +15,8 @@ class MeetingCreation extends Component {
         starting_date: "",
         starting_time: "",
         ending_date: "",
-        ending_time: ""
+        ending_time: "",
+        error: ""
     }
 
     constructor(props) {
@@ -154,7 +155,14 @@ class MeetingCreation extends Component {
                 (result) => {
                     console.log(result);
                     if (!result.error) {
+                        this.setState({
+                            error: ""
+                        });
                         window.location = "http://localhost:3000/meetings";
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
                     }
                 },
                 (error) => {
@@ -169,8 +177,16 @@ class MeetingCreation extends Component {
     render() {
         var userToken = this.context.authTokens;
 
+        var errorBox = "";
+        if (this.state.error != "") {
+            errorBox = <div class="vertical-center" style={{backgroundColor: '#f50057', borderRadius: 5, boxShadow: "0px 2px 8px 2px rgba(255, 0, 0, .3)", color:'white', fontWeight: 'bold', marginBottom: 14, padding: 10, paddingTop: 12}}>    
+                            <p style={{margin: 0}}>{this.state.error}</p>
+                        </div>
+        }
+
         return(
             <div>
+                {errorBox}
                 <div class="col s3" style={{fontWeigth: 'bold', fontFamily: 'Belgrano', padding: 30, paddingLeft: 80}}>
                     <h4><p>Create a new meeting:</p></h4>
                 </div>
