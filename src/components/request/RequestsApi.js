@@ -1,5 +1,5 @@
 class RequestsApi {
-    static API_BASE_URL = "http://localhost:3003/api/v1";
+    static API_BASE_URL = "https://animea-gateway.herokuapp.com/friends/api/v1";
 
     static requestHeaders() {
         return {}
@@ -98,7 +98,7 @@ class RequestsApi {
 
     static createRequest(userId, friendId, message, userToken) {
         const headers = this.tokenRequestHeaders(userId, userToken);
-        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
+        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests?noemail=true`, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
