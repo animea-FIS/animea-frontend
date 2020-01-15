@@ -15,6 +15,7 @@ import MeetingCreation from '../meeting/MeetingCreation';
 import MeetingEdition from '../meeting/MeetingEdition';
 import MeetingsUser from '../meeting/MeetingsUser';
 import Friends from '../friend/Friends';
+import FriendsAnimes from '../friend/FriendsAnimes';
 import Requests from '../request/Requests';
 import RequestInfo from '../request/RequestInfo';
 import RequestCreation from '../request/RequestCreation';

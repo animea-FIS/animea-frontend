@@ -23,7 +23,7 @@ class RequestCreation extends Component {
     componentDidMount() {
         M.AutoInit();
         if (this.props.match.params.reqId) {
-            RequestsApi.getRequestById(this.context.userId, this.props.match.params.reqId, this.context.token)
+            RequestsApi.getRequestById(this.context.userId, this.props.match.params.reqId, this.context.authTokens)
                 .then(
                     (result) => {
                         console.log(result.message);
@@ -54,7 +54,7 @@ class RequestCreation extends Component {
 
     createRequest(message) {
         if (this.props.match.params.friendId) {
-            RequestsApi.createRequest(this.context.userId, this.props.match.params.friendId, message, this.context.token)
+            RequestsApi.createRequest(this.context.userId, this.props.match.params.friendId, message, this.context.authTokens)
                 .then(
                     (result) => {
                         console.log(result);
@@ -70,7 +70,7 @@ class RequestCreation extends Component {
                     }
                 );
         } else if (this.props.match.params.reqId) {
-            RequestsApi.updateRequest(this.state.prevReq, message, this.context.token)
+            RequestsApi.updateRequest(this.state.prevReq, message, this.context.authTokens)
                 .then(
                     (result) => {
                         console.log(result);
@@ -90,8 +90,6 @@ class RequestCreation extends Component {
 
     render() {
         if (this.state.done) return <Redirect to="/requests" />
-
-        var userToken = this.context.authTokens;
 
         return(
             <div>

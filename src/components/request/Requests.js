@@ -27,7 +27,7 @@ class Requests extends Component {
   }
 
   getAllRequests() {
-    RequestsApi.getCreatedRequests(this.context.userId, this.context.token)
+    RequestsApi.getCreatedRequests(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
           var foundRequests = [];
@@ -51,7 +51,7 @@ class Requests extends Component {
   }
 
   getMyRequests() {
-    RequestsApi.getMyRequests(this.context.userId, this.context.token)
+    RequestsApi.getMyRequests(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
           console.log(result)
@@ -70,9 +70,9 @@ class Requests extends Component {
   }
 
   acceptRequest(reqId) {
-    RequestsApi.acceptRequest(this.context.userId, reqId, this.context.token).then(
+    RequestsApi.acceptRequest(this.context.userId, reqId, this.context.authTokens).then(
       () => {
-        RequestsApi.getMyRequests(this.context.userId, this.context.token)
+        RequestsApi.getMyRequests(this.context.userId, this.context.authTokens)
         .then(
           (result) => {
             var foundRequests = result
@@ -98,11 +98,11 @@ class Requests extends Component {
   }
 
   removeRequest(reqId) {
-    RequestsApi.removeRequest(this.context.userId, reqId, this.context.token).then(
+    RequestsApi.removeRequest(this.context.userId, reqId, this.context.authTokens).then(
       () => {
         var nextReq;
-        if (!this.state.myList) nextReq = RequestsApi.getCreatedRequests(this.context.userId, this.context.token);
-        else if (this.state.myList) nextReq = RequestsApi.getMyRequests(this.context.userId, this.context.token);
+        if (!this.state.myList) nextReq = RequestsApi.getCreatedRequests(this.context.userId, this.context.authTokens);
+        else if (this.state.myList) nextReq = RequestsApi.getMyRequests(this.context.userId, this.context.authTokens);
         nextReq
         .then(
           (result) => {
@@ -129,9 +129,9 @@ class Requests extends Component {
   }
 
   removeAllRequests() {
-    RequestsApi.removeAllRequests(this.context.userId, this.context.token).then(
+    RequestsApi.removeAllRequests(this.context.userId, this.context.authTokens).then(
       () => {
-        RequestsApi.getCreatedRequests(this.context.userId, this.context.token)
+        RequestsApi.getCreatedRequests(this.context.userId, this.context.authTokens)
         .then(
           (result) => {
             var foundRequests = result

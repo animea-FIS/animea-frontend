@@ -27,7 +27,7 @@ class Friends extends Component {
   }
 
   getAllFriends() {
-    FriendsApi.getAllFriends(this.context.userId, this.context.token)
+    FriendsApi.getAllFriends(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
           var foundFriends = result
@@ -45,9 +45,9 @@ class Friends extends Component {
   }
 
   removeFriend(friendId) {
-    FriendsApi.removeFriend(this.context.userId, friendId, this.context.token).then(
+    FriendsApi.removeFriend(this.context.userId, friendId, this.context.authTokens).then(
       () => {
-        FriendsApi.getAllFriends(this.context.userId)
+        FriendsApi.getAllFriends(this.context.userId, this.context.authTokens)
         .then(
           (result) => {
             var foundFriends = result
@@ -73,9 +73,9 @@ class Friends extends Component {
   }
 
   removeAllFriends() {
-    FriendsApi.removeAllFriends(this.context.userId, this.context.token).then(
+    FriendsApi.removeAllFriends(this.context.userId, this.context.authTokens).then(
       () => {
-        FriendsApi.getAllFriends(this.context.userId, this.context.token)
+        FriendsApi.getAllFriends(this.context.userId, this.context.authTokens)
         .then(
           (result) => {
             var foundFriends = result

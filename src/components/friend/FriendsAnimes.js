@@ -15,7 +15,7 @@ class FriendsAnimes extends Component {
 
   constructor(props) {
     super(props);
-    this.showUserList = this.showUserList.bind(this);
+    this.showFriendsList = this.showFriendsList.bind(this);
     this.setState = this.setState.bind(this);
   }
 
@@ -28,7 +28,7 @@ class FriendsAnimes extends Component {
   }
 
   showFriendsList() {
-    FriendsApi.getFriendsAnimes(this.context.userId, this.context.authToken)
+    FriendsApi.getFriendsAnimes(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
           this.setState({
