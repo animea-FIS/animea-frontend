@@ -42,6 +42,17 @@ class MeetingsApi {
 
     static createMeeting(name, description, address, postal_code, province, capacity, starting_date, starting_time, ending_date, ending_time, userToken) {
 
+        var startingDate = null;
+        var endingDate = null;
+
+        if (starting_date.toString() != "" && starting_time.toString() != "") {
+            startingDate = starting_date + "T" + starting_time + ":00.000Z";
+        }
+
+        if (ending_date != "" && ending_time != "") {
+            endingDate = ending_date + "T" + ending_time + ":00.000Z";
+        }
+
         const request = new Request(MeetingsApi.API_BASE_URL + `/meetings/`, {
             method: 'POST',
             headers: {
@@ -55,8 +66,8 @@ class MeetingsApi {
                 address: address,
                 province: province,
                 postalCode: postal_code,
-                startingDate: starting_date + "T" + starting_time + ":00.000Z",
-                endingDate: ending_date + "T" + ending_time + ":00.000Z",
+                startingDate: startingDate,
+                endingDate: endingDate,
                 capacity: capacity
             })
         });
