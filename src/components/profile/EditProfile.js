@@ -43,8 +43,8 @@ function EditProfile(props){
             <input className="form-control" name="presentationVideo" value={props.profile.presentationVideo} onChange={handleChange} />
                     </label>
 
-                    <button className="btn btn-primary" disabled={!props.isValid} onClick={() => props.onSave(props.profile)}>Save</button>
-                    <button className="btn btn-primary" onClick={() => props.onCancel(props.profile)}>Cancel</button>
+                    <button data-testid="save" className="btn btn-primary" disabled={!props.isValid} onClick={() => props.onSave(props.profile)}>Save</button>
+                    <button data-testid="cancel" className="btn btn-primary" onClick={() => props.onCancel(props.profile)}>Cancel</button>
                 </div>
             
     )

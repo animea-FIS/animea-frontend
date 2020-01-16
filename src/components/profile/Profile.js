@@ -247,7 +247,7 @@ class Profile extends Component {
             </div>
             :
             <div>
-              <EditProfile key={this.state.username} profile={this.state.isEditing[this.state.profile.username]}
+              <EditProfile key={this.state.profile.username} profile={this.state.isEditing[this.state.profile.username]}
                 onCancel={this.handleCancel.bind(this, this.state.profile.username)}
                 onChange={this.handleChange.bind(this, this.state.profile.username)}
                 onSave={this.handleSave.bind(this, this.state.profile.username)} 

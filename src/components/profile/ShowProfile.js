@@ -120,7 +120,7 @@ class ShowProfile extends Component {
 					</div>
 					<Row>
 						<div>
-							<button className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}>Edit</button>
+							<button data-testid="edit" className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}>Edit</button>
 						</div>
 					</Row>
 					{this.state.isRating[this.props.profile.username] ?
