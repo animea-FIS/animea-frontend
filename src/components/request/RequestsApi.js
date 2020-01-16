@@ -98,7 +98,7 @@ class RequestsApi {
 
     static createRequest(userId, friendId, message, userToken) {
         const headers = this.tokenRequestHeaders(userId, userToken);
-        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests?noemail=true`, {
+        const request = new Request(RequestsApi.API_BASE_URL + `/users/${userId}/requests`, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
