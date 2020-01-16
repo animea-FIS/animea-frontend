@@ -95,7 +95,7 @@ class ShowProfile extends Component {
 				<Row>
 					<Row>
 						<div>
-							<img src={this.props.profile.profilePic} alt={this.props.profile.username} className="circle tamano-img" /> <h3>{this.props.profile.username}  <button className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}><i class="material-icons left">person</i>Edit</button></h3>
+							<img src={this.props.profile.profilePic} alt={this.props.profile.username} className="circle tamano-img" /> <h3>{this.props.profile.username}  <button data-testid="edit" className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}><i className="material-icons left">person</i>Edit</button></h3>
 						</div>
 					</Row>
 					<div>
@@ -118,7 +118,7 @@ class ShowProfile extends Component {
 										:
 										!this.props.alreadyRated ?
 											
-												<button className="btn yellow accent-2 text-black" onClick={() => this.handleRate(this.props.profile)}><i class="material-icons left">stars</i>Rate user</button>
+												<button className="btn yellow accent-2 text-black" onClick={() => this.handleRate(this.props.profile)}><i className="material-icons left">stars</i>Rate user</button>
 											
 											:
 											<p>You have rated this user with {this.props.alreadyRatedValue} <FontAwesomeIcon icon={faStar} /></p>
@@ -132,10 +132,10 @@ class ShowProfile extends Component {
 					</div>
 					<Row>
 						<Col s={6}>
-							<a className="btn waves-effect deep-purple lighten-3" href={user_animes_url} role="button"><i class="material-icons left">movie_filter</i>User animes</a>
+							<a className="btn waves-effect deep-purple lighten-3" href={user_animes_url} role="button"><i className="material-icons left">movie_filter</i>User animes</a>
 						</Col>
 						<Col s={6}>
-							<a className="btn waves-effec light-green" href="/" role="button"><i class="material-icons left">group</i>Show meetings</a>
+							<a className="btn waves-effec light-green" href="/" role="button"><i className="material-icons left">group</i>Show meetings</a>
 						</Col>
 					</Row>
 

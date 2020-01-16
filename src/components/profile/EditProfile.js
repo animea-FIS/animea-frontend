@@ -17,11 +17,11 @@ function EditProfile(props) {
                         <h3>{props.profile.username}</h3>
                         <input type="hidden" name="username" readOnly value={props.profile.username} onChange={handleChange} />
                         <label> Name:
-            <input className="form-control" name="name" required="true" value={props.profile.name} onChange={handleChange} />
+            <input className="form-control" name="name" required={true} value={props.profile.name} onChange={handleChange} />
                         </label>
 
                         <label> Email:
-                                <input className="form-control" name="email" required="true" value={props.profile.email} onChange={handleChange} />
+                                <input className="form-control" name="email" required={true} value={props.profile.email} onChange={handleChange} />
                         </label>
 
                         <label> Location:
@@ -43,8 +43,8 @@ function EditProfile(props) {
             <input className="form-control" name="presentationVideo" value={props.profile.presentationVideo} onChange={handleChange} />
                         </label>
 
-                        <button className="btn btn-primary" disabled={!props.isValid} onClick={() => props.onSave(props.profile)}>Save</button>
-                        <button className="btn btn-primary" onClick={() => props.onCancel(props.profile)}>Cancel</button>
+                    <button data-testid="save" className="btn btn-primary" disabled={!props.isValid} onClick={() => props.onSave(props.profile)}>Save</button>
+                    <button data-testid="cancel" className="btn btn-primary" onClick={() => props.onCancel(props.profile)}>Cancel</button>
                 </div>
 
         )

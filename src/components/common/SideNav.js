@@ -67,7 +67,7 @@ function SideNav() {
       <li>
         <Link to="/my-profile">My profile</Link>
       </li>
-      <li><a class="loginLink" onClick={logOut}>Log out</a></li>
+      <li><a className="loginLink" onClick={logOut}>Log out</a></li>
       </ul>
       )
   } else {
@@ -88,7 +88,7 @@ function SideNav() {
       <li>
         <Link to="/requests">Requests</Link>
       </li>
-      <li class="loginLink">
+      <li className="loginLink">
         <Link to="/login">Login</Link>
       </li>
       </ul>
