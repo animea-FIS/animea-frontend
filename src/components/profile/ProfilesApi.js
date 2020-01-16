@@ -1,6 +1,6 @@
 class ProfilesApi {
-    static API_BASE_URL = "https://animea-gateway.herokuapp.com/profile/api";
-
+    static API_BASE_URL = "https://animea-gateway.herokuapp.com/profile/api/v1";
+    
     static requestHeaders() {
         return {}
     }

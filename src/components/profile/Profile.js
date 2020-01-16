@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  withRouter,
+} from "react-router-dom";
 import ProfilesApi from './ProfilesApi';
 import M from "materialize-css";
 import './Profile.css';
@@ -12,6 +15,7 @@ class Profile extends Component {
         super(props);
         this.showMyProfile = this.showMyProfile.bind(this);
         this.state = {
+          userId: 0,
           errorInfo: null,
           profile: {},
           isEditing: {},
@@ -58,6 +62,7 @@ class Profile extends Component {
       for(let i = 0; i < ratings.length; i++){
         totalRatingValue = totalRatingValue + ratings[i].value;
       }
+      totalRatingValue = totalRatingValue / ratings.length;
       this.setState({
         alreadyRated: true,
         alreadyRatedValue: value,
@@ -86,7 +91,7 @@ class Profile extends Component {
       let alreadyRatedValue = 0;
       
       for(let i= 0; i<ratings.length; i++){
-        if(ratings[i].rater_user_id === "5df9cfb41c9d44000047b038"){
+        if(ratings[i].rater_user_id === this.context.userId){
           alreadyRated = true;
           alreadyRatedValue = ratings[i].value;
           break;
@@ -124,16 +129,40 @@ class Profile extends Component {
     }
 
     handleChange(name, profile) {
-      const email = profile.email;
-      const profilePic = profile.profilePic;
+      const email = profile.email + "";
+      const profilePic = profile.profilePic + "";
+      let fieldValidationErrors = this.state.formErrors;
       this.setState(prevState => ({
           isEditing: {...prevState.isEditing, [name]: profile}
       }));
-      this.validateEmail(email);
-      this.validateProfilePic(profilePic);
+      const emailValid = email.includes("@");
+      console.log("La profilePic es: " + profilePic);
+      const profilePicValid = profilePic.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/);
+      console.log("La profile pic se ha evaluado como valida?: " + profilePicValid);
+      if(emailValid){
+        fieldValidationErrors.email = "";
+      }else{
+        fieldValidationErrors.email = " is invalid, must have an @"
+      }
+
+      if(profilePicValid){
+        fieldValidationErrors.profilePic = "";
+      }else{
+        fieldValidationErrors.profilePic = " is invalid, must be a valid picture url";
+      }
+
+      this.setState({
+        formErrors: fieldValidationErrors,
+        emailValid: emailValid,
+        profilePicValid: profilePicValid,
+        formValid: this.state.emailValid && this.state.profilePicValid
+      }); 
+      console.log("Email valid: " + this.state.emailValid);
+      console.log("Profile pic valid: " + this.state.profilePicValid);
+      console.log("Form valid" + this.state.formValid);
     }
 
-    validateEmail(email){
+    /*validateEmail(email){
       let fieldValidationErrors = this.state.formErrors;
       let emailValid = email + "";
       emailValid = emailValid.includes("@");
@@ -167,14 +196,14 @@ class Profile extends Component {
         profilePicValid: profilePicValid
       }); 
       this.validateForm();
-    }
+    }*/
 
-    validateForm(){
+    /*validateForm(){
       this.setState({
         formValid: this.state.emailValid && this.state.profilePicValid
       });
       console.log(this.state.formValid);
-    }
+    }*/
     
     handleSave(name, profile){
       this.setState(prevState => {
@@ -196,13 +225,19 @@ class Profile extends Component {
 
     componentDidMount() {
       // Auto initialize all the things
+      console.log("entra en el componentdidmount");
       M.AutoInit();
       this.showMyProfile();
     }
 
-    showMyProfile() { 
-        var userId = "5e145b225591df48f0316f03"; //TODO Cambiar por ID del usuario autenticado
-        ProfilesApi.getUserById(userId)
+    showMyProfile() {
+      let profileId;
+      if(this.props.match.params.profileId){
+        profileId = this.props.match.params.profileId;
+      }else{
+        profileId = this.context.userId;
+      }
+        ProfilesApi.getUserById(profileId)
           .then(
             (result) => {
               this.setState({
@@ -234,7 +269,6 @@ class Profile extends Component {
     render(){
       return (
         <div>
-          <p>{this.context.userId}</p>
           <div>
             <Alert message={this.state.errorInfo} onClose={this.handleCloseError} />
           </div>
@@ -261,4 +295,4 @@ class Profile extends Component {
 }
 
 Profile.contextType = AuthContext;
-export default Profile;
+export default withRouter(Profile);

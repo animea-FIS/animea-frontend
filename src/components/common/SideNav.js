@@ -20,6 +20,7 @@ import RequestCreation from '../request/RequestCreation';
 import NotFound from '../common/NotFound';
 import Error from '../common/Error';
 import Profile from '../profile/Profile';
+import MyProfile from '../profile/MyProfile';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
@@ -63,6 +64,9 @@ function SideNav() {
       <li>
         <Link to="/requests">Requests</Link>
       </li>
+      <li>
+        <Link to="/my-profile">My profile</Link>
+      </li>
       <li><a class="loginLink" onClick={logOut}>Log out</a></li>
       </ul>
       )
@@ -83,9 +87,6 @@ function SideNav() {
       </li>
       <li>
         <Link to="/requests">Requests</Link>
-      </li>
-      <li>
-        <Link to="/my-profile">My profile</Link>
       </li>
       <li class="loginLink">
         <Link to="/login">Login</Link>
@@ -126,7 +127,10 @@ function SideNav() {
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
           </Route>
-          <Route exact path="/my-profile">
+          <Route path="/my-profile">
+            <MyProfile />
+          </Route>
+          <Route path="/profile/:profileId">
             <Profile />
           </Route>
           <Route path="/login" component={Login} />
