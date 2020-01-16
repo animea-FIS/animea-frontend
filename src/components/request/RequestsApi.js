@@ -1,5 +1,5 @@
 class RequestsApi {
-    static API_BASE_URL = "http://localhost:3003/api/v1";
+    static API_BASE_URL = "https://animea-gateway.herokuapp.com/friends/api/v1";
 
     static requestHeaders() {
         return {}

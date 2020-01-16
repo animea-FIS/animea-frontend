@@ -13,7 +13,9 @@ import Meetings from '../meeting/Meetings';
 import MeetingInfo from '../meeting/MeetingInfo';
 import MeetingCreation from '../meeting/MeetingCreation';
 import MeetingEdition from '../meeting/MeetingEdition';
+import MeetingsUser from '../meeting/MeetingsUser';
 import Friends from '../friend/Friends';
+import FriendsAnimes from '../friend/FriendsAnimes';
 import Requests from '../request/Requests';
 import RequestInfo from '../request/RequestInfo';
 import RequestCreation from '../request/RequestCreation';
@@ -82,13 +84,7 @@ function SideNav() {
       <li>
         <Link to="/meetings">Meetings</Link>
       </li>
-      <li>
-        <Link to="/friends">Friends</Link>
-      </li>
-      <li>
-        <Link to="/requests">Requests</Link>
-      </li>
-      <li className="loginLink">
+      <li class="loginLink">
         <Link to="/login">Login</Link>
       </li>
       </ul>
@@ -124,6 +120,7 @@ function SideNav() {
           <Route exact path="/meetings" component={Meetings} />
           <PrivateRoute exact path="/meetings/create-meeting" component={MeetingCreation}/>
           <PrivateRoute exact path="/meetings/edit-meeting" component={MeetingEdition}/>
+          <Route exact path={`/meetings/user/:userId`} component={MeetingsUser}/>
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
           </Route>
@@ -136,6 +133,9 @@ function SideNav() {
           <Route path="/login" component={Login} />
           <Route exact path="/friends">
             <Friends />
+          </Route>
+          <Route path={`/friends/animes`}>
+            <FriendsAnimes />
           </Route>
           <Route exact path="/requests">
             <Requests />

@@ -10,6 +10,7 @@ class MeetingInfo extends Component {
 
     state = {
         meetingInfo: {},
+        error: ""
     };
 
     constructor(props) {
@@ -31,9 +32,16 @@ class MeetingInfo extends Component {
             .then(
                 (result) => {
                     console.log(result)
-                    this.setState({
-                        meetingInfo: result.meeting
-                    })
+                    if (!result.error) {
+                        this.setState({
+                            error: "",
+                            meetingInfo: result.meeting
+                        });
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
+                    }
                 },
                 (error) => {
                     console.log(error)
@@ -49,6 +57,15 @@ class MeetingInfo extends Component {
             .then(
                 (result) => {
                     console.log(result)
+                    if (!result.error) {
+                        this.setState({
+                            error: ""
+                        });
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
+                    }
                 },
                 (error) => {
                     console.log(error)
@@ -63,9 +80,16 @@ class MeetingInfo extends Component {
         MeetingsApi.deleteMeeting(meetingId, userToken)
             .then(
                 (result) => {
-                    console.log(result)
+                    console.log(result);
                     if (!result.error) {
+                        this.setState({
+                            error: ""
+                        });
                         window.location = "http://localhost:3000/meetings";
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
                     }
                 },
                 (error) => {
@@ -81,7 +105,16 @@ class MeetingInfo extends Component {
         MeetingsApi.leaveMeeting(meetingId, userToken)
             .then(
                 (result) => {
-                    console.log(result)
+                    console.log(result);
+                    if (!result.error) {
+                        this.setState({
+                            error: ""
+                        });
+                    } else {
+                        this.setState({
+                            error: result.error
+                        });
+                    }
                 },
                 (error) => {
                     console.log(error)
@@ -352,8 +385,16 @@ class MeetingInfo extends Component {
                             </div>
         }
 
+        var errorBox = "";
+        if (this.state.error != "") {
+            errorBox = <div class="vertical-center" style={{backgroundColor: '#f50057', borderRadius: 5, boxShadow: "0px 2px 8px 2px rgba(255, 0, 0, .3)", color:'white', fontWeight: 'bold', marginBottom: 14, padding: 10, paddingTop: 12}}>    
+                            <p style={{margin: 0}}>{this.state.error}</p>
+                        </div>
+        }
+
         return (
             <div style={{fontFamily: 'Belgrano'}}>
+                {errorBox}
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>            
                     <div class="col s6" style={{fontWeigth: 'bold', padding: 30, margin: 0}}>
                         <h4>{this.state.meetingInfo.name}</h4>
