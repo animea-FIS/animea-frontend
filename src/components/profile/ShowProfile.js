@@ -90,6 +90,7 @@ class ShowProfile extends Component {
 		}
 		let video_url = (this.props.profile.presentationVideo + "");
 		let user_animes_url = `/user/${this.context.userId}/animes`;
+		let user_meetings_usrl = `/meetings/user/${this.context.userId}`
 		return (
 			<div className="container profile-center">
 				<Row>
@@ -135,7 +136,7 @@ class ShowProfile extends Component {
 							<a className="btn waves-effect deep-purple lighten-3" href={user_animes_url} role="button"><i className="material-icons left">movie_filter</i>User animes</a>
 						</Col>
 						<Col s={6}>
-							<a className="btn waves-effec light-green" href="/" role="button"><i className="material-icons left">group</i>Show meetings</a>
+							<a className="btn waves-effec light-green" href={user_meetings_usrl} role="button"><i className="material-icons left">group</i>Show meetings</a>
 						</Col>
 					</Row>
 
