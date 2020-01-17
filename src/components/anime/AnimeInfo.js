@@ -222,14 +222,14 @@ class AnimeInfo extends Component {
       </div>)
           }
       }
-        if(!this.state.animeInfo.userHasAnime) {
+        if(!this.state.animeInfo.userHasAnime && (this.context.authTokens!=='undefined' && this.context.authTokens!==undefined)) {
             addButtom = (<a key="1" href="#" id="addAnime" onClick={() => this.addAnime(this.state.animeInfo.id)} >
                         <i className="material-icons">add_circle</i>
                         Add to my list
                         </a>
             )
         }
-        if(this.state.animeInfo.userHasAnime) {
+        if(this.state.animeInfo.userHasAnime && (this.context.authTokens!=='undefined' && this.context.authTokens!==undefined)) {
             removeButtom = (<a key="1" href="#" id="deleteAnime" onClick={() => this.removeAnime(this.state.animeInfo.id)}>
                         <i className="material-icons">remove_circle</i>
                         Remove from my list

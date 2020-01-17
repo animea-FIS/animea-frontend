@@ -72,7 +72,7 @@ function Login() {
             <Link to="/">Don't have an account? Fuck you because we don't have registry :)</Link>
             <div>
             <Recaptcha
-                sitekey="6LdWXNAUAAAAAIFHzXrEASe1l_Je0wh7prrs-umD"
+                sitekey="6LeqYtAUAAAAAIlI9egSVGrazGRpn27K_5ntHY0f"
                 render="explicit"
                 onloadCallback={callback}
                 verifyCallback={verifyCaptcha}
