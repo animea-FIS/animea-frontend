@@ -69,7 +69,8 @@ function Login() {
                 
                 <Button onClick={postLogin}>Sign In</Button>
             </Form>
-            <Link to="/">Don't have an account? Fuck you because we don't have registry :)</Link>
+            <br />
+            <br />
             <div>
             <Recaptcha
                 sitekey="6LeqYtAUAAAAAIlI9egSVGrazGRpn27K_5ntHY0f"
