@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Row } from 'react-materialize';
+import { Row, Col } from 'react-materialize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faEnvelopeOpenText, faBirthdayCake, faMapMarkedAlt, faStarHalfAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faEnvelopeOpenText, faBirthdayCake, faMapMarkedAlt, faStarHalfAlt, faUserEdit, faHashtag } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import ProfileVideo from './ProfileVideo';
 import RateProfile from './RateProfile';
 import ProfilesApi from './ProfilesApi';
 import './Profile.css';
+import { AuthContext } from "../auth/context/auth";
 
 
 class ShowProfile extends Component {
@@ -14,11 +16,10 @@ class ShowProfile extends Component {
 		this.state = {
 			isRating: {},
 			ratingValue: 3,
-			alreadyRated: false
+			alreadyRated: this.props.alreadyRated
 		}
 		this.handleRate = this.handleRate.bind(this);
 		this.handleSaveRate = this.handleSaveRate.bind(this);
-		this.loadAlredyRated = this.loadAlredyRated.bind(this);
 	}
 
 	handleRate(profile) {
@@ -51,7 +52,7 @@ class ShowProfile extends Component {
 		this.saveRate(value);
 	}
 	saveRate(ratingValue) {
-		var userRatingId = "5df9cfb41c9d44000047b038";
+		var userRatingId = this.context.userId;
 		ProfilesApi.addRatingToUser(this.props.profile.id, userRatingId, ratingValue).then((error => {
 			console.log(error);
 			this.setState({
@@ -78,15 +79,9 @@ class ShowProfile extends Component {
 		});
 	}
 
-	loadAlredyRated(){
-		this.setState({
-			alreadyRated: true
-		})
-	}
-
 	componentDidMount() {
-		this.loadAlredyRated();
-	  }
+
+	}
 
 	render() {
 		let stars = [];
@@ -94,12 +89,14 @@ class ShowProfile extends Component {
 			stars.push(<FontAwesomeIcon icon={faStar} />);
 		}
 		let video_url = (this.props.profile.presentationVideo + "");
+		let user_animes_url = `/user/${this.context.userId}/animes`;
+		let user_meetings_usrl = `/meetings/user/${this.context.userId}`
 		return (
 			<div className="container profile-center">
 				<Row>
 					<Row>
 						<div>
-							<img src={this.props.profile.profilePic} alt={this.props.profile.username} className="circle tamano-img" /> <h3>{this.props.profile.username}</h3>
+							<img src={this.props.profile.profilePic} alt={this.props.profile.username} className="circle tamano-img" /> <h3>{this.props.profile.username}  <button data-testid="edit" className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}><i className="material-icons left">person</i>Edit</button></h3>
 						</div>
 					</Row>
 					<div>
@@ -111,28 +108,38 @@ class ShowProfile extends Component {
 						{this.props.profile.birthdate == null &&
 							<p><FontAwesomeIcon icon={faMapMarkedAlt} /> {this.props.profile.location}</p>
 						}
-						<p><FontAwesomeIcon icon={faStarHalfAlt} /> Rating: {this.props.rating} {stars} </p>
+						<div>
+							<FontAwesomeIcon icon={faStarHalfAlt} /> Rating: {this.props.rating} {stars}
+							{this.props.profile.id !== this.context.userId &&
+								<p>
+									{this.state.isRating[this.props.profile.username] ?
+											<RateProfile key={this.props.profile.username} ratingValue={this.state.ratingValue}
+												onSaveRate={this.handleSaveRate}
+												onCancelRate={this.handleCancelRate.bind(this, this.props.profile.username)} />
+										:
+										!this.props.alreadyRated ?
+											
+												<button className="btn yellow accent-2 text-black" onClick={() => this.handleRate(this.props.profile)}><i className="material-icons left">stars</i>Rate user</button>
+											
+											:
+											<p>You have rated this user with {this.props.alreadyRatedValue} <FontAwesomeIcon icon={faStar} /></p>
+									}
+								</p>
+							}
+						</div>
+						<p><FontAwesomeIcon icon={faTwitter} /> Twitter account: {this.props.profile.twitterUsername}</p>
+						<p><FontAwesomeIcon icon={faHashtag} /> Last Tweet: {this.props.lastTweet}</p>
 						<p><FontAwesomeIcon icon={faUserEdit} /> Bio: {this.props.profile.bio}</p>
 					</div>
 					<Row>
-						<div>
-							<button className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}>Edit</button>
-						</div>
+						<Col s={6}>
+							<a className="btn waves-effect deep-purple lighten-3" href={user_animes_url} role="button"><i className="material-icons left">movie_filter</i>User animes</a>
+						</Col>
+						<Col s={6}>
+							<a className="btn waves-effec light-green" href={user_meetings_usrl} role="button"><i className="material-icons left">group</i>Show meetings</a>
+						</Col>
 					</Row>
-					{this.state.isRating[this.props.profile.username] ?
-						<Row>
-							<RateProfile key={this.props.profile.username} ratingValue={this.state.ratingValue}
-								onSaveRate={this.handleSaveRate}
-								onCancelRate={this.handleCancelRate.bind(this, this.props.profile.username)} />
-						</Row>
-						:
-						!this.props.alreadyRated ?
-							<Row>
-								<button className="btn btn-primary" onClick={() => this.handleRate(this.props.profile)}>Rate user</button>
-							</Row>
-							:
-						<p>You have rated this user with {this.props.alreadyRatedValue} <FontAwesomeIcon icon={faStar} /></p>
-					}
+
 					<div>
 						<ProfileVideo presentationVideo={video_url} />
 					</div>
@@ -142,4 +149,5 @@ class ShowProfile extends Component {
 	}
 }
 
+ShowProfile.contextType = AuthContext;
 export default ShowProfile;

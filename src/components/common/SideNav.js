@@ -22,6 +22,8 @@ import RequestCreation from '../request/RequestCreation';
 import NotFound from '../common/NotFound';
 import Error from '../common/Error';
 import Profile from '../profile/Profile';
+import MyProfile from '../profile/MyProfile';
+import Profiles from '../profile/Profiles';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
@@ -65,7 +67,10 @@ function SideNav() {
       <li>
         <Link to="/requests">Requests</Link>
       </li>
-      <li><a class="loginLink" onClick={logOut}>Log out</a></li>
+      <li>
+        <Link to="/my-profile">My profile</Link>
+      </li>
+      <li><a className="loginLink" onClick={logOut}>Log out</a></li>
       </ul>
       )
   } else {
@@ -79,9 +84,6 @@ function SideNav() {
       </li>
       <li>
         <Link to="/meetings">Meetings</Link>
-      </li>
-      <li>
-        <Link to="/my-profile">My profile</Link>
       </li>
       <li class="loginLink">
         <Link to="/login">Login</Link>
@@ -98,8 +100,8 @@ function SideNav() {
     <Router>
       {redirect}
       <div>
-        <nav class="yellow darken-2">
-          <a href="/" class="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"} /></a>
+        <nav className="yellow darken-2">
+          <a href="/" className="brand-logo"><img width="150" height="auto" src={window.location.origin + "/logo.png"} /></a>
           {navLinks}
         </nav>
         <Switch>
@@ -112,7 +114,9 @@ function SideNav() {
           <Route path={`/user/:userId/animes`}>
             <UserAnimes />
           </Route>
-          <PrivateRoute exact path="/users" />
+          <Route exact path="/users">
+            <Profiles/>
+            </Route>
           <Route exact path="/">
             <Animes />
           </Route>
@@ -123,7 +127,10 @@ function SideNav() {
           <Route path={`/meetings/:meetingId`}>
             <MeetingInfo />
           </Route>
-          <Route exact path="/my-profile">
+          <Route path="/my-profile">
+            <MyProfile />
+          </Route>
+          <Route path="/profile/:profileId">
             <Profile />
           </Route>
           <Route path="/login" component={Login} />
