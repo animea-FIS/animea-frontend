@@ -23,6 +23,7 @@ import NotFound from '../common/NotFound';
 import Error from '../common/Error';
 import Profile from '../profile/Profile';
 import MyProfile from '../profile/MyProfile';
+import Profiles from '../profile/Profiles';
 import PrivateRoute from '../auth/PrivateRoute';
 import Login from '../auth/Login';
 import { useAuth } from "../auth/context/auth";
@@ -113,7 +114,9 @@ function SideNav() {
           <Route path={`/user/:userId/animes`}>
             <UserAnimes />
           </Route>
-          <PrivateRoute exact path="/users" />
+          <Route exact path="/users">
+            <Profiles/>
+            </Route>
           <Route exact path="/">
             <Animes />
           </Route>
