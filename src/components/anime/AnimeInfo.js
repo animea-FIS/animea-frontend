@@ -16,12 +16,14 @@ class AnimeInfo extends Component {
     state = {
         animeInfo: {},
         userFriendsForAnime: false,
+        usersForAnime: false
     };   
 
     constructor(props) {
         super(props);
         this.getAnimeById = this.getAnimeById.bind(this);
         this.getUserFriendsForAnime = this.getUserFriendsForAnime.bind(this);
+        this.getUsersForAnime = this.getUsersForAnime.bind(this);
     }
 
     componentDidMount() {
@@ -32,6 +34,7 @@ class AnimeInfo extends Component {
         this.getAnimeById(this.props.match.params.animeId, this.context.authTokens);
         if(this.context.authTokens){
             this.getUserFriendsForAnime(this.props.match.params.animeId);
+            this.getUsersForAnime(this.props.match.params.animeId);
         }
 
     }
@@ -134,6 +137,23 @@ class AnimeInfo extends Component {
             )
     };
 
+    async getUsersForAnime(animeId) {
+      AnimesApi.getUsersForAnime(animeId, this.context.authTokens)
+          .then(
+              (result) => {
+                  this.setState({
+                      usersForAnime: result
+                  })
+              },
+              (error) => {
+                  console.log(error)
+                  this.setState({
+                      errorInfo: "Problem with connection to server"
+                  })
+              }
+          )
+  };
+
     render() {
         var animeInfo;
         if(this.props.testAnime){
@@ -142,6 +162,7 @@ class AnimeInfo extends Component {
           animeInfo = this.state.animeInfo.attributes;
       }
         var friends = "";
+        var users = "";
         var addButtom = "";
         var removeButtom = "";
         var updateRatingAnime = "";
@@ -170,7 +191,7 @@ class AnimeInfo extends Component {
         if(listItems.length > 0){
             friends = (<div class="card purple lighten-2">
             <div class="card-content white-text">
-            <span class="card-title">Users that watched the anime...</span>
+            <span class="card-title">Friends that watched the anime...</span>
             <ul className="animeInfo">
                 {listItems}
             </ul>
@@ -178,6 +199,26 @@ class AnimeInfo extends Component {
         </div>)
             }
         }
+
+        if(this.state.usersForAnime) {
+          const usersList = this.state.usersForAnime.map((friendObj) =>
+              <div class="chip">
+                  <img src={friendObj.profilePic} alt="Contact Person" />
+                  <Link to={`/profile/${friendObj.id}`}><b>{friendObj.username}</b></Link>
+              </div>
+              )
+          
+      if(usersList.length > 0){
+          users = (<div class="card purple lighten-2">
+          <div class="card-content white-text">
+          <span class="card-title">Users that watched the anime...</span>
+          <ul className="animeInfo">
+              {usersList}
+          </ul>
+          </div>
+      </div>)
+          }
+      }
         if(!this.state.animeInfo.userHasAnime) {
             addButtom = (<a key="1" href="#" id="addAnime" onClick={() => this.addAnime(this.state.animeInfo.id)} >
                         <i className="material-icons">add_circle</i>
@@ -257,6 +298,7 @@ class AnimeInfo extends Component {
                         </div>
                     </div>
                     {friends}
+                    {users}
                     </div>
                     <div class="col s5">
                         <div class="card pink lighten-2">

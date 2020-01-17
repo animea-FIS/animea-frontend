@@ -120,6 +120,21 @@ class AnimesApi {
         });
     }
 
+    static getUsersForAnime(animeId, userToken) {
+        const headers = this.tokenRequestHeaders(userToken);
+        const request = new Request(AnimesApi.API_BASE_URL + `/animes/${animeId}/users`, {
+            method: 'GET',
+            headers: headers
+        });
+        return fetch(request).then(response => {
+            if(response.status != 200){
+               throw {status: response.status, statusText: response.statusText};
+            } else {
+                return response.json();
+            }
+        });
+    }
+
     static removeAnimeFromList(animeId, userId, userToken) {
         const headers = this.tokenRequestHeaders(userToken);
         const request = new Request(AnimesApi.API_BASE_URL + `/user/animes/${animeId}`, {
