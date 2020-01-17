@@ -96,7 +96,7 @@ class ShowProfile extends Component {
 				<Row>
 					<Row>
 						<div>
-							<img src={this.props.profile.profilePic} alt={this.props.profile.username} className="circle tamano-img" /> <h3>{this.props.profile.username}  <button data-testid="edit" className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}><i className="material-icons left">person</i>Edit</button></h3>
+		<img src={this.props.profile.profilePic} alt={this.props.profile.username} className="circle tamano-img" /> <h3>{this.props.profile.username}  {this.props.profile.id === this.context.userId && <button data-testid="edit" className="btn btn-primary" onClick={() => this.props.onEdit(this.props.profile)}><i className="material-icons left">person</i>Edit</button>}</h3>
 						</div>
 					</Row>
 					<div>
