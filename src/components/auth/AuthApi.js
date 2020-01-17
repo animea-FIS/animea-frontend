@@ -18,6 +18,7 @@ class AuthApi {
                 password: password
             })
         });
+        console.log(request);
 
         return fetch(request).then(response => {
             return response.json();

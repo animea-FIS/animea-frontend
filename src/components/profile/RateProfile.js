@@ -54,8 +54,8 @@ class RateProfile extends Component{
                     </label>
                 
                 <div>
-                <button className="btn btn-default" onClick={() => this.props.onSaveRate(this.state.selectedOption)}>Rate</button>
-                <button className="btn btn-primary" onClick={() => this.props.onCancelRate(this.props.profile)}>Cancel</button>
+                <button data-testid="save" className="btn btn-default" onClick={() => this.props.onSaveRate(this.state.selectedOption)}>Rate</button>
+                <button data-testid="cancel" className="btn btn-primary" onClick={() => this.props.onCancelRate(this.props.profile)}>Cancel</button>
                 </div></div>
         )
       }

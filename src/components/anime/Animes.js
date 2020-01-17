@@ -267,8 +267,14 @@ class Animes extends Component {
       return (<Redirect to={{pathname:"/error", state:{errorCode:this.state.error.status, errorMessage:this.state.error.statusText }}}/>)
     }
     
-    const listItems = this.state.animes.map((anime) =>
-      <Anime key={anime.id} value={anime} />);
+    let listItems;
+      if(this.props.testAnimes){
+        listItems = this.props.testAnimes.map((anime) =>
+        <Anime key={anime.id} value={anime} />);
+      }else{
+        listItems = this.state.animes.map((anime) =>
+        <Anime key={anime.id} value={anime} />);
+    }
     return (
       <div className="container">
         <div className="row valign-wrapper">

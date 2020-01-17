@@ -135,7 +135,12 @@ class AnimeInfo extends Component {
     };
 
     render() {
-        var animeInfo = this.state.animeInfo.attributes;
+        var animeInfo;
+        if(this.props.testAnime){
+          animeInfo = this.props.testAnime.attributes;
+        }else{
+          animeInfo = this.state.animeInfo.attributes;
+      }
         var friends = "";
         var addButtom = "";
         var removeButtom = "";
@@ -174,14 +179,14 @@ class AnimeInfo extends Component {
             }
         }
         if(!this.state.animeInfo.userHasAnime) {
-            addButtom = (<a key="1" href="#" onClick={() => this.addAnime(this.state.animeInfo.id)} >
+            addButtom = (<a key="1" href="#" id="addAnime" onClick={() => this.addAnime(this.state.animeInfo.id)} >
                         <i className="material-icons">add_circle</i>
                         Add to my list
                         </a>
             )
         }
         if(this.state.animeInfo.userHasAnime) {
-            removeButtom = (<a key="1" href="#" onClick={() => this.removeAnime(this.state.animeInfo.id)}>
+            removeButtom = (<a key="1" href="#" id="deleteAnime" onClick={() => this.removeAnime(this.state.animeInfo.id)}>
                         <i className="material-icons">remove_circle</i>
                         Remove from my list
                     </a>

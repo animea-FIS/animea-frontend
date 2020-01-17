@@ -51,4 +51,4 @@ class Anime extends Component {
 }
 
 Anime.contextType = AuthContext;
-export default withRouter(Anime);
+export default Anime;
