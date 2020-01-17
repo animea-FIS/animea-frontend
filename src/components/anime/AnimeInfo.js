@@ -169,6 +169,7 @@ class AnimeInfo extends Component {
         var removeButtom = "";
         var updateRatingAnime = "";
         var updateStatusAnime = "";
+        var animeInfoLogged = "";
         const ratingOptions = [
             { value: '1', label: '1' },
             { value: '2', label: '2' },
@@ -270,6 +271,22 @@ class AnimeInfo extends Component {
             )
         }
 
+        if(this.state.animeInfo.userHasAnime) {
+          animeInfoLogged = (<div class="col s5">
+          <div class="card pink lighten-2">
+              <div class="card-content white-text">
+                  <span class="card-title">My anime info</span>
+                  <ul className="animeInfo">
+                      {this.state.animeInfo.status ? <li><b>My rating: </b>{this.state.animeInfo.rating} ★</li> : ''}
+                      {this.state.animeInfo.status ? <li><b>My status: </b>{this.state.animeInfo.status} ★</li> : ''}
+                  </ul>
+              </div>
+          </div>
+      </div>
+
+          )
+        }
+
         if (animeInfo) { 
             return (
             <div className="container">
@@ -303,17 +320,7 @@ class AnimeInfo extends Component {
                     {friends}
                     {users}
                     </div>
-                    <div class="col s5">
-                        <div class="card pink lighten-2">
-                            <div class="card-content white-text">
-                                <span class="card-title">My anime info</span>
-                                <ul className="animeInfo">
-                                    {this.state.animeInfo.status ? <li><b>My rating: </b>{this.state.animeInfo.rating} ★</li> : ''}
-                                    {this.state.animeInfo.status ? <li><b>My status: </b>{this.state.animeInfo.status} ★</li> : ''}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    {animeInfoLogged}
                     {addButtom}
                     {removeButtom}
                     <div>
