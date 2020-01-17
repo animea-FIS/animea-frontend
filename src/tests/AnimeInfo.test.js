@@ -60,7 +60,7 @@ it("sends event if button to add anime is clicked", async () => {
     const addItem = jest.fn()
       act(() => {
         render(
-            <AuthContext.Provider value={addItem}>
+            <AuthContext.Provider value={{ authTokens:123, setAuthTokens: addItem, userId:123, setUserId: addItem}}>
                 <BrowserRouter><AnimeInfo testAnime={fakeAnime} /></BrowserRouter>
             </AuthContext.Provider>, container);
       });
