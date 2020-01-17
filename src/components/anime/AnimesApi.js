@@ -1,6 +1,5 @@
 class AnimesApi {
-    //static API_BASE_URL = `https://animea-gateway.herokuapp.com/animes/api/v1`
-    static API_BASE_URL = `http://localhost:3001/api/v1`
+    static API_BASE_URL = `https://animea-gateway.herokuapp.com/animes/api/v1`
 
     static requestHeaders() {
         return {}
