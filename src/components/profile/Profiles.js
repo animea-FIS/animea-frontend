@@ -7,20 +7,20 @@ import { AuthContext } from "../auth/context/auth";
 import SmallProfileList from './SmallProfileList';
 
 class Profiles extends Component {
-    state = {
-        users:[],
-        errorInfo: null
-    };
-
     constructor(props) {
         super(props);
         this.getAllUsers = this.getAllUsers.bind(this);
+        this.state = {
+            users:[],
+            errorInfo: null
+        };
     }
 
     componentDidMount() {
         M.AutoInit();
         this.getAllUsers();
     };
+
 
     getAllUsers() {
         ProfilesApi.getAllUsers()
@@ -41,14 +41,23 @@ class Profiles extends Component {
     };
 
     render() {
-        const listItems = this.state.users.map((user) =>
+        let listItems;
+        if(this.props.testUsers){
+            listItems = this.props.testUsers.map((user) =>
             <div>
                 <SmallProfileList user={user} />
             </div>
         );
+        }else{
+            listItems = this.state.users.map((user) =>
+            <div>
+                <SmallProfileList user={user} />
+            </div>
+        );
+        }
         return (
             <div className="container">
-                {this.state.users.length !== 0 &&
+                {listItems.length !== 0 &&
                     <span>
                         <Row>
                             {listItems}
@@ -57,7 +66,7 @@ class Profiles extends Component {
 
                     </span>
                 }
-                {this.state.users.length === 0 &&
+                {(listItems === null || listItems.length === 0) &&
                     <span>There are no users in the system.</span>
                 }
             </div>
