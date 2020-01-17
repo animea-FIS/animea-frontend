@@ -4,6 +4,7 @@ import { Card, Logo, Form, Input, Button } from './AuthForm';
 import { useAuth } from "./context/auth";
 import { Redirect } from "react-router-dom";
 import AuthApi from "./AuthApi";
+import Recaptcha from 'react-recaptcha';
 
 function Login() {
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -11,16 +12,34 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { setAuthTokens, setUserId } = useAuth();
+    const [validCaptcha, setValidCaptcha] = useState(false);
 
     function postLogin() {
-        AuthApi.login(email, password).then(result => {
-            console.log(result)
-            setAuthTokens(result.token);
-            setUserId(result.user_id)
-            setLoggedIn(true);
-        }).catch(e => {
-            setIsError(true);
-        });
+        console.log(validCaptcha)
+        if(validCaptcha) {
+            AuthApi.login(email, password).then(result => {
+                console.log(result)
+                setAuthTokens(result.token);
+                setUserId(result.user_id)
+                setLoggedIn(true);
+            }).catch(e => {
+                setIsError(true);
+            });
+        } else {
+            alert('You must verify you are not a robot');
+        }
+    }
+
+    var callback = function () {
+        console.log('Done!!!!');
+        console.log(validCaptcha)
+      };
+
+    var verifyCaptcha = function(response) {
+        if(response) {
+            console.log("hay response")
+            setValidCaptcha(true);
+        }   
     }
 
     if (isLoggedIn) {
@@ -47,9 +66,18 @@ function Login() {
                     }}
                     placeholder="password"
                 />
+                
                 <Button onClick={postLogin}>Sign In</Button>
             </Form>
             <Link to="/">Don't have an account? Fuck you because we don't have registry :)</Link>
+            <div>
+            <Recaptcha
+                sitekey="6LdWXNAUAAAAAIFHzXrEASe1l_Je0wh7prrs-umD"
+                render="explicit"
+                onloadCallback={callback}
+                verifyCallback={verifyCaptcha}
+            />
+            </div>
         </Card>
     );
 }
