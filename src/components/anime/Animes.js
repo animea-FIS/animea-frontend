@@ -4,7 +4,8 @@ import Anime from './Anime';
 import M from "materialize-css";
 import './Animes.css';
 import { Row } from 'react-materialize';
-import ReactPaginate from 'react-paginate';
+import { AuthContext } from "../auth/context/auth";
+import { Redirect } from "react-router-dom";
 
 class Animes extends Component {
   state = {
@@ -12,7 +13,10 @@ class Animes extends Component {
     pageNumber: 0,
     windowsSize: document.documentElement.clientHeight,
     userList: false,
-    searchAnimesFunction: this.searchAllAnimes
+    searchAnimesFunction: this.searchAllAnimes.bind(this),
+    genre: false,
+    status: false,
+    searchText: false
   };
 
   constructor(props) {
@@ -20,8 +24,11 @@ class Animes extends Component {
     this.getAllAnimes = this.getAllAnimes.bind(this);
     this.searchAllAnimes = this.searchAllAnimes.bind(this);
     this.showUserList = this.showUserList.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleGenreChange = this.handleGenreChange.bind(this);
+    this.handleStatusChange = this.handleStatusChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.setState = this.setState.bind(this)
   }
 
   componentDidMount() {
@@ -35,7 +42,7 @@ class Animes extends Component {
   }
 
   getAllAnimes() {
-    AnimesApi.getAllAnimes(this.state.pageNumber)
+    AnimesApi.getAllAnimes(this.state.pageNumber, this.state.genre, this.state.status, this.state.searchText)
       .then(
         (result) => {
           var foundAnimes = []
@@ -60,7 +67,7 @@ class Animes extends Component {
   }
 
   searchAllAnimes(searchText) {
-    AnimesApi.searchAllAnimes(searchText)
+    AnimesApi.getAllAnimes(this.state.pageNumber, this.state.genre, this.state.status, searchText)
       .then(
         (result) => {
           this.setState({
@@ -77,11 +84,9 @@ class Animes extends Component {
   };
 
   showUserList() {
-    var userId = 1;
-    AnimesApi.getUserAnimes(userId)
+    AnimesApi.getUserAnimes(this.context.userId, this.context.authTokens)
       .then(
         (result) => {
-          console.log(result)
           this.setState({
             animes: result,
             userList: true,
@@ -90,10 +95,9 @@ class Animes extends Component {
           })
         },
         (error) => {
-          console.log(error)
-          this.setState({
-            errorInfo: "Problem with connection to server"
-          })
+          this.setState(
+            {error}
+          );          
         }
       )
   }
@@ -102,7 +106,6 @@ class Animes extends Component {
     var userId = 1;
     AnimesApi.addAnimeToUserList(userId).then(
       (result) => {
-        console.log(result);
         this.setState({
           animes: result
         })
@@ -116,10 +119,64 @@ class Animes extends Component {
     )
   }
 
-  handleChange(e) {
+  handleGenreChange(e) {
+    var genre = e.target.value;
+    this.setState({
+      pageNumber: 0,
+      genre: genre
+    })
+    console.log( this.state.searchText)
+    AnimesApi.getAllAnimes(this.state.pageNumber, genre, this.state.status, this.state.searchText)
+      .then(
+        (result) => {
+          console.log(result)
+          this.setState({
+            animes: result,
+            userList: false
+          })
+
+        },
+        (error) => {
+          console.log(error)
+          this.setState({
+            errorInfo: "Problem with connection to server"
+          })
+        }
+      )
+  }
+
+  handleStatusChange(e) {
+    var status = e.target.value;
+    this.setState({
+      pageNumber: 0,
+      status: status
+    })
+    console.log( this.state.searchText)
+    AnimesApi.getAllAnimes(this.state.pageNumber, this.state.genre, status, this.state.searchText)
+      .then(
+        (result) => {
+          console.log(result)
+          this.setState({
+            animes: result,
+            userList: false
+          })
+
+        },
+        (error) => {
+          console.log(error)
+          this.setState({
+            errorInfo: "Problem with connection to server"
+          })
+        }
+      )
+  }
+
+  handleTextChange(e) {
     var searchText = e.target.value;
     if (searchText.length > 4) {
-      console.log(searchText)
+      this.setState({
+        searchText: searchText
+      })
       this.state.searchAnimesFunction(searchText)
     }
   }
@@ -143,42 +200,98 @@ class Animes extends Component {
 
   render() {
     var listMsg;
+    var myListButton = '';
+    var searchBar = (<nav className="anime-search">
+    <div className="nav-wrapper">
+      <form autoComplete="off">
+        <div className="input-field">
+          <input autoComplete="off" id="search" type="search" placeholder="Search animes" required onKeyUp={this.handleTextChange} />
+          <label className="label-icon"><i className="material-icons">search</i></label>
+        </div>
+      </form>
+    </div>
+  </nav>)
+  var filters = (<div className="col s3">
+  <div class="search-filters">
+  <div class="input-field col s12">
+    <select onChange={this.handleGenreChange}>
+      <option value="" disabled selected>Genre</option>
+      <option value="action">Action</option>
+      <option value="adventure">Adventure</option>
+      <option value="school">School</option>
+      <option value="comedy">Comedy</option>
+      <option value="drama">Drama</option>
+      <option value="fantasy">Fantasy</option>
+      <option value="magic">Magic</option>
+      <option value="horror">Horror</option>
+      <option value="mystery">Mystery</option>
+      <option value="music">Music</option>
+      <option value="psychological">Psychological</option>
+      <option value="romance">Romance</option>
+      <option value="sci-fi">Sci-Fi</option>
+      <option value="yaoi">Yaoi</option>
+      <option value="yuri">Yuri</option>
+    </select>
+    <label>Genre</label>
+  </div>
+  <div class="input-field col s12">
+    <select onChange={this.handleStatusChange}>
+      <option value="" disabled selected>Status</option>
+      <option value="current">Current</option>
+      <option value="finished">Finished</option>
+      <option value="tba">TBA</option>
+      <option value="unreleased">Unreleased</option>
+      <option value="upcoming">Upcoming</option>
+    </select>
+    <label>Status</label>
+  </div>
+  </div>
+</div>)
     if (this.state.userList) {
       listMsg = "All animes";
+      searchBar = (<h5 style={{fontWeigth: 'bold', fontFamily: 'Belgrano', fontSize: 37, color:'#1DB9D7'}}>My Anime List</h5>)
+      filters = "";
     } else {
       listMsg = "My list";
     }
 
-    const listItems = this.state.animes.map((anime) =>
-      <Anime key={anime.id} value={anime} />);
+    if((this.context.authTokens!=='undefined' && this.context.authTokens!==undefined)){
+      myListButton = (<div className="col s2">
+      <button onClick={this.state.userList ? () => this.getAllAnimes() : () => this.showUserList()} className="btn waves-effect waves-light" type="submit" name="action">{listMsg}
+        <i className="material-icons right">library_books</i>
+      </button>
+    </div>)
+    }
+
+    if (this.state.error) {
+      return (<Redirect to={{pathname:"/error", state:{errorCode:this.state.error.status, errorMessage:this.state.error.statusText }}}/>)
+    }
+    
+    let listItems;
+      if(this.props.testAnimes){
+        listItems = this.props.testAnimes.map((anime) =>
+        <Anime key={anime.id} value={anime} />);
+      }else{
+        listItems = this.state.animes.map((anime) =>
+        <Anime key={anime.id} value={anime} />);
+    }
     return (
       <div className="container">
         <div className="row valign-wrapper">
           <div className="col s10">
-            <nav className="anime-search">
-              <div className="nav-wrapper">
-                <form autoComplete="off">
-                  <div className="input-field">
-                    <input autoComplete="off" id="search" type="search" required onKeyUp={this.handleChange} />
-                    <label className="label-icon"><i className="material-icons">search</i></label>
-                    <i className="material-icons">close</i>
-                  </div>
-                </form>
-              </div>
-            </nav>
+            {searchBar}
           </div>
-          <div className="col s2">
-            <button onClick={this.state.userList ? () => this.getAllAnimes() : () => this.showUserList()} className="btn waves-effect waves-light" type="submit" name="action">{listMsg}
-              <i className="material-icons right">library_books</i>
-            </button>
+          {myListButton}
+        </div>
+        <div class="row" onScroll={this.handleScroll}>
+          {filters}
+          <div class="col s9">
+            {listItems}
           </div>
         </div>
-        <Row onScroll={this.handleScroll}>
-          {listItems}
-        </Row>
       </div>
     )
   }
 }
-
+Animes.contextType = AuthContext;
 export default Animes; 

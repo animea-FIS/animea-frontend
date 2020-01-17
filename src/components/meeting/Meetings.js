@@ -4,6 +4,7 @@ import { Switch, Route, withRouter, Link} from 'react-router-dom';
 
 import Meeting from './Meeting';
 import MeetingsApi from './MeetingsApi';
+import { AuthContext } from "../auth/context/auth";
 
 class Meetings extends Component {
     state = {
@@ -12,7 +13,8 @@ class Meetings extends Component {
         windowsSize: document.documentElement.clientHeight,
         province: "",
         emptyMessage: "",
-        searchQuery: ""
+        searchQuery: "",
+        error: ""
     }
 
     constructor(props) {
@@ -37,24 +39,31 @@ class Meetings extends Component {
         MeetingsApi.getAllMeetings(this.state.pageNumber, this.state.province, this.state.searchQuery)
             .then(
                 (result) => {
-                    console.log(result.meetings)
-                    var foundMeetings = []
-                    var messageToShow = ""
+                    console.log(result);
+                    if (!result.error) {
+                        var foundMeetings = []
+                        var messageToShow = ""
 
-                    if (this.state.meetings.length > 0 && this.state.province == "" && this.state.searchQuery == "") {
-                        foundMeetings = this.state.meetings.concat(result.meetings);
+                        if (this.state.meetings.length > 0 && this.state.province == "" && this.state.searchQuery == "") {
+                            foundMeetings = this.state.meetings.concat(result.meetings);
+                        } else {
+                            foundMeetings = result.meetings;
+                        }
+
+                        if (foundMeetings.length == 0) {
+                            messageToShow = "Nothing to show ☹"
+                        }
+
+                        this.setState({
+                            meetings: foundMeetings,
+                            emptyMessage: messageToShow,
+                            error: ""
+                        });
                     } else {
-                        foundMeetings = result.meetings;
-                    }
-
-                    if (foundMeetings.length == 0) {
-                        messageToShow = "Nothing to show :("
-                    }
-
-                    this.setState({
-                        meetings: foundMeetings,
-                        emptyMessage: messageToShow
-                    })                                        
+                        this.setState({
+                            error: result.error
+                        });
+                    }                                        
                 },
                 (error) => {
                     console.log(error);
@@ -111,17 +120,27 @@ class Meetings extends Component {
     render() {
         const listItems = this.state.meetings.map((meeting) => <Meeting key={meeting._id} value={meeting} />)
 
+        var createButton = "";
+
+        if (this.context.authTokens) {
+            createButton = <Link to={"/meetings/create-meeting"}><div class="col s1"><i className="material-icons" style={{color: '#ffd54f', fontSize: 40}}>add_circle</i></div></Link>
+        }
+
+        var errorBox = "";
+        if (this.state.error != "") {
+            errorBox = <div class="vertical-center" style={{backgroundColor: '#f50057', borderRadius: 5, boxShadow: "0px 2px 8px 2px rgba(255, 0, 0, .3)", color:'white', fontWeight: 'bold', marginBottom: 14, padding: 10, paddingTop: 12}}>    
+                            <p style={{margin: 0}}>{this.state.error}</p>
+                        </div>
+        }
+
         return (
             <div>
+                {errorBox}
                 <div class="row" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 0, width: '90%'}}>            
                     <div class="col s3" style={{fontWeigth: 'bold', fontFamily: 'Belgrano', padding: 30}}>
                         <h4 style={{textAlign: 'right'}}><p>Meetings</p></h4>
                     </div>
-                    <Link to={"/meetings/create-meeting"}>
-                        <div class="col s1">
-                            <i className="material-icons" style={{color: '#ffd54f', fontSize: 40}}>add_circle</i>
-                        </div>
-                    </Link>
+                    {createButton}
                     <div class="col s5" style={{textAlign: 'center', padding: 30}}>
                         <nav style={{borderRadius: 100, overflow: 'hidden'}}>
                             <div class="nav-wrapper amber lighten-2">
@@ -205,4 +224,5 @@ class Meetings extends Component {
     }
 }
 
+Meetings.contextType = AuthContext;
 export default Meetings; 

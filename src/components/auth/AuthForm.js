@@ -4,10 +4,11 @@ const Card = styled.div`
   box-sizing: border-box;
   max-width: 410px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+
 `;
 
 const Form = styled.div`
@@ -21,10 +22,12 @@ const Input = styled.input`
   border: 1px solid #999;
   margin-bottom: 1rem;
   font-size: 0.8rem;
+  border-bottom: 2px solid #1DD7D5!important;
+
 `;
 
 const Button = styled.button`
-  background: linear-gradient(to bottom, #6371c7, #5563c1);
+  background: linear-gradient(to bottom, #1DB9D7, #BA2BFC);
   border-color: #3f4eae;
   border-radius: 3px;
   padding: 1rem;
@@ -33,11 +36,13 @@ const Button = styled.button`
   width: 100%;
   margin-bottom: 1rem;
   font-size: 0.8rem;
+  margin-top: 2em;
 `;
 
 const Logo = styled.img`
   width: 50%;
   margin-bottom: 1rem;
+  background-color:black
 `;
 
 const Error = styled.div`
