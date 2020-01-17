@@ -15,7 +15,6 @@ import Select from 'react-select';
 class AnimeInfo extends Component {
     state = {
         animeInfo: {},
-        animeaAverage: 0,
         userFriendsForAnime: false,
         usersForAnime: false
     };   
@@ -44,9 +43,9 @@ class AnimeInfo extends Component {
         AnimesApi.getAnimeById(animeId, this.context.authTokens)
             .then(
                 (result) => {
+                  console.log(result[0])
                     this.setState({
                         animeInfo: result[0],
-                        animeaAverage: Math.round((result[0].animeaAverage) * 100) / 100
                     })
                 },
                 (error) => {
@@ -312,8 +311,7 @@ class AnimeInfo extends Component {
                             <li><b>Status: </b>{animeInfo.status}</li>
                             <li><b>Number of episodes: </b>{animeInfo.episodeCount}</li>
                             <li><b>Average length of episodes: </b>{animeInfo.episodeLength} minutes</li>
-                            <li><b>Kitsu average rating: </b>{animeInfo.averageRating}/100 ★</li>
-                            <li><b>Animea average rating: </b>{this.state.animeaAverage}/5 ★</li>
+                            <li><b>Average rating: </b>{animeInfo.averageRating}/100 ★</li>
                         </ul>
                         </div>
                     </div>
