@@ -48,20 +48,20 @@ class Friends extends Component {
     FriendsApi.removeFriend(this.context.userId, friendId, this.context.authTokens).then(
       () => {
         FriendsApi.getAllFriends(this.context.userId, this.context.authTokens)
-        .then(
-          (result) => {
-            var foundFriends = result
-            this.setState({
-              friends: foundFriends,
-            });
-          },
-          (error) => {
-            console.log(error)
-            this.setState({
-              errorInfo: "Problem with connection to server"
-            });
-          }
-        );
+          .then(
+            (result) => {
+              var foundFriends = result
+              this.setState({
+                friends: foundFriends,
+              });
+            },
+            (error) => {
+              console.log(error)
+              this.setState({
+                errorInfo: "Problem with connection to server"
+              });
+            }
+          );
       },
       (error) => {
         console.log(error);
@@ -76,20 +76,20 @@ class Friends extends Component {
     FriendsApi.removeAllFriends(this.context.userId, this.context.authTokens).then(
       () => {
         FriendsApi.getAllFriends(this.context.userId, this.context.authTokens)
-        .then(
-          (result) => {
-            var foundFriends = result
-            this.setState({
-              friends: foundFriends,
-            });
-          },
-          (error) => {
-            console.log(error)
-            this.setState({
-              errorInfo: "Problem with connection to server"
-            });
-          }
-        );
+          .then(
+            (result) => {
+              var foundFriends = result
+              this.setState({
+                friends: foundFriends,
+              });
+            },
+            (error) => {
+              console.log(error)
+              this.setState({
+                errorInfo: "Problem with connection to server"
+              });
+            }
+          );
       },
       (error) => {
         console.log(error);
@@ -101,18 +101,32 @@ class Friends extends Component {
   }
 
   render() {
-    const listItems = this.state.friends.map((friend) =>
-      <div>
-        <Friend value={friend} />
-        <a key="1" href="#" onClick={() => this.removeFriend(friend.id)}>
-          <i className="material-icons">remove_circle</i>
+    let listItems;
+    if (this.props.testUsers) {
+      listItems = this.props.testUsers.map((user) =>
+        <div>
+          <Friend value={user} />
+          <a key="1" href="#" onClick={() => this.removeFriend(user.id)}>
+            <i className="material-icons">remove_circle</i>
             Remove friend
-        </a>
-      </div>
-    );
+          </a>
+        </div>
+      );
+    } else {
+      listItems = this.state.friends.map((friend) =>
+        <div>
+          <Friend value={friend} />
+          <a key="1" href="#" onClick={() => this.removeFriend(friend.id)}>
+            <i className="material-icons">remove_circle</i>
+            Remove friend
+      </a>
+        </div>
+      );
+    }
+
     return (
       <div className="container">
-        {this.state.friends.length !== 0 &&
+        {listItems.length !== 0 &&
           <span>
             <Row>
               {listItems}
@@ -120,7 +134,7 @@ class Friends extends Component {
             </Row>
             <a key="1" href="#" onClick={() => this.removeAllFriends()}>
               <i className="material-icons">remove_circle</i>
-                Remove all friends
+              Remove all friends
             </a>
             <br />
             <a key="1" href="friends/animes">
@@ -128,7 +142,7 @@ class Friends extends Component {
             </a>
           </span>
         }
-        {this.state.friends.length === 0 &&
+        {listItems.length === 0 &&
           <span>You have no friends</span>
         }
       </div>
