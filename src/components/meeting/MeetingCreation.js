@@ -158,7 +158,7 @@ class MeetingCreation extends Component {
                         this.setState({
                             error: ""
                         });
-                        window.location = "http://localhost:3000/meetings";
+                        window.location = "https://animea-frontend.herokuapp.com/meetings";
                     } else {
                         this.setState({
                             error: result.error
