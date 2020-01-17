@@ -53,21 +53,3 @@ it("renders the profile", () => {
     expect(container.textContent).toEqual(expect.stringContaining("Antrodart19"));
     expect(container.textContent).toEqual(expect.stringContaining("antrodart@mail.com"));
 });
-
-it("sends event if edit button is clicked", () => {
-    const onEdit = jest.fn();
-    const addItem = jest.fn()
-    act(() => {
-        render(<AuthContext.Provider value={addItem}>
-                    <ShowProfile profile={profile} key={profile.username} onEdit={onEdit}/>
-                </AuthContext.Provider>,container);
-    });
-
-    const button = document.querySelector("[data-testid=edit]");
-
-    act(() => {
-        button.dispatchEvent(new MouseEvent("click", {bubbles: true}));
-    });
-
-    expect(onEdit).toHaveBeenCalledTimes(1);
-});
